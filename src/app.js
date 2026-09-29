@@ -686,10 +686,12 @@ function coConfirm(){
 }
 
 function render(){ validCart();if(view==="game")renderGame();else if(view==="account") renderAccount(); else if(view==="checkout") renderCheckout(); else if(view==="admin") renderAdmin(); else if(view==="catalog") renderCatalog(); else renderHome(); }
+/* Cambia la dirección sin cortar la navegación: algunos visores (link publicado, vistas previas en el celular) no permiten tocar el historial */
+function setHash(h,replace){try{history[replace?'replaceState':'pushState'](null,'',h)}catch(e){}}
 function go(k,fromHistory){
  clearTimeout(qTimer);filt=emptyFilters();sec=['stock','pedido','destacado'].includes(k)?k:'todo';
  if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'){view='admin'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.epoca='Retro';filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
- if(!fromHistory&&location.hash!=='#'+k)history.pushState(null,'','#'+encodeURIComponent(k));
+ if(!fromHistory&&location.hash!=='#'+k)setHash('#'+encodeURIComponent(k));
  render();scrollTo(0,0);
 }
 window.addEventListener('popstate',function(){go(decodeURIComponent(location.hash.slice(1))||'inicio',true)});
@@ -729,7 +731,7 @@ app.addEventListener("click",function(e){
   if(t.closest("#openBag")){openBag();return}
   if(t.closest("#clear")){clearTimeout(qTimer);filt=emptyFilters();sec="todo";refreshCatalog();return}
   if(t.closest("#howto")){alert("1. Elegí la camiseta y el talle.\n2. Agregala a tu pedido.\n3. Tocá \"Enviar pedido por WhatsApp\" y coordinamos pago y envío.");return}
-  if(t.closest("#goAdmin")){view="admin";history.replaceState(null,"","#socios");render();scrollTo(0,0);return}
+  if(t.closest("#goAdmin")){view="admin";setHash("#socios",true);render();scrollTo(0,0);return}
   if(t.closest("#add")){
     data.productos.unshift({id:uid(),club:"Club",titulo:"Modelo",categoria:"Sudamérica",epoca:"Actual",precio:60000,precioAnterior:0,patron:{tipo:"liso",c1:"#FFFFFF",c2:"#0F2A5C"},foto:null,stock:{S:0,M:0,L:0,XL:0,XXL:0},destacado:false,nuevo:true});
     dirty=true;renderAdmin();var fi=app.querySelector('.tbl input[data-k="club"]');if(fi){fi.focus();fi.select()}return}
