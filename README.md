@@ -1,6 +1,6 @@
 # La ONCE Avellaneda
 
-Prototipo de la tienda: stock local, camisetas por encargo y ruleta de demostración. Repositorio privado de trabajo: **gggalooo/la-once-avellaneda**.
+Prototipo de la tienda: stock local, camisetas por encargo y ruleta de demostración. Repositorio público de trabajo: **gggalooo/la-once-avellaneda**.
 
 ## Ver la página
 
@@ -30,7 +30,7 @@ Trabajen cada uno en una rama, suban sus cambios y abran un pull request para qu
 
 ## Colaborar desde GitHub
 
-El repositorio está en [gggalooo/la-once-avellaneda](https://github.com/gggalooo/la-once-avellaneda). Su propietario puede entrar en **Settings → Collaborators → Add people** e invitar las cuentas de los otros dos socios. Ellos deben aceptar la invitación para ver y editar el repositorio privado.
+El repositorio está en [gggalooo/la-once-avellaneda](https://github.com/gggalooo/la-once-avellaneda) y cualquiera puede verlo. Para que los otros dos socios editen directamente, el propietario puede ir a **Settings → Collaborators → Add people** e invitarlos por sus usuarios de GitHub. También pueden hacer una copia (fork) y proponer cambios con un pull request.
 
 Cada socio debería trabajar en su propia rama y proponer los cambios con un pull request. Antes de subir cambios del código o catálogo, ejecuten `npm run build` y `npm run check` e incluyan el `index.html` generado. No compartan contraseñas ni tokens; cada uno usa su propia cuenta.
 
