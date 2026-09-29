@@ -714,3 +714,18 @@ nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#fff1bc;box-shado
 @keyframes winnerHalo{0%{box-shadow:0 0 0 0 #e7bc5470}100%{box-shadow:0 0 0 22px #e7bc5400}}
 @media(max-width:720px){nav.cats [data-nav="ruleta"]{padding:7px 9px;font-size:11px;margin-top:8px;margin-bottom:8px}nav.cats [data-nav="ruleta"]::before{margin-right:4px;font-size:13px}.game-sound{margin:14px auto 0}}
 @media(prefers-reduced-motion:reduce){.prize-reveal,.wheel-area.winner .wheel-rim{animation:none}nav.cats [data-nav="ruleta"]{transition:none}}
+
+/* Foto completa en la ficha (sin recorte ni zoom), PC y celular */
+.detail .art:has(>img){aspect-ratio:auto;min-height:0;align-self:start;position:sticky;top:0;background:transparent;display:block}
+.detail .art>img{width:100%;height:auto;max-height:min(84vh,760px);object-fit:contain;display:block}
+@media (max-width:720px){.detail .art:has(>img){min-height:0;position:relative}.detail .art>img{max-height:64vh}}
+
+/* PC: la foto ocupa todo el alto de la ficha, sin espacio vacío; el texto se desplaza al lado */
+@media (min-width:721px){
+  dialog:has(.detail>.art>img){max-width:min(1000px,94vw);overflow:hidden}
+  .detail:has(>.art>img){display:flex;height:min(580px,90vh)}
+  .detail:has(>.art>img)>.art{flex:none;height:100%;width:auto;max-width:58%;aspect-ratio:auto;min-height:0;position:static;align-self:stretch;background:transparent}
+  .detail:has(>.art>img)>.art>img{height:100%;width:auto;max-width:100%;max-height:none;object-fit:cover}
+  .detail:has(>.art>img)>.detail-body{flex:1;min-width:0;overflow-y:auto;overscroll-behavior:contain}
+  .detail:has(>.art>img)>.detail-body:focus{outline:none}
+}
