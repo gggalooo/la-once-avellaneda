@@ -7,12 +7,18 @@
     "envioGratisDesde": 120000,
     "cuotas": 0,
     "envios": "Envíos a todo el país",
-    "zona": "Retiro en Avellaneda a coordinar",
+    "zona": "Retiro a coordinar",
     "envioTarifas": {
       "clasico": 8829,
       "expreso": 9713,
       "retiro": 5816
-    }
+    },
+    "razonSocial": "",
+    "cuit": "",
+    "domicilio": "",
+    "emailContacto": "",
+    "dataFiscalUrl": "",
+    "avisosUrl": ""
   },
   "productos": [
     {
@@ -374,7 +380,7 @@
       "precio": 44900,
       "proveedor": "GRKITS",
       "fuente": "https://www.grkits7.com/2026-27-Argentina-Home-1-1-Fans-Soccer-Jersey-p3674924.html",
-      "foto": "assets/1e311118833076b4.jpg",
+      "foto": "assets/59a3059931f90e4d.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -411,7 +417,7 @@
       "precio": 44900,
       "proveedor": "GRKITS",
       "fuente": "https://www.grkits7.com/2026-27-BAR-Home-1-1-Fans-Soccer-Jersey-p3626208.html",
-      "foto": "assets/4d6f3cef084f78d0.jpg",
+      "foto": "assets/f11559f1cb3f3939.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -448,7 +454,7 @@
       "precio": 49900,
       "proveedor": "SSDAYS",
       "fuente": "https://www.ssdays2.com/1998-Vasco-Home-Retro-Soccer-Jersey-p3538669.html",
-      "foto": "assets/4cf8cab49053920a.jpg",
+      "foto": "assets/39c7870bd17fdcce.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -485,7 +491,7 @@
       "precio": 49900,
       "proveedor": "SSDAYS",
       "fuente": "https://www.ssdays2.com/25-26-Brazil-Away-Player-Version-Soccer-Jersey-p3031827.html",
-      "foto": "assets/ab4c449b147451be.jpg",
+      "foto": "assets/5dd29207f434aee5.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -512,43 +518,6 @@
       "activo": true,
       "fechaConsulta": "2026-09-29",
       "fotoOrigen": "https://us03-imgcdn.ymcart.com/98460/2025/02/16/1/7/17a4472d82c0648b.jpg"
-    },
-    {
-      "id": "ss-3644810",
-      "club": "Venezuela",
-      "titulo": "Suplente 2026/27 · Player",
-      "categoria": "Selecciones",
-      "epoca": "Actual",
-      "precio": 46900,
-      "proveedor": "SSDAYS",
-      "fuente": "https://www.ssdays2.com/2026-Venezuela-Away-Player-Version-Soccer-Jersey-p3644810.html",
-      "foto": "assets/90aabe233f97788c.png",
-      "modalidad": "pedido",
-      "tallesPedido": [
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
-      "stock": {
-        "S": 0,
-        "M": 0,
-        "L": 0,
-        "XL": 0,
-        "XXL": 0
-      },
-      "precioAnterior": 0,
-      "patron": {
-        "tipo": "liso",
-        "c1": "#eeeeee",
-        "c2": "#b7c1c8"
-      },
-      "nuevo": false,
-      "destacado": false,
-      "activo": true,
-      "fechaConsulta": "2026-09-29",
-      "fotoOrigen": "https://us03-imgcdn.ymcart.com/98460/2026/05/13/f/0/f0e14944b68e2287.png"
     },
     {
       "id": "asj-2098370",
@@ -631,18 +600,18 @@
   ],
   "heroFondo": "assets/bffc908faad8537e.webp",
   "heroRetro": {
-    "foto": "assets/851e1d9bf9ed125e.png",
+    "foto": "assets/3edb3e97b4a8a585.webp",
     "fondo": "assets/350a9a27d772b015.webp",
     "alt": "Camiseta blanca del Santos FC con BMG, sin percha",
-    "foto2": "assets/502e0aec9d65b2c9.png",
+    "foto2": "assets/29a36af564856cf3.webp",
     "alt2": "Camiseta roja del Manchester United 2008 con AIG, sin percha",
     "foto3": "assets/19eac94ba631ec11.webp",
     "alt3": "Camiseta retro del Barcelona con el 10"
   },
   "heroPago": {
-    "mp": "assets/4429268b1f715b66.png",
-    "uala": "assets/1ae44d8c036ea891.png",
-    "modo": "assets/21166f856c6c8f58.png",
+    "mp": "assets/3d7037207db12e94.webp",
+    "uala": "assets/e98eea779418eaad.webp",
+    "modo": "assets/9d63f0fedd920874.webp",
     "fondo": "assets/e51533446e6c5240.webp"
   }
 }
