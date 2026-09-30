@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /la-once-avellaneda/
+
+Sitemap: https://gggalooo.github.io/la-once-avellaneda/sitemap.xml
