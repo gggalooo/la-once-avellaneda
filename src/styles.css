@@ -965,3 +965,14 @@ nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#fff1bc;box-shado
 .extras-fields input{text-transform:uppercase;font-size:16px;width:100%}
 .extras .hint{margin:0;font-size:12.5px}
 .extras .linkish{align-self:flex-start;min-height:36px;padding:6px 0}
+.cw-sub{font-size:10px}
+
+/* Botón "La ruleta" del menú: rojo casino con mini ruleta */
+nav.cats [data-nav="ruleta"]{background:linear-gradient(180deg,#e8323a 0%,#c0141c 55%,#930b12 100%);color:#fff!important;border:1.5px solid #f0c75a;box-shadow:0 2px 0 #5e070b,0 8px 16px -8px #c0141ccc;text-shadow:0 1px 0 #0005;letter-spacing:.02em}
+nav.cats [data-nav="ruleta"]::before{content:'';width:15px;height:15px;border-radius:50%;display:inline-block;vertical-align:-3px;margin-right:7px;border:1.5px solid #f0c75a;background:radial-gradient(circle,#f0c75a 0 18%,#5b2d12 19% 34%,transparent 35%),repeating-conic-gradient(#111 0 20deg,#f4efe4 20deg 40deg);box-shadow:0 0 0 1px #5e070b}
+nav.cats [data-nav="ruleta"]:hover{background:linear-gradient(180deg,#f2434b 0%,#cf1b24 55%,#9e0f16 100%);transform:translateY(-1px);box-shadow:0 3px 0 #5e070b,0 10px 18px -8px #c0141ccc}
+nav.cats [data-nav="ruleta"]:hover::before{animation:navWheel 1.2s linear infinite}
+nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#ffe08a;box-shadow:0 0 0 3px #e8323a33,0 2px 0 #5e070b}
+@keyframes navWheel{to{transform:rotate(360deg)}}
+@media (max-width:720px){nav.cats [data-nav="ruleta"]::before{width:13px;height:13px;margin-right:5px}}
+@media (prefers-reduced-motion:reduce){nav.cats [data-nav="ruleta"]:hover::before{animation:none}}
