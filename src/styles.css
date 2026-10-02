@@ -907,3 +907,6 @@ nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#fff1bc;box-shado
 .odds{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (min-width:721px){.odds{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media (max-width:420px){.odds{gap:6px}.odds div{padding:12px 4px}.odds strong{font-size:14px;letter-spacing:-.01em}}
+
+/* Mystery Box: botón para pedirla por WhatsApp desde la ruleta */
+.prize-ticket .mb-claim{display:flex;justify-content:center;align-items:center;margin:12px auto 0;max-width:280px;min-height:44px;text-decoration:none}

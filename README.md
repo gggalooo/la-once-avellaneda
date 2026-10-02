@@ -45,7 +45,7 @@ Referencias: [invitar colaboradores](https://docs.github.com/en/repositories/man
 | 15% | 10% |
 | 25% | 3,5% |
 | Envío gratis | 1,5% |
-| Camiseta gratis | 1% |
+| Mystery Box (camiseta sorpresa de regalo) | 1% |
 
 Un giro cada 72 horas en ese navegador. El código de prueba dura también 72 horas. Es una propuesta inicial para probar frecuencia de regreso; no es un resultado medido de ventas. El sorteo utiliza aleatoriedad criptográfica del navegador y probabilidades positivas para todos los premios. El 1% no garantiza un premio cada 100 giros.
 
