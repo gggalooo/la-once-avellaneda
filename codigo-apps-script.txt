@@ -1,0 +1,134 @@
+/**
+ * La ONCE Kits — recibe pedidos, pagos y avisos de stock y los anota en esta planilla.
+ *
+ * Cómo instalarlo:
+ * 1. En la planilla: Extensiones → Apps Script.
+ * 2. Borrá todo lo que haya y pegá este código.
+ * 3. Cambiá la CLAVE de abajo por una clave larga inventada por ustedes (la misma que van a
+ *    cargar en Netlify como SHEET_SECRET). Guardá (ícono de disquete).
+ * 4. Implementar → Nueva implementación → tipo "Aplicación web".
+ *    Ejecutar como: Yo. Quién tiene acceso: Cualquier persona.
+ * 5. Implementar, autorizá con tu cuenta y copiá la URL que termina en /exec.
+ *
+ * Si más adelante cambiás este código: Implementar → Administrar implementaciones →
+ * editar (lápiz) → Versión: "Nueva versión" → Implementar. La URL sigue siendo la misma.
+ */
+
+var CLAVE = 'CAMBIAR-POR-UNA-CLAVE-LARGA';
+
+var HOJA_PEDIDOS = 'Pedidos';
+var HOJA_AVISOS = 'Avisos de stock';
+var HOJA_PRODUCTOS = 'Productos';
+var TALLES = ['S', 'M', 'L', 'XL', 'XXL'];
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    // Acciones públicas (las manda la página): pedidos por WhatsApp y avisos de stock.
+    if (d.tipo === 'pedido') {
+      // Los números de pedido online (LOaammdd-XXXXXX) solo los puede anotar el servidor de la tienda.
+      if (/^LO\d{6}-[0-9A-F]{6}$/.test(String(d.codigo || ''))) return respuesta({ ok: false, error: 'codigo reservado' });
+      agregarPedido(ss, d, 'Nuevo');
+      return respuesta({ ok: true });
+    }
+    if (d.tipo === 'aviso_stock') {
+      ss.getSheetByName(HOJA_AVISOS).appendRow([new Date(), txt(d.email, 120), txt(d.producto, 200), txt(d.id, 80)]);
+      return respuesta({ ok: true });
+    }
+
+    // Acciones protegidas (solo el servidor de la tienda, con la clave): pagos online.
+    if (CLAVE === 'CAMBIAR-POR-UNA-CLAVE-LARGA' || d.clave !== CLAVE) return respuesta({ ok: false, error: 'clave' });
+
+    if (d.tipo === 'pedido_online') {
+      if (!buscarFila(ss.getSheetByName(HOJA_PEDIDOS), d.codigo)) agregarPedido(ss, d, d.estado || 'Esperando pago');
+      return respuesta({ ok: true });
+    }
+    if (d.tipo === 'estado') {
+      var hp = ss.getSheetByName(HOJA_PEDIDOS), fila = buscarFila(hp, d.codigo);
+      if (fila && hp.getRange(fila, 10).getValue() !== 'Pagado') hp.getRange(fila, 10).setValue(txt(d.estado, 60));
+      return respuesta({ ok: true });
+    }
+    if (d.tipo === 'pago') return respuesta(registrarPago(ss, d));
+
+    return respuesta({ ok: false, error: 'tipo desconocido' });
+  } catch (err) {
+    return respuesta({ ok: false, error: String(err) });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Marca el pedido como pagado y descuenta el stock. Si ya estaba pagado no hace nada (no descuenta dos veces).
+function registrarPago(ss, d) {
+  var hp = ss.getSheetByName(HOJA_PEDIDOS);
+  var fila = buscarFila(hp, d.codigo);
+  if (fila && hp.getRange(fila, 10).getValue() === 'Pagado') return { ok: true, repetido: true };
+
+  var sinStock = [];
+  var prod = ss.getSheetByName(HOJA_PRODUCTOS);
+  var datos = prod.getDataRange().getValues();
+  var cab = datos[0].map(function (h) { return String(h).trim(); });
+  var colId = cab.indexOf('id');
+  (d.items || []).forEach(function (it) {
+    var col = cab.indexOf(String(it.talle));
+    if (colId < 0 || col < 0 || TALLES.indexOf(String(it.talle)) < 0) return;
+    for (var r = 1; r < datos.length; r++) {
+      if (String(datos[r][colId]).trim() === String(it.id)) {
+        var actual = Number(datos[r][col]) || 0, cant = Math.max(0, Math.floor(Number(it.cant) || 0));
+        if (actual < cant) sinStock.push(it.id + ' ' + it.talle);
+        prod.getRange(r + 1, col + 1).setValue(Math.max(0, actual - cant));
+        datos[r][col] = Math.max(0, actual - cant);
+        break;
+      }
+    }
+  });
+
+  if (!fila && d.nombre) { agregarPedido(ss, d, 'Pagado'); fila = buscarFila(hp, d.codigo); }
+  if (fila) {
+    hp.getRange(fila, 10).setValue('Pagado');
+    var nota = 'Pago MP ' + txt(d.pago_id, 40) + (d.nota ? ' · ' + txt(d.nota, 300) : '') + (sinStock.length ? ' · REVISAR STOCK: ' + sinStock.join(', ') : '');
+    hp.getRange(fila, 11).setValue(nota);
+  }
+  return { ok: true, sinStock: sinStock.length ? sinStock : null };
+}
+
+function agregarPedido(ss, d, estado) {
+  ss.getSheetByName(HOJA_PEDIDOS).appendRow([
+    new Date(),
+    txt(d.codigo, 30),
+    txt(d.nombre, 80),
+    "'" + txt(d.telefono, 30),
+    txt(d.email, 120),
+    txt(d.entrega, 200),
+    txt(d.pago, 60),
+    Number(d.total) || 0,
+    txt(d.detalle, 4000),
+    txt(estado, 60)
+  ]);
+}
+
+function buscarFila(hoja, codigo) {
+  if (!codigo) return 0;
+  var col = hoja.getRange(1, 2, Math.max(1, hoja.getLastRow()), 1).getValues();
+  for (var i = col.length - 1; i >= 1; i--) if (String(col[i][0]) === String(codigo)) return i + 1;
+  return 0;
+}
+
+// Para probar que la URL funciona: abrila en el navegador y tiene que decir {"ok":true}.
+function doGet() {
+  return respuesta({ ok: true, tienda: 'La ONCE Kits' });
+}
+
+// Texto seguro: corta el largo y evita que algo empiece con "=" y se tome como fórmula.
+function txt(v, max) {
+  var s = String(v == null ? '' : v).slice(0, max);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+
+function respuesta(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
