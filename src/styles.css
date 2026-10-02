@@ -902,3 +902,189 @@ nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#fff1bc;box-shado
 
 /* Porción "Envío gratis" de la ruleta: palabra más larga, mismo tamaño que "Camiseta" */
 .wheel-rim .wheel-label.wl-word{font-size:6.2cqw}
+
+/* Probabilidades de la ruleta: que "CAMISETA" no empuje la grilla en celulares chicos */
+.odds{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (min-width:721px){.odds{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (max-width:420px){.odds{gap:6px}.odds div{padding:12px 4px}.odds strong{font-size:14px;letter-spacing:-.01em}}
+
+/* Mystery Box: botón para pedirla por WhatsApp desde la ruleta */
+.prize-ticket .mb-claim{display:flex;justify-content:center;align-items:center;margin:12px auto 0;max-width:280px;min-height:44px;text-decoration:none}
+
+/* ===== Ruleta estilo casino: paño verde, madera y dorado ===== */
+.club-surface.casino{--felt:#0d4a35;--gold:#e2b54c;--gold-2:#f3d77e;--cream:#fbf3dc;background-color:var(--felt);background-image:radial-gradient(ellipse at 72% 42%,#1a6d4f 0%,#0e4c36 48%,#07301f 100%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");background-blend-mode:normal;color:var(--cream);border:0;border-radius:18px;box-shadow:inset 0 0 0 2px #b8862e66,inset 0 0 140px #0000006b,0 24px 50px -28px #000}
+.club-surface.casino .club-topline{background:linear-gradient(180deg,#6a3517,#3d1d0a);border-bottom:2px solid #c9962c;color:var(--gold-2)}
+.club-surface.casino .club-demo{background:linear-gradient(180deg,#f6dc84,#c9962c);color:#2a1306}
+.club-surface.casino .club-copy .eyebrow{color:var(--gold-2)}
+.club-surface.casino .club-copy h1{color:var(--cream);text-shadow:0 3px 0 #04251799}
+.club-surface.casino .club-copy h1 em{color:var(--gold)}
+.club-surface.casino .club-copy>p{color:#cfe2d7}
+.club-surface.casino .spin-button{background:linear-gradient(180deg,#f8e08c 0%,#e0b04a 52%,#b07d1e 100%);color:#2a1306;border:1px solid #8a5f14;border-radius:999px;box-shadow:0 4px 0 #6e4a0f,0 14px 26px -10px #000;font-weight:800;letter-spacing:.04em;text-transform:uppercase;min-height:54px;transition:transform .15s,filter .15s}
+.club-surface.casino .spin-button:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px)}
+.club-surface.casino .spin-button:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #6e4a0f,0 8px 18px -10px #000}
+.club-surface.casino .spin-button:disabled{background:#14563f;color:#cfe2d7;border-color:#2b7a5c;box-shadow:none;opacity:1;text-transform:none;letter-spacing:0}
+.club-surface.casino .linkish{color:var(--gold-2)}
+.club-surface.casino .game-sound{border-color:#e2b54c80;color:var(--gold-2)}
+.club-surface.casino .game-sound:hover{background:#ffffff14}
+.club-surface.casino .spin-small{color:#a8c9b8}
+.club-surface.casino .prize-ticket{background:linear-gradient(180deg,#fffaf0,#f6ecd2);color:#1d1a12;border:2px solid #d4a33c;box-shadow:0 0 0 4px #0b3a2a,0 0 0 5px #d4a33c66,0 16px 30px -14px #000}
+.club-surface.casino .prize-ticket .eyebrow{color:#8a5f14}
+.club-surface.casino .prize-ticket h2{color:#1a1208}
+.club-surface.casino .prize-ticket button{background:#efe2bf}
+.club-surface.casino .club-bottom{border-top:1px solid #e2b54c40;background:#00000024;color:#cfe2d7}
+.club-surface.casino .wheel-area.casino-wheel{width:min(100%,460px);padding:0;aspect-ratio:1;filter:drop-shadow(0 24px 22px rgba(0,0,0,.5))}
+.cw-svg{width:100%;height:auto;display:block;overflow:visible}
+.cw-num{fill:#fff;font-family:var(--display),"Arial Narrow",sans-serif;font-weight:800;text-anchor:middle;dominant-baseline:central}
+.cw-sub{fill:#f3d77e;font:800 7.5px var(--body),sans-serif;text-anchor:middle;dominant-baseline:central}
+.cw-logo{fill:#fff;font:italic 900 42px var(--display),sans-serif;text-anchor:middle}
+.casino-wheel.winner{animation:cwGlow 1.1s ease-out 2}
+@keyframes cwGlow{0%{filter:drop-shadow(0 24px 22px rgba(0,0,0,.5)) drop-shadow(0 0 0 #f3d77e00)}40%{filter:drop-shadow(0 24px 22px rgba(0,0,0,.5)) drop-shadow(0 0 26px #f3d77ecc)}100%{filter:drop-shadow(0 24px 22px rgba(0,0,0,.5)) drop-shadow(0 0 0 #f3d77e00)}}
+.club-surface.casino.jackpot .prize-ticket{background:linear-gradient(180deg,#fff7d6,#f3df9a)}
+@media (max-width:720px){.club-surface.casino .wheel-area.casino-wheel{width:min(100%,340px)}.club-surface.casino .club-topline{font-size:10px}}
+@media (prefers-reduced-motion:reduce){.casino-wheel.winner{animation:none}}
+/* Invitación del inicio con el mismo estilo */
+.club-invite{background:radial-gradient(ellipse at 20% 30%,#1a6d4f,#0d4a35 60%,#08311f);color:#fbf3dc;box-shadow:inset 0 0 0 2px #b8862e66}
+.club-invite .eyebrow{color:#f3d77e}
+.club-invite p{color:#cfe2d7}
+.club-invite button{background:linear-gradient(180deg,#f8e08c,#e0b04a 52%,#b07d1e);color:#2a1306;border:1px solid #8a5f14;font-weight:800}
+.club-invite .mini-wheel{border:4px solid #c9962c;box-shadow:0 0 0 3px #4a2410,0 6px 14px #0006;background:radial-gradient(circle,#0f2a5c 0 17%,#d4a33c 18% 22%,#6e4423 23% 44%,transparent 45%),conic-gradient(#0f7a3d 0 20deg,#b3141c 20deg 40deg,#151515 40deg 60deg,#b3141c 60deg 80deg,#151515 80deg 100deg,#b3141c 100deg 120deg,#151515 120deg 140deg,#b3141c 140deg 160deg,#151515 160deg 180deg,#b3141c 180deg 200deg,#151515 200deg 220deg,#b3141c 220deg 240deg,#151515 240deg 260deg,#b3141c 260deg 280deg,#151515 280deg 300deg,#b3141c 300deg 320deg,#151515 320deg 340deg,#b3141c 340deg 360deg)}
+@media (max-width:720px){.club-surface.casino .club-layout{gap:18px}.club-surface.casino .club-copy h1{font-size:46px;margin:10px 0 14px}.club-surface.casino .club-copy .eyebrow{font-size:10px}}
+
+/* Adicionales de encargos: nombre y número */
+.add-extras{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:1.5px dashed currentColor;border-radius:10px;padding:11px 14px;min-height:54px;cursor:pointer;color:inherit;font:inherit;opacity:.92}
+.add-extras:hover{opacity:1;background:color-mix(in srgb,currentColor 6%,transparent)}
+.add-extras .ae-plus{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--ink,#111);color:var(--bg,#fff);font:700 20px/1 var(--body,sans-serif)}
+.add-extras b{display:block;font-size:15px}
+.add-extras small{display:block;font-size:12.5px;opacity:.75;margin-top:2px}
+.extras{border:1.5px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.extras-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.extras-head b{font-size:15px}
+.extras-head span{font-weight:800;color:var(--wa,#1f8a4c)}
+.extras-fields{display:grid;grid-template-columns:1fr 92px;gap:10px}
+.extras-fields .cf{margin:0}
+.extras-fields input{text-transform:uppercase;font-size:16px;width:100%}
+.extras .hint{margin:0;font-size:12.5px}
+.extras .linkish{align-self:flex-start;min-height:36px;padding:6px 0}
+.cw-sub{font-size:10px}
+
+/* Botón "La ruleta" del menú: rojo casino con mini ruleta */
+nav.cats [data-nav="ruleta"]{background:linear-gradient(180deg,#e8323a 0%,#c0141c 55%,#930b12 100%);color:#fff!important;border:1.5px solid #f0c75a;box-shadow:0 2px 0 #5e070b,0 8px 16px -8px #c0141ccc;text-shadow:0 1px 0 #0005;letter-spacing:.02em}
+nav.cats [data-nav="ruleta"]::before{content:'';width:15px;height:15px;border-radius:50%;display:inline-block;vertical-align:-3px;margin-right:7px;border:1.5px solid #f0c75a;background:radial-gradient(circle,#f0c75a 0 18%,#5b2d12 19% 34%,transparent 35%),repeating-conic-gradient(#111 0 20deg,#f4efe4 20deg 40deg);box-shadow:0 0 0 1px #5e070b}
+nav.cats [data-nav="ruleta"]:hover{background:linear-gradient(180deg,#f2434b 0%,#cf1b24 55%,#9e0f16 100%);transform:translateY(-1px);box-shadow:0 3px 0 #5e070b,0 10px 18px -8px #c0141ccc}
+nav.cats [data-nav="ruleta"]:hover::before{animation:navWheel 1.2s linear infinite}
+nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#ffe08a;box-shadow:0 0 0 3px #e8323a33,0 2px 0 #5e070b}
+@keyframes navWheel{to{transform:rotate(360deg)}}
+@media (max-width:720px){nav.cats [data-nav="ruleta"]::before{width:13px;height:13px;margin-right:5px}}
+@media (prefers-reduced-motion:reduce){nav.cats [data-nav="ruleta"]:hover::before{animation:none}}
+/* Botón "La ruleta": tipografía de casino (condensada, mayúsculas) y un poco más grande */
+nav.cats [data-nav="ruleta"]{font-family:var(--display),"Arial Narrow",sans-serif;font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:.06em;font-size:19px;line-height:1;padding:10px 22px;min-height:44px;display:inline-flex;align-items:center}
+nav.cats [data-nav="ruleta"]::before{width:18px;height:18px;vertical-align:0;margin-right:8px;flex:none}
+@media (max-width:720px){nav.cats [data-nav="ruleta"]{font-size:15px;padding:8px 12px;min-height:40px;letter-spacing:.04em}nav.cats [data-nav="ruleta"]::before{width:14px;height:14px;margin-right:6px}}
+@media (max-width:400px){nav.cats [data-nav="ruleta"]{padding:8px 10px}}
+@media (max-width:720px){nav.cats [data-nav="ruleta"]{font-size:14px;letter-spacing:.02em;padding:8px 10px}nav.cats [data-nav="ruleta"]::before{width:13px;height:13px;margin-right:5px}}
+@media (max-width:400px){nav.cats button{padding-left:5px;padding-right:5px}nav.cats [data-nav="ruleta"]{padding:8px 8px;letter-spacing:0}}
+@media (max-width:370px){nav.cats [data-nav="ruleta"]{font-size:13px;padding:8px 7px}nav.cats [data-nav="ruleta"]::before{width:12px;height:12px;margin-right:4px}}
+/* Botón "La ruleta": tipografía simple, sin cursiva */
+nav.cats [data-nav="ruleta"]{font-family:var(--mont),system-ui,sans-serif;font-style:normal;font-weight:800;text-transform:none;letter-spacing:0;font-size:17px}
+@media (max-width:720px){nav.cats [data-nav="ruleta"]{font-size:13.5px;letter-spacing:0}}
+@media (max-width:370px){nav.cats [data-nav="ruleta"]{font-size:12.5px}}
+
+/* Logo nuevo (imagen) */
+.logo-mark.logo-img{width:48px;height:48px;border:0;background:none;padding:0;border-radius:50%;object-fit:contain;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
+@media (max-width:720px){.logo-mark.logo-img{width:42px;height:42px}}
+
+/* ===== Tipografía estilo Champions: Source Sans 3 (libre, de la familia de Myriad) en toda la página ===== */
+:root{--display:"Source Sans 3","Segoe UI",system-ui,sans-serif;--body:"Source Sans 3","Segoe UI",system-ui,sans-serif;--mont:"Source Sans 3","Segoe UI",system-ui,sans-serif}
+body{font-family:var(--body)}
+.nt-name,.nt-ok h3{font-family:var(--body)}
+/* El botón rojo de La ruleta mantiene Montserrat */
+nav.cats [data-nav="ruleta"]{font-family:"Montserrat","Segoe UI",system-ui,sans-serif}
+@media (max-width:720px){nav.cats button:not([data-nav="ruleta"]){font-size:14.5px}}
+@media (max-width:370px){nav.cats button:not([data-nav="ruleta"]){font-size:13.5px}}
+
+/* "Cómo comprar" */
+.howto{padding:30px 28px 26px;position:relative;max-width:520px}
+.howto h2{margin:6px 0 16px;font-size:30px}
+.howto ol{margin:0 0 20px;padding-left:22px;display:flex;flex-direction:column;gap:12px}
+.howto li>b{display:block;margin-bottom:2px}
+.howto li span b{display:inline;color:var(--ink)}
+.howto .close{position:absolute;top:12px;right:12px}
+.howto li span{color:var(--muted);font-size:14.5px;line-height:1.45}
+.howto .btn{width:100%}
+dialog:has(.howto){max-width:min(520px,94vw)}
+
+/* ---------- Pagos online ---------- */
+.pay-tag{display:inline-block;background:#009ee3;color:#fff;border-radius:4px;padding:0 6px;font-size:12px;letter-spacing:.02em;margin-right:4px}
+.co-opt small .pay-tag{display:inline-block}
+.pay-safe{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:13px;line-height:1.4;margin:10px 0 0}
+.pay-safe svg{width:16px;height:16px;flex:none;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.btn-mp{background:#009ee3;color:#fff}
+.btn-mp:hover{background:#0089c6}
+.co-confirm:disabled{opacity:.7;cursor:progress}
+.pay-err{background:color-mix(in srgb,var(--sale) 12%,transparent);color:var(--sale);border-radius:6px;padding:10px 12px;font-size:14px;font-weight:600;margin:0 0 10px}
+.pay-dlg{border:0;border-radius:14px;padding:0;width:min(480px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--bg);color:var(--ink);overflow:auto}
+.pay-dlg::backdrop{background:rgba(4,10,30,.62)}
+.pay-box{padding:24px 22px 20px;position:relative}
+.pay-box h2{font-size:34px;margin:4px 0 2px;font-weight:800}
+.pay-sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.pay-box .close{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;background:transparent;color:var(--ink);font-size:28px;cursor:pointer;border-radius:50%}
+.card-brick{min-height:120px;background:#fff;border-radius:10px}
+.pay-loading{display:flex;gap:10px;align-items:center;justify-content:center;color:#5b6475;padding:40px 0;margin:0}
+.pay-msg{font-size:14px;font-weight:600;margin:10px 0 0;min-height:1em}
+.pay-msg.err{color:var(--sale)}
+.spin{display:inline-block;width:18px;height:18px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:payspin .8s linear infinite;vertical-align:middle}
+@keyframes payspin{to{transform:rotate(360deg)}}
+.co-ok.wait{background:var(--surface);color:var(--celeste,#009ee3);border:2px solid var(--line)}
+.co-ok.wait .spin{width:30px;height:30px;border-width:3px}
+.co-ok.bad{background:var(--sale)}
+.pay-result .co-code{color:var(--ink)}
+@media (max-width:560px){.pay-box{padding:20px 14px 16px}.pay-box h2{font-size:28px}.pay-result h1{font-size:36px}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+
+/* ============ Ambientación "noche de copa" (inspirada en el estilo Champions; diseño propio) ============ */
+html:root:not([data-z]){
+  color-scheme:dark;
+  --bg:#06123A; --surface:#0C1F57; --ink:#EEF4FF; --muted:#A3B6DD; --line:rgba(120,170,255,.2);
+  --celeste:#4CD6EE; --navy:#040C2B; --sale:#FF5A6E; --wa:#2BC27A; --gold:#F2C230;
+  --glow:#3FD9F0; --deep:#030A26; --glass:rgba(13,33,92,.62);
+}
+body{background:var(--deep)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMinYMid slice"%3E%3Cdefs%3E%3ClinearGradient id="a" x1="0" y1="0" x2="1" y2="1"%3E%3Cstop offset="0" stop-color="#7ff6ff"/%3E%3Cstop offset=".45" stop-color="#2f8bff"/%3E%3Cstop offset="1" stop-color="#2f6bff" stop-opacity="0"/%3E%3C/linearGradient%3E%3ClinearGradient id="b" x1="0" y1="1" x2="1" y2="0"%3E%3Cstop offset="0" stop-color="#2f6bff" stop-opacity="0"/%3E%3Cstop offset=".6" stop-color="#3fd9f0"/%3E%3Cstop offset="1" stop-color="#9ffaff"/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill="none"%3E%3Ccircle cx="-80" cy="430" r="440" stroke="url%28#a%29" stroke-width="12" opacity=".1"/%3E%3Ccircle cx="-80" cy="430" r="440" stroke="url%28#a%29" stroke-width="2.4" opacity=".8"/%3E%3Ccircle cx="-80" cy="430" r="372" stroke="url%28#a%29" stroke-width="1" opacity=".35"/%3E%3Cpath d="M-30 90C190 150 330 300 352 520" stroke="url%28#a%29" stroke-width="1.6" opacity=".6"/%3E%3Cpath d="M-60 300C150 330 300 470 330 700" stroke="url%28#a%29" stroke-width="1.2" opacity=".45"/%3E%3Cpath d="M60 830C190 720 300 640 352 520" stroke="url%28#b%29" stroke-width="1.4" opacity=".5"/%3E%3Cpath d="M-40 640C90 600 200 560 330 700" stroke="url%28#b%29" stroke-width="1" opacity=".35"/%3E%3Cpath d="M1060 60C900 140 820 260 800 420" stroke="url%28#b%29" stroke-width="1.2" opacity=".22"/%3E%3C/g%3E%3C/svg%3E") left center/cover no-repeat,
+  radial-gradient(70% 55% at 12% 30%,rgba(34,104,232,.55),transparent 70%),
+  radial-gradient(60% 50% at 95% 95%,rgba(28,90,210,.35),transparent 70%),
+  linear-gradient(160deg,#0A2370 0%,#06143F 45%,#030A26 100%)}
+@media (max-width:720px){body::before{background-size:auto 115%,auto,auto,auto;background-position:-120px 30%,0 0,0 0,0 0}}
+#app{position:relative}
+.topbar{background:linear-gradient(90deg,#040C2B,#0B2A7A 50%,#040C2B);border-bottom:1px solid rgba(76,214,238,.25);letter-spacing:.02em}
+header.site{background:rgba(5,16,52,.82);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid rgba(76,214,238,.18)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){header.site{background:#06123A}}
+footer{background:linear-gradient(180deg,rgba(3,10,38,.4),#020822 40%);border-top:1px solid rgba(76,214,238,.2)}
+.eyebrow{color:var(--glow)}
+/* Tarjetas de vidrio */
+.mode-link,.co-box,.co-sum,.acc-sec,.acc-card,.ship,.request-shirt,.delivery-note,.cart-sum,.legal-doc,.legal-side,.game-rules,.game-checkout{background:var(--glass)!important;border-color:var(--line)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.art{background:radial-gradient(circle at 50% 38%,#2C74E8 0%,#123C9E 45%,#0A2468 100%)!important;box-shadow:inset 0 0 0 1px rgba(127,246,255,.14)}
+.art svg{filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.thumb{background:#0C2A72}
+/* Botones con brillo celeste */
+.btn-ink{background:linear-gradient(180deg,#FFFFFF,#DCEBFF);color:#061547;box-shadow:0 0 0 1px rgba(127,246,255,.35),0 6px 22px rgba(63,217,240,.18)}
+.btn-ink:hover{box-shadow:0 0 0 1px rgba(127,246,255,.6),0 8px 28px rgba(63,217,240,.32)}
+.btn-ghost{border-color:rgba(127,246,255,.4)!important;color:var(--ink)}
+.btn-mp{background:linear-gradient(180deg,#14B1F0,#0090D6);color:#fff;box-shadow:0 6px 22px rgba(0,158,227,.3)}
+.co-opt{background:rgba(6,18,58,.5)}
+.co-opt.on{border-color:var(--glow)!important;background:rgba(63,217,240,.08)!important;box-shadow:0 0 0 1px rgba(63,217,240,.35),0 0 24px rgba(63,217,240,.12)}
+.co-opt input{accent-color:var(--glow)}
+input,select,textarea{background-color:rgba(3,10,38,.55);border-color:var(--line)}
+/* Títulos con aire de noche de gala */
+.mode-intro h1,.catalog-intro h1,.co-title,.co-done h1{text-shadow:0 0 28px rgba(63,217,240,.25)}
+.tile{box-shadow:0 0 0 1px rgba(127,246,255,.14),0 18px 40px rgba(0,0,0,.35)}
+.tile.photo::after{background:linear-gradient(0deg,rgba(4,14,52,.9) 0%,rgba(8,30,100,.35) 50%,rgba(0,0,0,0) 75%)}
+.co-ok{box-shadow:0 0 0 6px rgba(43,194,122,.18),0 0 40px rgba(43,194,122,.35)}
+.pay-dlg,dialog{background:#081A4E;color:var(--ink)}
+dialog::backdrop{background:rgba(2,6,24,.72)}
+.drawer{background:#071643!important}
+.toast{background:#EEF4FF;color:#061547}
+::selection{background:rgba(63,217,240,.35)}
+@media (prefers-reduced-transparency:reduce){header.site{background:#06123A;backdrop-filter:none}.mode-link,.co-box,.co-sum,.acc-sec,.acc-card,.ship,.request-shirt,.delivery-note,.cart-sum,.legal-doc,.legal-side,.game-rules,.game-checkout{backdrop-filter:none;background:#0C1F57!important}}
+/* Fotos de proveedor (fondo blanco): luz de estudio para que se vean los colores reales */
+.art:has(img){background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#E6EDF9 62%,#C8D6EE 100%)!important}

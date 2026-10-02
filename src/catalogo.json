@@ -1,6 +1,6 @@
 {
   "config": {
-    "nombre": "La ONCE Avellaneda",
+    "nombre": "La ONCE Kits",
     "whatsapp": "",
     "instagram": "",
     "descuentoTransferencia": 10,
@@ -18,7 +18,11 @@
     "domicilio": "",
     "emailContacto": "",
     "dataFiscalUrl": "",
-    "avisosUrl": ""
+    "avisosUrl": "",
+    "precioPersonalizacion": 8000,
+    "logo": "assets/logo-once.webp",
+    "planilla": "",
+    "planillaApp": ""
   },
   "productos": [
     {
@@ -582,8 +586,8 @@
   ],
   "heroJugadores": [
     {
-      "foto": "assets/04322d690a3e9a7c.webp",
-      "alt": "Jugador con camiseta a rayas"
+      "foto": "assets/94ef99990411e4fd.webp",
+      "alt": "Thiago Almada con la camiseta alternativa de River Plate"
     },
     {
       "foto": "assets/0acf4da3b9b30e9f.webp",
@@ -594,11 +598,11 @@
       "alt": "Jugador de espaldas con camiseta roja"
     },
     {
-      "foto": "assets/94ef99990411e4fd.webp",
-      "alt": "Jugador con camiseta blanca y roja"
+      "foto": "assets/paredes-boca.webp",
+      "alt": "Leandro Paredes con la camiseta titular de Boca Juniors"
     }
   ],
-  "heroFondo": "assets/bffc908faad8537e.webp",
+  "heroFondo": "assets/estadio-champions.webp",
   "heroRetro": {
     "foto": "assets/3edb3e97b4a8a585.webp",
     "fondo": "assets/350a9a27d772b015.webp",

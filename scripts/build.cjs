@@ -16,9 +16,13 @@ function embed(value){
 }
 const data=JSON.parse(read('src/catalogo.json'));
 const ids=new Set();for(const p of data.productos){if(ids.has(p.id))throw Error('ID repetido: '+p.id);ids.add(p.id);if(!Number.isFinite(p.precio)||p.precio<0)throw Error('Precio inválido: '+p.id)}
-const js=read('src/app.js').replace('/* @include ruleta.js */',()=>read('src/ruleta.js'));
+const js=read('src/app.js').replace('/* @include pagos.js */',()=>read('src/pagos.js')).replace('/* @include ruleta.js */',()=>read('src/ruleta.js'));
 if(js.includes('/* @include'))throw Error('Quedó un archivo sin incluir.');
 const html=read('src/index.template.html').replace('{{STYLES}}',()=>read('src/styles.css')).replace('{{CATALOG}}',()=>JSON.stringify(embed(data)).replace(/</g,'\\u003c')).replace('{{APP}}',()=>js);
 const output=path.join(root,'index.html');
-if(process.argv.includes('--check')){if(!fs.existsSync(output)||read('index.html')!==html)throw Error('index.html no está actualizado. Ejecutá npm run build.');console.log('OK: sintaxis, catálogo, imágenes y HTML actualizado.');}
-else{fs.writeFileSync(output,html);console.log('Listo: index.html. Abrilo con doble clic.');}
+// Catálogo para el servidor (Netlify Functions): sin fotos, solo lo que hace falta para precios y stock.
+const fnCat={config:{descuentoTransferencia:data.config.descuentoTransferencia,precioPersonalizacion:data.config.precioPersonalizacion,planilla:data.config.planilla,planillaApp:data.config.planillaApp},productos:data.productos.map(p=>({id:p.id,club:p.club,titulo:p.titulo,precio:p.precio,modalidad:p.modalidad||'stock',stock:p.stock||{},tallesPedido:p.tallesPedido||[],activo:p.activo!==false}))};
+const fnCatText='// Archivo generado por "npm run build" a partir de src/catalogo.json. No editar a mano.\nexport default '+JSON.stringify(fnCat,null,1)+';\n';
+const fnCatPath=path.join(root,'netlify','functions','_lib','catalogo.mjs');
+if(process.argv.includes('--check')){if(!fs.existsSync(output)||read('index.html')!==html)throw Error('index.html no está actualizado. Ejecutá npm run build.');if(!fs.existsSync(fnCatPath)||fs.readFileSync(fnCatPath,'utf8')!==fnCatText)throw Error('netlify/functions/_lib/catalogo.mjs no está actualizado. Ejecutá npm run build.');console.log('OK: sintaxis, catálogo, imágenes y HTML actualizado.');}
+else{fs.writeFileSync(output,html);fs.mkdirSync(path.dirname(fnCatPath),{recursive:true});fs.writeFileSync(fnCatPath,fnCatText);console.log('Listo: index.html. Abrilo con doble clic.');}
