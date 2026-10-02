@@ -988,3 +988,7 @@ nav.cats [data-nav="ruleta"]::before{width:18px;height:18px;vertical-align:0;mar
 nav.cats [data-nav="ruleta"]{font-family:var(--mont),system-ui,sans-serif;font-style:normal;font-weight:800;text-transform:none;letter-spacing:0;font-size:17px}
 @media (max-width:720px){nav.cats [data-nav="ruleta"]{font-size:13.5px;letter-spacing:0}}
 @media (max-width:370px){nav.cats [data-nav="ruleta"]{font-size:12.5px}}
+
+/* Logo nuevo (imagen) */
+.logo-mark.logo-img{width:48px;height:48px;border:0;background:none;padding:0;border-radius:50%;object-fit:contain;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
+@media (max-width:720px){.logo-mark.logo-img{width:42px;height:42px}}

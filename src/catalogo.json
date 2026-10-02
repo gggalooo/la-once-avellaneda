@@ -19,7 +19,8 @@
     "emailContacto": "",
     "dataFiscalUrl": "",
     "avisosUrl": "",
-    "precioPersonalizacion": 8000
+    "precioPersonalizacion": 8000,
+    "logo": "assets/logo-once.webp"
   },
   "productos": [
     {

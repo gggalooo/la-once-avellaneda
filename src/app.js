@@ -54,7 +54,7 @@ function header(){
   var c=data.config, n=cart.reduce(function(a,l){return a+l.cant},0);
   var top=Number(c.envioGratisDesde)>0?"Envío gratis desde "+money(c.envioGratisDesde)+" · "+(Number(c.descuentoTransferencia)||0)+"% off por transferencia":(c.envios||"");
   var nav=NAV.map(function(x){var cur=(view==="home"&&x.k==="inicio")||(view==="catalog"&&sec===x.k)||(view==="game"&&x.k==="ruleta");return '<button data-nav="'+esc(x.k)+'" aria-current="'+cur+'">'+x.t+'</button>'}).join("");
-  return '<div class="topbar">'+esc(top)+'</div>'+prizeBar()+'<header class="site"><div class="wrap head-row"><button class="logo" data-nav="inicio" aria-label="Ir al inicio"><span class="logo-mark">11</span><span class="logo-word">'+logoWord(c.nombre)+'</span></button><input class="search" type="search" placeholder="Buscar camiseta" aria-label="Buscar" value="'+esc(filt.q)+'"><div class="acc-head">'+accountLink()+'</div><button class="bag" id="openBag" aria-label="Carrito'+(n?', '+n+(n===1?' camiseta':' camisetas'):', vacío')+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.1 10.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.5-1.2L21 8H6.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg>'+(n?'<i>'+n+'</i>':'')+'</button></div><nav class="cats" aria-label="Categorías"><div class="wrap">'+nav+'</div></nav></header>';
+  return '<div class="topbar">'+esc(top)+'</div>'+prizeBar()+'<header class="site"><div class="wrap head-row"><button class="logo" data-nav="inicio" aria-label="Ir al inicio">'+(c.logo?'<img class="logo-mark logo-img" src="'+esc(c.logo)+'" alt="" width="46" height="46">':'<span class="logo-mark">11</span>')+'<span class="logo-word">'+logoWord(c.nombre)+'</span></button><input class="search" type="search" placeholder="Buscar camiseta" aria-label="Buscar" value="'+esc(filt.q)+'"><div class="acc-head">'+accountLink()+'</div><button class="bag" id="openBag" aria-label="Carrito'+(n?', '+n+(n===1?' camiseta':' camisetas'):', vacío')+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.1 10.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.5-1.2L21 8H6.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg>'+(n?'<i>'+n+'</i>':'')+'</button></div><nav class="cats" aria-label="Categorías"><div class="wrap">'+nav+'</div></nav></header>';
 }
 function logoWord(n){
  if(n==="La ONCE Avellaneda") return '<span>La <b>ONCE</b></span><small>Avellaneda</small>';
@@ -222,7 +222,7 @@ function openDetail(id){
     dlg.innerHTML='<div class="detail"><div class="art">'+art(p)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' por transferencia</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
       '<div><p class="hint" style="margin-bottom:8px">Talle</p><div class="pick">'+btns+'</div></div>'+stepper+(note?'<p class="hint">'+note+'</p>':"")+extras()+
       (t?'<button class="btn btn-ink" id="addBag" '+(sel&&maxQ?"":"disabled")+'>'+addLabel(maxQ)+'</button>':'<button class="btn btn-nostock" disabled>Sin stock</button><button class="btn btn-notify" id="notifyBtn">¿Querés que te avise cuando haya stock?</button>')+
-      (!n&&t?'<p class="hint">Falta cargar el WhatsApp del negocio en el panel de socios.</p>':"")+
+      ""+
       deliveryInfo(p)+'<p class="hint legal-mini">Tenés 10 días desde que la recibís para arrepentirte de la compra, y garantía por falla. <button class="inline-link" data-legal="cambios">Cambios y devoluciones</button></p>'+
       shipBlock()+'</div></div><button class="close" aria-label="Cerrar">×</button>';
   }
@@ -262,6 +262,12 @@ function sendStockAlert(info){
     else if(waNumber())window.open("https://wa.me/"+waNumber()+"?text="+encodeURIComponent(txt),"_blank","noopener");
   }catch(e){}
   return Promise.resolve();
+}
+/* Pedidos sin WhatsApp del negocio: se mandan a la dirección de avisos/pedidos o al email del negocio. */
+function sendOrder(info){
+  var c=data.config, url=String(c.avisosUrl||"").trim();
+  if(/^https:\/\//i.test(url)){try{fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(info)}).catch(function(){})}catch(e){}return}
+  if(c.emailContacto){try{window.open("mailto:"+encodeURIComponent(c.emailContacto)+"?subject="+encodeURIComponent("Nuevo pedido de "+info.nombre)+"&body="+encodeURIComponent(info.detalle),"_blank")}catch(e){}}
 }
 function openNotify(p){
   var d=document.getElementById("notifyDlg");
@@ -419,11 +425,11 @@ function renderAdmin(){
    '<div class="admin-head"><div><button class="linkish" data-nav="inicio">← Volver a la tienda</button><h1>Panel de socios</h1><p class="hint">'+data.productos.length+' modelos · '+units+' camisetas en stock</p></div><button class="btn btn-ink" id="add">Agregar camiseta</button></div>'+
    (adminMsg?'<div class="msg '+adminMsg.kind+'">'+esc(adminMsg.text)+'</div>':'<div class="msg info">Editá el catálogo y descargá una copia HTML para conservar los cambios. La descarga no publica la tienda.</div>')+
    '<section class="panel"><h3>Datos del negocio</h3><div class="fields">'+
-     f("Nombre","nombre")+f("WhatsApp (ej. 5491122334455)","whatsapp","","inputmode=\"tel\" placeholder=\"54911…\"")+f("Instagram (sin @)","instagram","","placeholder=\"laonce.camisetas\"")+
+     f("Nombre","nombre")+f("WhatsApp del negocio, donde llegan los pedidos (ej. 5491122334455)","whatsapp","","inputmode=\"tel\" placeholder=\"54911…\"")+f("Instagram (sin @)","instagram","","placeholder=\"laonce.camisetas\"")+
      f("% descuento por transferencia","descuentoTransferencia","number","min=\"0\" max=\"50\"")+f("Nombre y número en encargos ($ extra por camiseta)","precioPersonalizacion","number","min=\"0\" step=\"500\"")+f("Envío gratis desde ($, 0 = no)","envioGratisDesde","number","min=\"0\" step=\"1000\"")+f("Cuotas sin interés (0 = no)","cuotas","number","min=\"0\" max=\"12\"")+
      f("Envíos","envios")+f("Retiro / zona","zona")+
    '</div></section><section class="panel"><h3>Datos legales (se muestran al pie de la página)</h3><div class="fields">'+
-     f("Razón social o nombre del titular","razonSocial")+f("CUIT","cuit","","inputmode=\"numeric\" placeholder=\"20-12345678-9\"")+f("Domicilio comercial","domicilio")+f("Email de contacto","emailContacto","email")+f("Avisos de stock: dirección que los recibe (Formspree, Google o servidor propio)","avisosUrl","url","placeholder=\"https://formspree.io/f/...\"")+f("Link del QR de Data Fiscal (ARCA)","dataFiscalUrl","url","placeholder=\"https://qr.afip.gob.ar/?qr=...\"")+
+     f("Razón social o nombre del titular","razonSocial")+f("CUIT","cuit","","inputmode=\"numeric\" placeholder=\"20-12345678-9\"")+f("Domicilio comercial","domicilio")+f("Email de contacto","emailContacto","email")+f("Avisos de stock y pedidos: dirección que los recibe (Formspree, Google o servidor propio)","avisosUrl","url","placeholder=\"https://formspree.io/f/...\"")+f("Link del QR de Data Fiscal (ARCA)","dataFiscalUrl","url","placeholder=\"https://qr.afip.gob.ar/?qr=...\"")+
    '</div></section>'+
    supplierPanel()+'<section class="panel"><h3>Banners de categorías (inicio)</h3><div class="tile-edit">'+tileList().map(function(t,i){
       var o='<option value="center 15%">Arriba</option><option value="center 30%">Un poco arriba</option><option value="center">Centro</option><option value="center 70%">Abajo</option>'.replace('value="'+(t.pos||"center")+'"','value="'+(t.pos||"center")+'" selected');
@@ -744,7 +750,7 @@ function renderLegal(){
 
 
 /* ---------- Checkout ---------- */
-var coDone=false, coErr={};
+var coDone=false, coDoneTel="", coErr={};
 var co=(function(){try{return JSON.parse(localStorage.getItem("laonce-checkout")||"{}")}catch(e){return {}}})();
 co=Object.assign({pendingId:null,nombre:"",telefono:"",email:"",dni:"",entrega:"envio",direccion:"",depto:"",localidad:"",cp:"",pago:"transferencia",notas:""},co);
 function saveCo(){try{var c=Object.assign({},co);delete c.notas;delete c.dni;delete c.aceptaEspera;delete c.terms;localStorage.setItem("laonce-checkout",JSON.stringify(c))}catch(e){}}
@@ -782,7 +788,8 @@ function renderCheckout(){
   if(u){ if(!co.nombre) co.nombre=u.nombre; if(!co.email) co.email=u.email; if(!co.telefono&&u.telefono) co.telefono=u.telefono;
     migrateAcc(u); var A=u.direcciones[0]; if(A&&!co.direccion){co.direccion=A.direccion||"";co.depto=A.depto||"";co.localidad=A.localidad||"";co.cp=A.cp||""} }
   if(coDone){
-    app.innerHTML=coHeader()+'<main class="wrap co-done"><div class="co-ok">✓</div><h1>Solicitud preparada</h1><p>Tu pedido queda pendiente de confirmación y pago. Enviá el detalle por WhatsApp para coordinarlo. Si no se abrió, tocá el botón.</p><div class="co-done-btns"><a class="btn btn-wa" target="_blank" rel="noopener" href="'+esc(coDone)+'">Abrir WhatsApp</a>'+(u?'<button class="btn btn-ghost" id="goAccount">Ver mis pedidos</button>':'')+'<button class="btn btn-ghost" data-nav="inicio">Volver al inicio</button></div></main><div class="toast" id="toast"></div>';
+    var viaWa=/^https:\/\/wa\.me\//.test(String(coDone));
+    app.innerHTML=coHeader()+'<main class="wrap co-done"><div class="co-ok">✓</div>'+(viaWa?'<h1>Solicitud preparada</h1><p>Tu pedido queda pendiente de confirmación y pago. Enviá el detalle por WhatsApp para coordinarlo. Si no se abrió, tocá el botón.</p>':'<h1>¡Recibimos tu pedido!</h1><p>Te vamos a escribir'+(coDoneTel?' al WhatsApp <b>'+esc(coDoneTel)+'</b>':'')+' para confirmar disponibilidad y coordinar el pago y la entrega.</p>')+'<div class="co-done-btns">'+(viaWa?'<a class="btn btn-wa" target="_blank" rel="noopener" href="'+esc(coDone)+'">Abrir WhatsApp</a>':'')+(u?'<button class="btn btn-ghost" id="goAccount">Ver mis pedidos</button>':'')+'<button class="btn btn-ghost" data-nav="inicio">Volver al inicio</button></div></main><div class="toast" id="toast"></div>';
     return;
   }
   if(!cart.length){
@@ -799,7 +806,7 @@ function renderCheckout(){
     '<section class="co-box"><h2>3. Pago</h2><div class="co-opts">'+opt("pago","transferencia","Transferencia bancaria",(T.d?T.d+"% off · ":"")+"Mercado Pago, Ualá, MODO o tu banco")+opt("pago","tarjeta","Tarjeta débito o crédito","")+(co.pago==="tarjeta"?'<p class="hint">Coordinamos un enlace de pago después de confirmar tu pedido. No ingreses datos de tarjeta acá.</p>':"")+(co.entrega==="retiro"?opt("pago","efectivo","Efectivo","Al retirar"):"")+'</div>'+
       '<label class="cf full"><span>Notas (opcional)</span><input data-co="notas" value="'+esc(co.notas)+'" placeholder="Algo que tengamos que saber"></label></section>'+
   '</div><aside class="co-sum"><h2>Tu pedido</h2>'+items+'<div class="co-rows"><div><span>Subtotal</span><span>'+money(T.sub)+'</span></div>'+(T.stack?(T.td?'<div class="co-desc"><span>Descuento transferencia</span><span>−'+money(T.td)+'</span></div>':"")+(T.pd?'<div class="co-desc"><span>Premio ruleta · '+esc(prizeLabel(T.pz))+'</span><span>−'+money(T.pd)+'</span></div>':""):T.desc?'<div class="co-desc"><span>'+(T.usePrize?'Premio ruleta · '+esc(prizeLabel(T.pz)):'Descuento transferencia')+'</span><span>−'+money(T.desc)+'</span></div>':"")+''+(T.mysteryPrize?'<div class="co-desc"><span>Mystery Box · premio ruleta</span><span>De regalo</span></div>':'')+'<div'+(T.envioPrize?' class="co-desc"':'')+'><span>Envío'+(T.envioPrize?' · premio ruleta':'')+'</span><span>'+(T.gratis?"Gratis":"A coordinar")+'</span></div><div class="co-total"><span>Total</span><span>'+money(T.total)+'</span></div></div>'+
-    checkoutGame()+(hasPreCart()?'<label class="pre-ack"><input id="acceptLeadTime" type="checkbox" '+(co.aceptaEspera?'checked':'')+'> Entiendo que los encargos tardan aproximadamente 30 días desde la confirmación, más la entrega local, y que el plazo puede variar.</label>'+(coErr.espera?'<p class="import-error" role="alert">'+esc(coErr.espera)+'</p>':''):'')+'<div class="co-notes">'+cartNotes()+'</div><label class="terms-ok'+(coErr.terms?" err":"")+'"><input type="checkbox" id="termsOk" '+(co.terms?"checked":"")+'><span>He leído y acepto los <button class="inline-link" data-legal="terminos">Términos y condiciones</button> y la <button class="inline-link" data-legal="privacidad">Política de privacidad</button>.</span></label>'+(coErr.terms?'<p class="terms-err">'+esc(coErr.terms)+'</p>':"")+'<button class="btn btn-ink co-confirm" id="coConfirm">Confirmar pedido</button><p class="hint">Al confirmar te abrimos WhatsApp con el pedido completo para coordinar el pago y la entrega.</p>'+(!waNumber()?'<p class="hint" style="color:var(--sale)">Falta cargar el WhatsApp del negocio en el panel de socios.</p>':"")+'</aside></div></main><div class="toast" id="toast"></div>';
+    checkoutGame()+(hasPreCart()?'<label class="pre-ack"><input id="acceptLeadTime" type="checkbox" '+(co.aceptaEspera?'checked':'')+'> Entiendo que los encargos tardan aproximadamente 30 días desde la confirmación, más la entrega local, y que el plazo puede variar.</label>'+(coErr.espera?'<p class="import-error" role="alert">'+esc(coErr.espera)+'</p>':''):'')+'<div class="co-notes">'+cartNotes()+'</div><label class="terms-ok'+(coErr.terms?" err":"")+'"><input type="checkbox" id="termsOk" '+(co.terms?"checked":"")+'><span>He leído y acepto los <button class="inline-link" data-legal="terminos">Términos y condiciones</button> y la <button class="inline-link" data-legal="privacidad">Política de privacidad</button>.</span></label>'+(coErr.terms?'<p class="terms-err">'+esc(coErr.terms)+'</p>':"")+'<button class="btn btn-ink co-confirm" id="coConfirm">Confirmar pedido</button><p class="hint">'+(waNumber()?'Al confirmar te abrimos WhatsApp con el pedido completo para coordinar el pago y la entrega.':'Al confirmar te escribimos a tu WhatsApp para coordinar el pago y la entrega.')+'</p>'+'</aside></div></main><div class="toast" id="toast"></div>';
 }
 function coConfirm(){
   if(validCart()){renderCheckout();toast("Revisá el carrito actualizado antes de continuar");return}
@@ -814,15 +821,17 @@ function coConfirm(){
   if(hasPreCart()&&!co.aceptaEspera)coErr.espera="Confirmá que leíste el plazo de los encargos";
   if(!co.terms) coErr.terms="Tenés que aceptar los términos y condiciones para continuar";
   if(Object.keys(coErr).length||!cardOk){renderCheckout();var f=app.querySelector(".cf.err input")||app.querySelector(".terms-ok.err input")||app.querySelector("#acceptLeadTime");if(f){f.focus();f.scrollIntoView({block:"center"})}return}
-  var n=waNumber(); if(!n){toast("Falta cargar el WhatsApp del negocio");return}
+  var n=waNumber();
   var T=coTotals(), pagos={transferencia:"Transferencia bancaria",tarjeta:"Tarjeta débito o crédito",efectivo:"Efectivo"};
   var msg="Hola! Quiero confirmar este pedido:\n"+cart.map(function(l){var p=byId(l.id);return "• "+l.cant+" x "+p.club+" "+p.titulo+" ["+(isPre(p)?"POR PEDIDO ≈ 30 días":"EN STOCK")+"] (talle "+l.talle+(l.pers?", "+persText(l.pers):"")+") "+money(linePrice(l)*l.cant)}).join("\n")+
     "\n\nSubtotal: "+money(T.sub)+(T.stack?(T.td?"\nDescuento transferencia: -"+money(T.td):"")+(T.pd?"\nPremio ruleta "+prizeLabel(T.pz)+" (código "+T.pz.r.code+"): -"+money(T.pd):""):T.desc?(T.usePrize?"\nPremio ruleta "+prizeLabel(T.pz)+" en "+T.pz.prod.club+" (código "+T.pz.r.code+"): -":"\nDescuento transferencia: -")+money(T.desc):"")+"\nTotal: "+money(T.total)+
     "\n\nNombre: "+co.nombre+"\nTeléfono: "+co.telefono+"\nEmail: "+co.email+
     (T.mysteryPrize?"\nMystery Box de regalo (premio ruleta, código "+T.pz.r.code+")":"")+"\nEntrega: "+(co.entrega==="envio"?"Envío a "+co.direccion+(co.depto?" (depto "+co.depto+")":"")+", "+co.localidad+" ("+co.cp+")"+(T.envioPrize?" — envío gratis (premio ruleta, código "+T.pz.r.code+")":T.gratis?" — envío gratis":""):"Retiro")+
     (hasPreCart()?"\nEncargos: acepto plazo estimado de 30 días desde confirmación, más entrega local. Si hay stock y encargo, coordinar envíos separados.":"")+"\nPago: "+pagos[co.pago]+(co.notas?"\nNotas: "+co.notas:"");
-  var href="https://wa.me/"+n+"?text="+encodeURIComponent(msg);
-  try{window.open(href,"_blank","noopener")}catch(e){}
+  var href=n?"https://wa.me/"+n+"?text="+encodeURIComponent(msg):"";
+  if(href){try{window.open(href,"_blank","noopener")}catch(e){}}
+  else sendOrder({tipo:"pedido",nombre:co.nombre,telefono:co.telefono,email:co.email,total:T.total,detalle:msg,fecha:new Date().toISOString()});
+  coDoneTel=co.telefono;
   var u=me();
   if(u){
     migrateAcc(u); u.pedidos=u.pedidos||[];
@@ -835,7 +844,7 @@ function coConfirm(){
     saveAccounts();
   }
   if((T.usePrize||T.envioPrize||T.mysteryPrize)&&spinRecord){spinRecord.used=true;try{localStorage.setItem('laonce-ruleta-demo',JSON.stringify(spinRecord))}catch(e){}}
-  cart=[]; saveCart(); coDone=href; renderCheckout(); scrollTo(0,0);
+  cart=[]; saveCart(); coDone=href||"recibido"; renderCheckout(); scrollTo(0,0);
 }
 
 function render(){ validCart();if(view==="game")renderGame();else if(view==="account") renderAccount(); else if(view==="checkout") renderCheckout(); else if(view==="legal") renderLegal(); else if(view==="admin") renderAdmin(); else if(view==="catalog") renderCatalog(); else renderHome(); }
