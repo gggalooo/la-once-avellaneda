@@ -1,0 +1,103 @@
+LA ONCE KITS — CÓMO ACTIVAR LOS PAGOS CON MERCADO PAGO
+=======================================================
+
+Qué va a ver el cliente al pagar
+--------------------------------
+• "Mercado Pago" (con el 10% off): toca "Pagar con Mercado Pago", se abre la app
+  (o la web) de Mercado Pago con el monto ya cargado, paga con su dinero en cuenta
+  y vuelve solo a la página, que le muestra "¡Pago aprobado!".
+• "Tarjeta de débito, crédito o prepaga": carga la tarjeta en el formulario seguro
+  de Mercado Pago dentro de la página (Visa, Mastercard, Amex y prepagas) y toca Pagar.
+• "Efectivo" aparece solo si elige Retiro (eso se coordina por WhatsApp, como antes).
+
+El stock se descuenta SOLO cuando Mercado Pago confirma el pago. El servidor revisa
+que el monto pagado sea el del pedido; si no coincide, el pedido queda "Revisar".
+El envío se sigue coordinando aparte (salvo que sea gratis).
+
+IMPORTANTE: los pagos funcionan con el sitio conectado a GitHub en Netlify.
+Si se arrastra la carpeta a Netlify Drop, la página anda pero sin pagos online.
+
+
+PASO 1 — Crear la aplicación en Mercado Pago
+--------------------------------------------
+1. Entrá a https://www.mercadopago.com.ar/developers con la cuenta de Mercado Pago
+   del negocio (la que va a recibir la plata).
+2. "Tus integraciones" → "Crear aplicación". Nombre: La ONCE Kits.
+   Tipo de solución: Pagos online. Producto: Checkout Pro y Checkout API / Bricks
+   (si pregunta por plataforma: "No uso plataforma de e-commerce").
+3. Entrá a la aplicación → "Credenciales de prueba". Copiá:
+   • Public Key   (empieza con TEST-)
+   • Access Token (empieza con TEST-)   ← ESTE ES SECRETO, no lo mandes ni lo pegues en la página.
+
+
+PASO 2 — Cargar las claves en Netlify
+-------------------------------------
+En Netlify: tu sitio → Site configuration → Environment variables → Add a variable.
+Cargá estas (nombre exacto, en mayúsculas):
+
+  MP_ACCESS_TOKEN = el Access Token de Mercado Pago
+  MP_PUBLIC_KEY   = la Public Key de Mercado Pago
+  PRIZE_SECRET    = una clave larga inventada (ej: 40 letras y números al azar)
+  SHEET_SECRET    = otra clave larga inventada (la misma que va en el Apps Script, paso 4)
+  SHEET_APP_URL   = la URL del Apps Script que termina en /exec (si ya la cargaste
+                    en la página como "planillaApp", podés no ponerla)
+
+Después: Deploys → Trigger deploy → Deploy site. (Las variables nuevas se usan
+desde el próximo deploy.)
+
+
+PASO 3 — Avisos de pago (webhook)
+---------------------------------
+En Mercado Pago Developers → tu aplicación → Webhooks → Configurar notificaciones:
+  URL: https://TU-SITIO.netlify.app/api/mp-webhook   (cambiá TU-SITIO por tu dirección)
+  Evento: Pagos
+Guardá. (La página ya le pasa esta dirección a cada pago, así que funciona igual,
+pero así queda doble seguro.)
+
+
+PASO 4 — Planilla: que marque "Pagado" y descuente el stock
+-----------------------------------------------------------
+1. En la planilla de Google: Extensiones → Apps Script.
+2. Borrá todo y pegá el contenido NUEVO de planilla/codigo-apps-script.txt.
+3. En la línea  var CLAVE = 'CAMBIAR-POR-UNA-CLAVE-LARGA';  poné la MISMA clave que
+   cargaste en Netlify como SHEET_SECRET (entre comillas simples).
+4. Guardá. Implementar → Administrar implementaciones → lápiz → Versión: "Nueva versión"
+   → Implementar. (La URL /exec no cambia.)
+
+Qué hace: cuando entra un pedido online lo anota en "Pedidos" como "Esperando pago".
+Cuando Mercado Pago confirma, lo pasa a "Pagado", resta las camisetas en stock de la
+pestaña "Productos" (columnas S, M, L, XL, XXL) y anota el número de pago de MP.
+Las camisetas "por pedido" no restan stock.
+Si no conectan la planilla, la página igual lleva la cuenta de lo vendido y no deja
+comprar más de lo que hay.
+
+
+PASO 5 — Probar con dinero de mentira
+-------------------------------------
+Con las credenciales de PRUEBA:
+• Tarjeta: usá estas tarjetas de prueba de Mercado Pago:
+    Mastercard 5031 7557 3453 0604 · Visa 4509 9535 6623 3704
+    Código de seguridad 123 · Vencimiento 11/30 · DNI 12345678
+    Nombre del titular:  APRO = aprobado  ·  OTHE = rechazado  ·  CONT = pendiente
+• Mercado Pago (dinero en cuenta): en Developers → "Cuentas de prueba" creá un
+  comprador y un vendedor de prueba, y pagá logueado con el comprador de prueba
+  (no podés pagarte a vos mismo).
+Revisá que en la planilla el pedido pase a "Pagado" y que baje el stock.
+
+
+PASO 6 — Pasar a cobrar de verdad
+---------------------------------
+En Mercado Pago → tu aplicación → "Credenciales de producción" (te pide completar
+datos del negocio). Reemplazá en Netlify MP_ACCESS_TOKEN y MP_PUBLIC_KEY por las de
+producción (APP_USR-...), y hacé "Trigger deploy". Listo.
+
+
+Para tener en cuenta
+--------------------
+• Mercado Pago cobra comisión por cada venta y tiene plazos de acreditación según
+  lo que elijas en tu cuenta. El 10% off es solo para pago con Mercado Pago.
+• Cuotas: si en la página ponen "Cuotas sin interés" en 3, 6, etc., el formulario de
+  tarjeta ofrece hasta esa cantidad. Las cuotas sin interés las tienen que activar
+  también en su cuenta de Mercado Pago (el costo lo paga el vendedor).
+• La ruleta en el sitio publicado la sortea el servidor: el premio no se puede
+  inventar desde el navegador y vale una vez por pedido y por teléfono cada 3 días.

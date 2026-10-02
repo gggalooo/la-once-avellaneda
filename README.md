@@ -76,6 +76,22 @@ Pestaña **Productos**: en stock, los talles S–XXL son cantidades; en pedido, 
 ## Publicar en Netlify
 
 - **Conectando el repositorio de GitHub (recomendado):** en Netlify, "Add new site" → "Import an existing project" → GitHub → este repositorio. Netlify lee `netlify.toml`: arma la página con `node scripts/netlify.cjs` y publica la carpeta `dist`. Cada cambio que se sube a GitHub se publica solo.
-- **Arrastrando la carpeta:** ejecutar `npm run netlify` y arrastrar la carpeta `dist` a app.netlify.com/drop.
+- **Arrastrando la carpeta:** ejecutar `npm run netlify` y arrastrar la carpeta `dist` a app.netlify.com/drop. Así **no** funcionan los pagos ni la ruleta validada: para eso hace falta conectar GitHub.
 
 El script usa la dirección del sitio que da Netlify para los links de Google y de redes. Si usan un dominio propio, se puede fijar con la variable `SITE_URL` en la configuración del sitio en Netlify.
+
+## Pagos con Mercado Pago
+
+Con el sitio en Netlify conectado a GitHub, el checkout cobra online. Paso a paso en `COMO-ACTIVAR-LOS-PAGOS.txt`.
+
+- **Mercado Pago (10% off):** el servidor crea el pago con el total ya calculado y el cliente sigue a la app o web de Mercado Pago para pagar con su dinero en cuenta.
+- **Tarjeta (débito, crédito o prepaga):** formulario seguro de Mercado Pago (Card Payment Brick) dentro de la página. Los datos de la tarjeta no pasan por nuestro servidor.
+- **Efectivo:** solo con retiro; sigue el circuito anterior (WhatsApp / planilla).
+
+Cómo funciona: `netlify/functions` recalcula precios, stock, descuentos y premios con el catálogo real (nunca confía en el navegador), guarda el pedido en Netlify Blobs y recién cuando Mercado Pago confirma el pago (aviso a `/api/mp-webhook` o consulta al volver) marca el pedido como **Pagado** y descuenta el stock en la planilla. Si no hay planilla, lleva el stock vendido internamente. Confirmar dos veces no descuenta dos veces.
+
+La ruleta, en el sitio publicado, la sortea el servidor y entrega el premio firmado; un premio vale para un pedido y para un teléfono cada 3 días.
+
+Variables en Netlify: `MP_ACCESS_TOKEN`, `MP_PUBLIC_KEY`, `PRIZE_SECRET`, `SHEET_SECRET` y, opcional, `SHEET_APP_URL` y `SITE_URL`.
+
+`npm run build` también genera `netlify/functions/_lib/catalogo.mjs` (el catálogo sin fotos que usa el servidor).

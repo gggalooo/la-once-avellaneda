@@ -3,8 +3,11 @@
   command = "node scripts/netlify.cjs"
   publish = "dist"
 
+[functions]
+  node_bundler = "esbuild"
+
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
 
 # La página siempre se revisa al entrar (para ver precios y cambios al día).
 [[headers]]

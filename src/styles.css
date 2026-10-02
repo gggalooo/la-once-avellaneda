@@ -1012,3 +1012,79 @@ nav.cats [data-nav="ruleta"]{font-family:"Montserrat","Segoe UI",system-ui,sans-
 .howto li span{color:var(--muted);font-size:14.5px;line-height:1.45}
 .howto .btn{width:100%}
 dialog:has(.howto){max-width:min(520px,94vw)}
+
+/* ---------- Pagos online ---------- */
+.pay-tag{display:inline-block;background:#009ee3;color:#fff;border-radius:4px;padding:0 6px;font-size:12px;letter-spacing:.02em;margin-right:4px}
+.co-opt small .pay-tag{display:inline-block}
+.pay-safe{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:13px;line-height:1.4;margin:10px 0 0}
+.pay-safe svg{width:16px;height:16px;flex:none;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.btn-mp{background:#009ee3;color:#fff}
+.btn-mp:hover{background:#0089c6}
+.co-confirm:disabled{opacity:.7;cursor:progress}
+.pay-err{background:color-mix(in srgb,var(--sale) 12%,transparent);color:var(--sale);border-radius:6px;padding:10px 12px;font-size:14px;font-weight:600;margin:0 0 10px}
+.pay-dlg{border:0;border-radius:14px;padding:0;width:min(480px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--bg);color:var(--ink);overflow:auto}
+.pay-dlg::backdrop{background:rgba(4,10,30,.62)}
+.pay-box{padding:24px 22px 20px;position:relative}
+.pay-box h2{font-size:34px;margin:4px 0 2px;font-weight:800}
+.pay-sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.pay-box .close{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;background:transparent;color:var(--ink);font-size:28px;cursor:pointer;border-radius:50%}
+.card-brick{min-height:120px;background:#fff;border-radius:10px}
+.pay-loading{display:flex;gap:10px;align-items:center;justify-content:center;color:#5b6475;padding:40px 0;margin:0}
+.pay-msg{font-size:14px;font-weight:600;margin:10px 0 0;min-height:1em}
+.pay-msg.err{color:var(--sale)}
+.spin{display:inline-block;width:18px;height:18px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:payspin .8s linear infinite;vertical-align:middle}
+@keyframes payspin{to{transform:rotate(360deg)}}
+.co-ok.wait{background:var(--surface);color:var(--celeste,#009ee3);border:2px solid var(--line)}
+.co-ok.wait .spin{width:30px;height:30px;border-width:3px}
+.co-ok.bad{background:var(--sale)}
+.pay-result .co-code{color:var(--ink)}
+@media (max-width:560px){.pay-box{padding:20px 14px 16px}.pay-box h2{font-size:28px}.pay-result h1{font-size:36px}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+
+/* ============ Ambientación "noche de copa" (inspirada en el estilo Champions; diseño propio) ============ */
+html:root:not([data-z]){
+  color-scheme:dark;
+  --bg:#06123A; --surface:#0C1F57; --ink:#EEF4FF; --muted:#A3B6DD; --line:rgba(120,170,255,.2);
+  --celeste:#4CD6EE; --navy:#040C2B; --sale:#FF5A6E; --wa:#2BC27A; --gold:#F2C230;
+  --glow:#3FD9F0; --deep:#030A26; --glass:rgba(13,33,92,.62);
+}
+body{background:var(--deep)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMinYMid slice"%3E%3Cdefs%3E%3ClinearGradient id="a" x1="0" y1="0" x2="1" y2="1"%3E%3Cstop offset="0" stop-color="#7ff6ff"/%3E%3Cstop offset=".45" stop-color="#2f8bff"/%3E%3Cstop offset="1" stop-color="#2f6bff" stop-opacity="0"/%3E%3C/linearGradient%3E%3ClinearGradient id="b" x1="0" y1="1" x2="1" y2="0"%3E%3Cstop offset="0" stop-color="#2f6bff" stop-opacity="0"/%3E%3Cstop offset=".6" stop-color="#3fd9f0"/%3E%3Cstop offset="1" stop-color="#9ffaff"/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill="none"%3E%3Ccircle cx="-80" cy="430" r="440" stroke="url%28#a%29" stroke-width="12" opacity=".1"/%3E%3Ccircle cx="-80" cy="430" r="440" stroke="url%28#a%29" stroke-width="2.4" opacity=".8"/%3E%3Ccircle cx="-80" cy="430" r="372" stroke="url%28#a%29" stroke-width="1" opacity=".35"/%3E%3Cpath d="M-30 90C190 150 330 300 352 520" stroke="url%28#a%29" stroke-width="1.6" opacity=".6"/%3E%3Cpath d="M-60 300C150 330 300 470 330 700" stroke="url%28#a%29" stroke-width="1.2" opacity=".45"/%3E%3Cpath d="M60 830C190 720 300 640 352 520" stroke="url%28#b%29" stroke-width="1.4" opacity=".5"/%3E%3Cpath d="M-40 640C90 600 200 560 330 700" stroke="url%28#b%29" stroke-width="1" opacity=".35"/%3E%3Cpath d="M1060 60C900 140 820 260 800 420" stroke="url%28#b%29" stroke-width="1.2" opacity=".22"/%3E%3C/g%3E%3C/svg%3E") left center/cover no-repeat,
+  radial-gradient(70% 55% at 12% 30%,rgba(34,104,232,.55),transparent 70%),
+  radial-gradient(60% 50% at 95% 95%,rgba(28,90,210,.35),transparent 70%),
+  linear-gradient(160deg,#0A2370 0%,#06143F 45%,#030A26 100%)}
+@media (max-width:720px){body::before{background-size:auto 115%,auto,auto,auto;background-position:-120px 30%,0 0,0 0,0 0}}
+#app{position:relative}
+.topbar{background:linear-gradient(90deg,#040C2B,#0B2A7A 50%,#040C2B);border-bottom:1px solid rgba(76,214,238,.25);letter-spacing:.02em}
+header.site{background:rgba(5,16,52,.82);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid rgba(76,214,238,.18)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){header.site{background:#06123A}}
+footer{background:linear-gradient(180deg,rgba(3,10,38,.4),#020822 40%);border-top:1px solid rgba(76,214,238,.2)}
+.eyebrow{color:var(--glow)}
+/* Tarjetas de vidrio */
+.mode-link,.co-box,.co-sum,.acc-sec,.acc-card,.ship,.request-shirt,.delivery-note,.cart-sum,.legal-doc,.legal-side,.game-rules,.game-checkout{background:var(--glass)!important;border-color:var(--line)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.art{background:radial-gradient(circle at 50% 38%,#2C74E8 0%,#123C9E 45%,#0A2468 100%)!important;box-shadow:inset 0 0 0 1px rgba(127,246,255,.14)}
+.art svg{filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.thumb{background:#0C2A72}
+/* Botones con brillo celeste */
+.btn-ink{background:linear-gradient(180deg,#FFFFFF,#DCEBFF);color:#061547;box-shadow:0 0 0 1px rgba(127,246,255,.35),0 6px 22px rgba(63,217,240,.18)}
+.btn-ink:hover{box-shadow:0 0 0 1px rgba(127,246,255,.6),0 8px 28px rgba(63,217,240,.32)}
+.btn-ghost{border-color:rgba(127,246,255,.4)!important;color:var(--ink)}
+.btn-mp{background:linear-gradient(180deg,#14B1F0,#0090D6);color:#fff;box-shadow:0 6px 22px rgba(0,158,227,.3)}
+.co-opt{background:rgba(6,18,58,.5)}
+.co-opt.on{border-color:var(--glow)!important;background:rgba(63,217,240,.08)!important;box-shadow:0 0 0 1px rgba(63,217,240,.35),0 0 24px rgba(63,217,240,.12)}
+.co-opt input{accent-color:var(--glow)}
+input,select,textarea{background-color:rgba(3,10,38,.55);border-color:var(--line)}
+/* Títulos con aire de noche de gala */
+.mode-intro h1,.catalog-intro h1,.co-title,.co-done h1{text-shadow:0 0 28px rgba(63,217,240,.25)}
+.tile{box-shadow:0 0 0 1px rgba(127,246,255,.14),0 18px 40px rgba(0,0,0,.35)}
+.tile.photo::after{background:linear-gradient(0deg,rgba(4,14,52,.9) 0%,rgba(8,30,100,.35) 50%,rgba(0,0,0,0) 75%)}
+.co-ok{box-shadow:0 0 0 6px rgba(43,194,122,.18),0 0 40px rgba(43,194,122,.35)}
+.pay-dlg,dialog{background:#081A4E;color:var(--ink)}
+dialog::backdrop{background:rgba(2,6,24,.72)}
+.drawer{background:#071643!important}
+.toast{background:#EEF4FF;color:#061547}
+::selection{background:rgba(63,217,240,.35)}
+@media (prefers-reduced-transparency:reduce){header.site{background:#06123A;backdrop-filter:none}.mode-link,.co-box,.co-sum,.acc-sec,.acc-card,.ship,.request-shirt,.delivery-note,.cart-sum,.legal-doc,.legal-side,.game-rules,.game-checkout{backdrop-filter:none;background:#0C1F57!important}}
+/* Fotos de proveedor (fondo blanco): luz de estudio para que se vean los colores reales */
+.art:has(img){background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#E6EDF9 62%,#C8D6EE 100%)!important}

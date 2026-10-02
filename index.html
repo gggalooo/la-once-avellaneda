@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#06123A">
+<meta name="color-scheme" content="dark">
 <title>La ONCE Kits | Camisetas de fútbol</title>
 <meta name="description" content="Camisetas de fútbol en stock y por pedido en La ONCE Kits. Explorá modelos de clubes y selecciones, elegí talle y consultá las opciones de entrega.">
 <link rel="canonical" href="https://gggalooo.github.io/la-once-avellaneda/">
@@ -1036,6 +1038,82 @@ nav.cats [data-nav="ruleta"]{font-family:"Montserrat","Segoe UI",system-ui,sans-
 .howto li span{color:var(--muted);font-size:14.5px;line-height:1.45}
 .howto .btn{width:100%}
 dialog:has(.howto){max-width:min(520px,94vw)}
+
+/* ---------- Pagos online ---------- */
+.pay-tag{display:inline-block;background:#009ee3;color:#fff;border-radius:4px;padding:0 6px;font-size:12px;letter-spacing:.02em;margin-right:4px}
+.co-opt small .pay-tag{display:inline-block}
+.pay-safe{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:13px;line-height:1.4;margin:10px 0 0}
+.pay-safe svg{width:16px;height:16px;flex:none;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.btn-mp{background:#009ee3;color:#fff}
+.btn-mp:hover{background:#0089c6}
+.co-confirm:disabled{opacity:.7;cursor:progress}
+.pay-err{background:color-mix(in srgb,var(--sale) 12%,transparent);color:var(--sale);border-radius:6px;padding:10px 12px;font-size:14px;font-weight:600;margin:0 0 10px}
+.pay-dlg{border:0;border-radius:14px;padding:0;width:min(480px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--bg);color:var(--ink);overflow:auto}
+.pay-dlg::backdrop{background:rgba(4,10,30,.62)}
+.pay-box{padding:24px 22px 20px;position:relative}
+.pay-box h2{font-size:34px;margin:4px 0 2px;font-weight:800}
+.pay-sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.pay-box .close{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;background:transparent;color:var(--ink);font-size:28px;cursor:pointer;border-radius:50%}
+.card-brick{min-height:120px;background:#fff;border-radius:10px}
+.pay-loading{display:flex;gap:10px;align-items:center;justify-content:center;color:#5b6475;padding:40px 0;margin:0}
+.pay-msg{font-size:14px;font-weight:600;margin:10px 0 0;min-height:1em}
+.pay-msg.err{color:var(--sale)}
+.spin{display:inline-block;width:18px;height:18px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:payspin .8s linear infinite;vertical-align:middle}
+@keyframes payspin{to{transform:rotate(360deg)}}
+.co-ok.wait{background:var(--surface);color:var(--celeste,#009ee3);border:2px solid var(--line)}
+.co-ok.wait .spin{width:30px;height:30px;border-width:3px}
+.co-ok.bad{background:var(--sale)}
+.pay-result .co-code{color:var(--ink)}
+@media (max-width:560px){.pay-box{padding:20px 14px 16px}.pay-box h2{font-size:28px}.pay-result h1{font-size:36px}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+
+/* ============ Ambientación "noche de copa" (inspirada en el estilo Champions; diseño propio) ============ */
+html:root:not([data-z]){
+  color-scheme:dark;
+  --bg:#06123A; --surface:#0C1F57; --ink:#EEF4FF; --muted:#A3B6DD; --line:rgba(120,170,255,.2);
+  --celeste:#4CD6EE; --navy:#040C2B; --sale:#FF5A6E; --wa:#2BC27A; --gold:#F2C230;
+  --glow:#3FD9F0; --deep:#030A26; --glass:rgba(13,33,92,.62);
+}
+body{background:var(--deep)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMinYMid slice"%3E%3Cdefs%3E%3ClinearGradient id="a" x1="0" y1="0" x2="1" y2="1"%3E%3Cstop offset="0" stop-color="#7ff6ff"/%3E%3Cstop offset=".45" stop-color="#2f8bff"/%3E%3Cstop offset="1" stop-color="#2f6bff" stop-opacity="0"/%3E%3C/linearGradient%3E%3ClinearGradient id="b" x1="0" y1="1" x2="1" y2="0"%3E%3Cstop offset="0" stop-color="#2f6bff" stop-opacity="0"/%3E%3Cstop offset=".6" stop-color="#3fd9f0"/%3E%3Cstop offset="1" stop-color="#9ffaff"/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill="none"%3E%3Ccircle cx="-80" cy="430" r="440" stroke="url%28#a%29" stroke-width="12" opacity=".1"/%3E%3Ccircle cx="-80" cy="430" r="440" stroke="url%28#a%29" stroke-width="2.4" opacity=".8"/%3E%3Ccircle cx="-80" cy="430" r="372" stroke="url%28#a%29" stroke-width="1" opacity=".35"/%3E%3Cpath d="M-30 90C190 150 330 300 352 520" stroke="url%28#a%29" stroke-width="1.6" opacity=".6"/%3E%3Cpath d="M-60 300C150 330 300 470 330 700" stroke="url%28#a%29" stroke-width="1.2" opacity=".45"/%3E%3Cpath d="M60 830C190 720 300 640 352 520" stroke="url%28#b%29" stroke-width="1.4" opacity=".5"/%3E%3Cpath d="M-40 640C90 600 200 560 330 700" stroke="url%28#b%29" stroke-width="1" opacity=".35"/%3E%3Cpath d="M1060 60C900 140 820 260 800 420" stroke="url%28#b%29" stroke-width="1.2" opacity=".22"/%3E%3C/g%3E%3C/svg%3E") left center/cover no-repeat,
+  radial-gradient(70% 55% at 12% 30%,rgba(34,104,232,.55),transparent 70%),
+  radial-gradient(60% 50% at 95% 95%,rgba(28,90,210,.35),transparent 70%),
+  linear-gradient(160deg,#0A2370 0%,#06143F 45%,#030A26 100%)}
+@media (max-width:720px){body::before{background-size:auto 115%,auto,auto,auto;background-position:-120px 30%,0 0,0 0,0 0}}
+#app{position:relative}
+.topbar{background:linear-gradient(90deg,#040C2B,#0B2A7A 50%,#040C2B);border-bottom:1px solid rgba(76,214,238,.25);letter-spacing:.02em}
+header.site{background:rgba(5,16,52,.82);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid rgba(76,214,238,.18)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){header.site{background:#06123A}}
+footer{background:linear-gradient(180deg,rgba(3,10,38,.4),#020822 40%);border-top:1px solid rgba(76,214,238,.2)}
+.eyebrow{color:var(--glow)}
+/* Tarjetas de vidrio */
+.mode-link,.co-box,.co-sum,.acc-sec,.acc-card,.ship,.request-shirt,.delivery-note,.cart-sum,.legal-doc,.legal-side,.game-rules,.game-checkout{background:var(--glass)!important;border-color:var(--line)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.art{background:radial-gradient(circle at 50% 38%,#2C74E8 0%,#123C9E 45%,#0A2468 100%)!important;box-shadow:inset 0 0 0 1px rgba(127,246,255,.14)}
+.art svg{filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.thumb{background:#0C2A72}
+/* Botones con brillo celeste */
+.btn-ink{background:linear-gradient(180deg,#FFFFFF,#DCEBFF);color:#061547;box-shadow:0 0 0 1px rgba(127,246,255,.35),0 6px 22px rgba(63,217,240,.18)}
+.btn-ink:hover{box-shadow:0 0 0 1px rgba(127,246,255,.6),0 8px 28px rgba(63,217,240,.32)}
+.btn-ghost{border-color:rgba(127,246,255,.4)!important;color:var(--ink)}
+.btn-mp{background:linear-gradient(180deg,#14B1F0,#0090D6);color:#fff;box-shadow:0 6px 22px rgba(0,158,227,.3)}
+.co-opt{background:rgba(6,18,58,.5)}
+.co-opt.on{border-color:var(--glow)!important;background:rgba(63,217,240,.08)!important;box-shadow:0 0 0 1px rgba(63,217,240,.35),0 0 24px rgba(63,217,240,.12)}
+.co-opt input{accent-color:var(--glow)}
+input,select,textarea{background-color:rgba(3,10,38,.55);border-color:var(--line)}
+/* Títulos con aire de noche de gala */
+.mode-intro h1,.catalog-intro h1,.co-title,.co-done h1{text-shadow:0 0 28px rgba(63,217,240,.25)}
+.tile{box-shadow:0 0 0 1px rgba(127,246,255,.14),0 18px 40px rgba(0,0,0,.35)}
+.tile.photo::after{background:linear-gradient(0deg,rgba(4,14,52,.9) 0%,rgba(8,30,100,.35) 50%,rgba(0,0,0,0) 75%)}
+.co-ok{box-shadow:0 0 0 6px rgba(43,194,122,.18),0 0 40px rgba(43,194,122,.35)}
+.pay-dlg,dialog{background:#081A4E;color:var(--ink)}
+dialog::backdrop{background:rgba(2,6,24,.72)}
+.drawer{background:#071643!important}
+.toast{background:#EEF4FF;color:#061547}
+::selection{background:rgba(63,217,240,.35)}
+@media (prefers-reduced-transparency:reduce){header.site{background:#06123A;backdrop-filter:none}.mode-link,.co-box,.co-sum,.acc-sec,.acc-card,.ship,.request-shirt,.delivery-note,.cart-sum,.legal-doc,.legal-side,.game-rules,.game-checkout{backdrop-filter:none;background:#0C1F57!important}}
+/* Fotos de proveedor (fondo blanco): luz de estudio para que se vean los colores reales */
+.art:has(img){background:radial-gradient(circle at 50% 40%,#FFFFFF 0%,#E6EDF9 62%,#C8D6EE 100%)!important}
 </style>
 </head>
 <body>
@@ -1095,7 +1173,7 @@ function waNumber(){return String(data.config.whatsapp||"").replace(/\D/g,"")}
 /* ---------- Partes comunes ---------- */
 function header(){
   var c=data.config, n=cart.reduce(function(a,l){return a+l.cant},0);
-  var top=Number(c.envioGratisDesde)>0?"Envío gratis desde "+money(c.envioGratisDesde)+" · "+(Number(c.descuentoTransferencia)||0)+"% off por transferencia":(c.envios||"");
+  var top=Number(c.envioGratisDesde)>0?"Envío gratis desde "+money(c.envioGratisDesde)+" · "+(Number(c.descuentoTransferencia)||0)+"% off "+offW():(c.envios||"");
   var nav=NAV.map(function(x){var cur=(view==="home"&&x.k==="inicio")||(view==="catalog"&&sec===x.k)||(view==="game"&&x.k==="ruleta");return '<button data-nav="'+esc(x.k)+'" aria-current="'+cur+'">'+x.t+'</button>'}).join("");
   return '<div class="topbar">'+esc(top)+'</div>'+prizeBar()+'<header class="site"><div class="wrap head-row"><button class="logo" data-nav="inicio" aria-label="Ir al inicio">'+(c.logo?'<img class="logo-mark logo-img" src="'+esc(c.logo)+'" alt="" width="46" height="46">':'<span class="logo-mark">11</span>')+'<span class="logo-word">'+logoWord(c.nombre)+'</span></button><input class="search" type="search" placeholder="Buscar camiseta" aria-label="Buscar" value="'+esc(filt.q)+'"><div class="acc-head">'+accountLink()+'</div><button class="bag" id="openBag" aria-label="Carrito'+(n?', '+n+(n===1?' camiseta':' camisetas'):', vacío')+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.1 10.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.5-1.2L21 8H6.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg>'+(n?'<i>'+n+'</i>':'')+'</button></div><nav class="cats" aria-label="Categorías"><div class="wrap">'+nav+'</div></nav></header>';
 }
@@ -1116,7 +1194,7 @@ function card(p){
   if(Number(data.config.envioGratisDesde)>0 && p.precio>=Number(data.config.envioGratisDesde)) b+='<span class="badge ship">Envío gratis</span>';
   var pills=SIZES.map(function(s){return '<span class="'+(capacity(p,s)>0?"":"no")+'">'+s+'</span>'}).join("");
   var cuotas=Number(data.config.cuotas)||0;
-  return '<article class="item"><button class="art" data-open="'+esc(p.id)+'" aria-label="Ver '+esc(p.club+" "+p.titulo)+'">'+art(p)+'<span class="badges">'+b+'</span></button><div class="info">'+modeBadge(p)+'<h3 class="name">'+esc(p.club)+'<small>'+esc(p.titulo)+'</small></h3><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' por transferencia</span>'+(cuotas>1?'<span class="hint">'+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+'<div class="sz">'+pills+'</div><button class="btn '+(t?"btn-ink":"btn-ghost")+' buy" data-open="'+esc(p.id)+'">'+(isPre(p)?"Elegir talle":t?"Comprar":"Avisame")+'</button></div></article>';
+  return '<article class="item"><button class="art" data-open="'+esc(p.id)+'" aria-label="Ver '+esc(p.club+" "+p.titulo)+'">'+art(p)+'<span class="badges">'+b+'</span></button><div class="info">'+modeBadge(p)+'<h3 class="name">'+esc(p.club)+'<small>'+esc(p.titulo)+'</small></h3><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' '+offW()+'</span>'+(cuotas>1?'<span class="hint">'+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+'<div class="sz">'+pills+'</div><button class="btn '+(t?"btn-ink":"btn-ghost")+' buy" data-open="'+esc(p.id)+'">'+(isPre(p)?"Elegir talle":t?"Comprar":"Avisame")+'</button></div></article>';
 }
 function sortList(l){
   var o=filt.orden;
@@ -1161,7 +1239,7 @@ function renderHome(){
     if(s.pay&&hp&&hp.mp){
       var off=Number(data.config.descuentoTransferencia)||0;
       return '<div class="slide s3 pay" aria-roledescription="slide" aria-label="'+(i+1)+' de '+SLIDES.length+'">'+(hp.fondo?'<div class="retro-bg" style="background-image:url('+hp.fondo+')"></div>':"")+'<div><h2>'+esc(s.t)+'<span class="yr">'+esc(s.yr)+'</span></h2><p>'+esc(s.p)+'</p><button class="btn btn-light" data-nav="'+esc(s.nav)+'">'+esc(s.cta)+'</button></div>'+
-        '<div class="pay-stage">'+(off?'<div class="pay-off"><b>'+off+'%</b><span>OFF</span><small>por transferencia</small></div>':"")+
+        '<div class="pay-stage">'+(off?'<div class="pay-off"><b>'+off+'%</b><span>OFF</span><small>'+offW()+'</small></div>':"")+
         '<div class="pcard pc-mp"><img src="'+esc(hp.mp)+'" alt="Mercado Pago"><span>Mercado Pago</span></div>'+
         '<div class="pcard pc-modo"><img src="'+esc(hp.modo)+'" alt="MODO"></div>'+
         '<div class="pcard pc-uala"><img src="'+esc(hp.uala)+'" alt="Ualá"></div></div></div>';
@@ -1262,7 +1340,7 @@ function openDetail(id){
     var note=isPre(p)?(sel?"Talle a confirmar con el proveedor. Máximo 5 unidades por talle en esta solicitud.":"Elegí el talle que querés consultar."):t===0?"":(sel?(!maxQ?"Ya agregaste todas las que hay en talle "+sel+".":(left<=2?"Quedan "+left+" en talle "+sel+".":"Hay stock en talle "+sel+".")):"Elegí un talle.");
     var avisar=n?"https://wa.me/"+n+"?text="+encodeURIComponent("Hola! Me avisan cuando vuelva la camiseta de "+p.club+" "+p.titulo+"?"):"#";
     var cuotas=Number(data.config.cuotas)||0;
-    dlg.innerHTML='<div class="detail"><div class="art">'+art(p)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' por transferencia</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
+    dlg.innerHTML='<div class="detail"><div class="art">'+art(p)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' '+offW()+'</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
       '<div><p class="hint" style="margin-bottom:8px">Talle</p><div class="pick">'+btns+'</div></div>'+stepper+(note?'<p class="hint">'+note+'</p>':"")+extras()+
       (t?'<button class="btn btn-ink" id="addBag" '+(sel&&maxQ?"":"disabled")+'>'+addLabel(maxQ)+'</button>':'<button class="btn btn-nostock" disabled>Sin stock</button><button class="btn btn-notify" id="notifyBtn">¿Querés que te avise cuando haya stock?</button>')+
       ""+
@@ -1353,7 +1431,7 @@ function openHowTo(){var d=document.getElementById("dlg");if(!d)return;var off=N
   d.innerHTML='<div class="howto"><button class="close" aria-label="Cerrar">×</button><span class="eyebrow">Cómo comprar</span><h2>Así de simple</h2><ol>'+
   '<li><b>Elegí tu camiseta y el talle.</b> <span>Las <b>en stock</b> salen enseguida. Las <b>por pedido</b> las traemos en ≈ 30 días y podés sumarles nombre y número.</span></li>'+
   '<li><b>Agregala al carrito y finalizá la compra.</b> <span>Completás tus datos y la entrega. No hace falta crear una cuenta.</span></li>'+
-  '<li><b>Te escribimos por WhatsApp.</b> <span>Confirmamos disponibilidad y coordinamos el pago'+(off?' (con '+off+'% off por transferencia)':'')+' y el envío'+(free?' (gratis desde '+money(free)+')':'')+'.</span></li></ol>'+
+  '<li><b>Te escribimos por WhatsApp.</b> <span>Confirmamos disponibilidad y coordinamos el pago'+(off?' (con '+off+'% off '+offW()+')':'')+' y el envío'+(free?' (gratis desde '+money(free)+')':'')+'.</span></li></ol>'+
   '<button class="btn btn-ink" id="howtoGo">Ver camisetas</button></div>';
   d.onclick=function(e){if(e.target===d||e.target.closest(".close")){d.close();return}if(e.target.closest("#howtoGo")){d.close();go("todo")}};d.showModal()}
 function openNotify(p){
@@ -1454,7 +1532,7 @@ function openBag(){
     var msg="Hola! Quiero hacer este pedido:\n"+cart.map(function(l){var p=byId(l.id);return "• "+l.cant+" x "+p.club+" "+p.titulo+" ["+(isPre(p)?"POR PEDIDO ≈ 30 días":"EN STOCK")+"] (talle "+l.talle+(l.pers?", "+persText(l.pers):"")+") "+money(linePrice(l)*l.cant)}).join("\n")+(pd?"\nPremio ruleta "+prizeLabel(pz)+" (código "+pz.r.code+"): -"+money(pd):pz&&pz.envio?"\nPremio ruleta: envío gratis (código "+pz.r.code+")":pz&&pz.mystery?"\nPremio ruleta: Mystery Box de regalo (código "+pz.r.code+")":"")+"\nTotal: "+money(sum-pd)+" ("+money(payT)+" por transferencia)";
     var href=n?"https://wa.me/"+n+"?text="+encodeURIComponent(msg):"#";
     dlg.innerHTML='<div class="drawer-head"><h2>Mi pedido</h2><button class="close" style="position:static" aria-label="Cerrar">×</button></div><div class="drawer-body">'+cartAlert()+(cart.length?cartDelivery():'')+(cart.length?lines:'<div class="empty" style="margin-top:20px">Todavía no agregaste camisetas.<br><br><button class="btn btn-ink" id="backShop">Volver a la tienda</button></div>')+'</div>'+
-      (cart.length?'<div class="drawer-foot">'+(pd?'<div class="prize-row"><span>Premio ruleta · '+esc(prizeLabel(pz))+'</span><span>−'+money(pd)+'</span></div>':'')+'<div class="tot"><span>Total</span><span>'+money(sum-pd)+'</span></div><span class="transfer">'+money(payT)+' por transferencia</span>'+(pz&&pz.mystery?'<span class="hint">Tu Mystery Box de regalo se suma a este pedido.</span>':'')+(pz&&!pd&&!pz.envio&&!pz.mystery?'<span class="hint">Tu premio de la ruleta vale para camisetas en stock.</span>':'')+(pz&&pz.envio?'<span class="hint">Tenés envío gratis por el premio de la ruleta.</span>':free>0?'<span class="hint">'+(sum>=free?"Tenés envío gratis.":"Te faltan "+money(free-sum)+" para el envío gratis.")+'</span>':"")+'<button class="btn btn-ink btn-checkout" id="goCheckout">Finalizar compra</button><p class="hint">Podés comprar sin crear una cuenta.</p>'+'</div>':"");
+      (cart.length?'<div class="drawer-foot">'+(pd?'<div class="prize-row"><span>Premio ruleta · '+esc(prizeLabel(pz))+'</span><span>−'+money(pd)+'</span></div>':'')+'<div class="tot"><span>Total</span><span>'+money(sum-pd)+'</span></div><span class="transfer">'+money(payT)+' '+offW()+'</span>'+(pz&&pz.mystery?'<span class="hint">Tu Mystery Box de regalo se suma a este pedido.</span>':'')+(pz&&!pd&&!pz.envio&&!pz.mystery?'<span class="hint">Tu premio de la ruleta vale para camisetas en stock.</span>':'')+(pz&&pz.envio?'<span class="hint">Tenés envío gratis por el premio de la ruleta.</span>':free>0?'<span class="hint">'+(sum>=free?"Tenés envío gratis.":"Te faltan "+money(free-sum)+" para el envío gratis.")+'</span>':"")+'<button class="btn btn-ink btn-checkout" id="goCheckout">Finalizar compra</button><p class="hint">Podés comprar sin crear una cuenta.</p>'+'</div>':"");
   }
   dlg.onclick=function(e){
     if(e.target===dlg||e.target.closest(".close")||e.target.closest("#backShop")){dlg.close();render();return}
@@ -1645,7 +1723,7 @@ function toggleFav(id,cb){
   if(i>=0){u.favs.splice(i,1);toast("Quitada de favoritos")}else{u.favs.push(id);toast("Agregada a favoritos")}
   saveAccounts(); if(cb) cb();
 }
-var ESTADOS={pendiente:"Pendiente de confirmación y pago",pagado:"Pagado"};
+var ESTADOS={pendiente:"Pendiente de pago",pagado:"Pagado"};
 function crumbs(label){return '<nav class="crumbs" aria-label="Ruta"><button class="crumb-link" data-nav="inicio">Inicio</button><span class="crumb-sep" aria-hidden="true">»</span><span class="crumb-here" aria-current="page">'+esc(label)+'</span></nav>'}
 var openOrder=null, editProfile=false, accPage="resumen", addrEdit=null, pwMsg=null;
 var ACC_PAGES=[["resumen","Resumen de mi cuenta"],["carrito","Mi carrito"],["direccion","Mi dirección"],["favoritos","Mis favoritos"],["password","Cambiar contraseña"]];
@@ -1673,12 +1751,12 @@ function accSummary(u){
   var P=u.pedidos||[], cnt=function(e){return P.filter(function(o){return o.estado===e}).length};
   var rows=P.slice().reverse().map(function(o){
     var det=openOrder===o.id?'<tr class="od-row"><td colspan="5"><div class="od">'+o.items.map(function(it){return '<div><span>'+it.cant+' × '+esc(it.club)+' '+esc(it.titulo)+' · Talle '+esc(it.talle)+(it.pers?' · '+esc(persText(it.pers)):'')+'</span><b>'+money(it.precio*it.cant)+'</b></div>'}).join("")+(o.entrega?'<div class="od-meta">'+esc(o.entrega)+(o.pago?' · '+esc(o.pago):"")+'</div>':"")+'</div></td></tr>':"";
-    return '<tr><td class="mono">'+esc(o.id)+'</td><td>'+money(o.total)+'</td><td><span class="st st-'+o.estado+'">'+ESTADOS[o.estado]+'</span></td><td>'+new Date(o.fecha).toLocaleDateString("es-AR")+'</td><td class="acts"><button class="linkish" data-od="'+esc(o.id)+'">'+(openOrder===o.id?"Ocultar":"Detalle")+'</button>'+(o.estado==="pendiente"?'<button class="linkish pay-l" data-pay="'+esc(o.id)+'">Coordinar pago</button>':"")+'</td></tr>'+det;
+    return '<tr><td class="mono">'+esc(o.id)+'</td><td>'+money(o.total)+'</td><td><span class="st st-'+o.estado+'">'+ESTADOS[o.estado]+'</span></td><td>'+new Date(o.fecha).toLocaleDateString("es-AR")+'</td><td class="acts"><button class="linkish" data-od="'+esc(o.id)+'">'+(openOrder===o.id?"Ocultar":"Detalle")+'</button>'+(o.estado==="pendiente"?'<button class="linkish pay-l" data-pay="'+esc(o.id)+'">'+(PAYON&&PAYON.pagos?'Pagar':'Coordinar pago')+'</button>':"")+'</td></tr>'+det;
   }).join("");
   var ini=(u.nombre||u.email).trim().charAt(0).toUpperCase();
   return '<section class="acc-top"><div class="acc-user"><div class="avatar" aria-hidden="true">'+esc(ini)+'</div><div><h1>'+esc(u.nombre)+'</h1><span class="hint">Miembro desde '+new Date(u.creada).toLocaleDateString("es-AR",{month:"long",year:"numeric"})+'</span><button class="linkish" id="editProfile">'+(u.telefono?"Editar perfil":"Completar perfil")+'</button></div></div>'+
     '<div class="acc-card"><div><h3><button class="linkish plain" data-jump="orders">Mis pedidos</button> <em>('+P.length+')</em></h3><ul><li>Pendientes de pago <em>('+cnt("pendiente")+')</em></li><li>Pagados <em>('+cnt("pagado")+')</em></li></ul></div>'+
-      '<div><h3>Descuento <em>('+(Number(data.config.descuentoTransferencia)||0)+'%)</em></h3><p class="hint">Pagando por transferencia</p><h3>Cupones <em>(0)</em></h3></div></div></section>'+
+      '<div><h3>Descuento <em>('+(Number(data.config.descuentoTransferencia)||0)+'%)</em></h3><p class="hint">Pagando '+offW()+'</p><h3>Cupones <em>(0)</em></h3></div></div></section>'+
     (editProfile?'<section class="acc-sec"><h2>Mis datos</h2><div class="co-fields"><label class="cf"><span>Nombre y apellido</span><input data-pf="nombre" value="'+esc(u.nombre)+'"></label><label class="cf"><span>Teléfono / WhatsApp</span><input data-pf="telefono" type="tel" value="'+esc(u.telefono||"")+'"></label></div><div class="acc-btns"><button class="btn btn-ink" id="saveProfile">Guardar</button><button class="btn btn-ghost" id="cancelProfile">Cancelar</button></div></section>':"")+
     '<section class="acc-sec" id="orders"><h2>Mis pedidos</h2>'+(P.length?'<div class="tbl-wrap"><table class="otbl"><thead><tr><th>Número de pedido</th><th>Total</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Todavía no hiciste ningún pedido.<br><br><button class="btn btn-ink" data-nav="inicio">Ir a la tienda</button></div>')+'</section>';
 }
@@ -1703,8 +1781,8 @@ function accCart(u){
   if(!cart.length) return '<section class="acc-sec first"><h2>Mi carrito</h2><div class="empty">Tu carrito está vacío.<br><br><button class="btn btn-ink" data-nav="inicio">Volver a la tienda</button></div></section>';
   return '<section class="acc-sec first"><div class="cart-page"><div><h2>Mi carrito</h2><div class="tbl-wrap"><table class="ctbl"><thead><tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
     cartNotes()+'</div>'+
-    '<aside class="cart-sum"><h2>Resumen</h2><div class="promo"><b>Más beneficios</b>'+(d?'<div><span class="tag-ic">%</span>Pagando por transferencia, '+d+'% OFF</div>':"")+(free?'<div><span class="tag-ic">✈</span>Envío gratis desde '+money(free)+'</div>':"")+'</div>'+
-    '<div class="cs-rows"><div><span>Productos ('+units+')</span><span>'+money(sub)+'</span></div>'+(pd?'<div class="co-desc"><span>Premio ruleta · '+esc(prizeLabel(pz))+'</span><span>−'+money(pd)+'</span></div>':"")+(d?'<div class="co-desc"><span>Con transferencia</span><span>'+money(pz&&pz.stack?sub*(1-d/100)-pd:sub-Math.max(pd,sub*d/100))+'</span></div>':"")+'<div class="cs-total"><span>Total</span><span>'+money(sub-pd)+'</span></div></div>'+
+    '<aside class="cart-sum"><h2>Resumen</h2><div class="promo"><b>Más beneficios</b>'+(d?'<div><span class="tag-ic">%</span>Pagando '+offW()+', '+d+'% OFF</div>':"")+(free?'<div><span class="tag-ic">✈</span>Envío gratis desde '+money(free)+'</div>':"")+'</div>'+
+    '<div class="cs-rows"><div><span>Productos ('+units+')</span><span>'+money(sub)+'</span></div>'+(pd?'<div class="co-desc"><span>Premio ruleta · '+esc(prizeLabel(pz))+'</span><span>−'+money(pd)+'</span></div>':"")+(d?'<div class="co-desc"><span>Con '+offN()+'</span><span>'+money(pz&&pz.stack?sub*(1-d/100)-pd:sub-Math.max(pd,sub*d/100))+'</span></div>':"")+'<div class="cs-total"><span>Total</span><span>'+money(sub-pd)+'</span></div></div>'+
     '<button class="btn btn-ink btn-checkout" id="cartCheckout">Finalizar compra</button><button class="linkish keep" data-nav="inicio">‹ Seguir comprando</button></aside></div></section>';
 }
 function cartNotes(){return '<div class="cart-notes"><p>Revisá modelo, talle y datos de entrega. Antes del pago confirmamos disponibilidad, importe final y condiciones de compra por WhatsApp.</p></div>'}
@@ -1733,7 +1811,7 @@ function saveProfileFromForm(){
 }
 function cartSnapshot(){return cart.map(function(l){var p=byId(l.id);return {id:l.id,club:p.club,titulo:p.titulo,talle:l.talle,cant:l.cant,precio:linePrice(l),pers:l.pers||null,modalidad:p.modalidad||"stock"}})}
 function startCheckout(){
-  co.aceptaEspera=false;
+  co.aceptaEspera=false;payView=null;clearTimeout(payPoll);delete coErr.pay;
   var changed=validCart(),u=me();
   if(u)migrateAcc(u);
   var items=cartSnapshot(), total=items.reduce(function(a,it){return a+it.precio*it.cant},0);
@@ -1746,7 +1824,7 @@ function startCheckout(){
 }
 function payOrder(id){
   var o=(me().pedidos||[]).find(function(x){return x.id===id}); if(!o) return;
-  cart=o.items.filter(function(it){return byId(it.id)}).map(function(it){return {id:it.id,talle:it.talle,cant:it.cant}}); saveCart(); updateBadge(false);
+  cart=o.items.filter(function(it){return byId(it.id)}).map(function(it){return {id:it.id,talle:it.talle,cant:it.cant,pers:it.pers||null}}); saveCart(); updateBadge(false);
   co.pendingId=o.id; startCheckout();
 }
 
@@ -1784,13 +1862,13 @@ function legalBody(k){
     '<h2>1. Quiénes somos</h2>'+lp('Este sitio es operado por '+who+'. Podés contactarnos por '+contacto+'.')+
     '<h2>2. Aceptación</h2>'+lp('Al comprar en este sitio aceptás estos términos y condiciones y nuestra Política de privacidad. Si no estás de acuerdo, no realices la compra.')+
     '<h2>3. Productos, precios y stock</h2>'+lp('Los precios están expresados en pesos argentinos y son precios finales. Las fotos son ilustrativas. Las ofertas y descuentos son válidos mientras dure el stock o hasta la fecha que se indique. Si un producto se agota después de tu compra, te avisamos y te devolvemos el total de lo pagado.')+
-    '<h2>4. Medios de pago</h2>'+lp('Aceptamos transferencia bancaria'+(d?' (con '+d+'% de descuento)':'')+' y tarjetas de débito y crédito'+(cq>1?', hasta '+cq+' cuotas sin interés (CFT 0%)':'')+'. El pedido se confirma una vez acreditado el pago.')+
+    '<h2>4. Medios de pago</h2>'+lp(PAYON&&PAYON.pagos?'Aceptamos Mercado Pago con dinero en cuenta'+(d?' (con '+d+'% de descuento)':'')+' y tarjetas de débito, crédito y prepagas (Visa, Mastercard y otras), procesadas por Mercado Pago'+(cq>1?', hasta '+cq+' cuotas':'')+'. Los datos de la tarjeta se cargan en el formulario seguro de Mercado Pago y no pasan por nuestra página. El pedido se confirma y el stock se descuenta cuando Mercado Pago acredita el pago.':'Aceptamos transferencia bancaria'+(d?' (con '+d+'% de descuento)':'')+' y tarjetas de débito y crédito'+(cq>1?', hasta '+cq+' cuotas sin interés (CFT 0%)':'')+'. El pedido se confirma una vez acreditado el pago.')+
     '<h2>5. Camisetas por pedido (encargo)</h2>'+lp('Algunas camisetas se traen por encargo. El plazo estimado es de aproximadamente 30 días desde la confirmación del pedido, más la entrega local, y puede variar por transporte o aduana. Antes del pago confirmamos modelo, talle, precio y disponibilidad. Si finalmente no podemos conseguirla, te devolvemos el total pagado. El derecho de arrepentimiento también aplica a estas compras, salvo las camisetas personalizadas con nombre o número, que se confeccionan según tu pedido (art. 1116 del Código Civil y Comercial); igual tienen garantía por falla.')+
     '<h2>6. Envíos y entregas</h2>'+lp('Hacemos '+esc((c.envios||"envíos a todo el país").toLowerCase())+'. El costo y el plazo dependen del destino y se informan antes de confirmar. '+(c.zona?esc(c.zona)+'. ':'')+'Es responsabilidad del comprador informar correctamente los datos de entrega.')+
     '<h2>7. Cambios, devoluciones y arrepentimiento</h2>'+lp('Podés arrepentirte de tu compra dentro de los 10 días corridos desde que recibís el producto, sin costo y sin dar explicaciones, usando el <button class="inline-link" data-legal="arrepentimiento">Botón de arrepentimiento</button> (Ley 24.240, art. 34). Los detalles están en <button class="inline-link" data-legal="cambios">Cambios y devoluciones</button>.')+
     '<h2>8. Garantía</h2>'+lp('Los productos nuevos tienen la garantía legal de 6 meses por defectos o fallas de fabricación (Ley 24.240, art. 11).')+
     '<h2>9. Datos personales</h2>'+lp('Tratamos tus datos según la <button class="inline-link" data-legal="privacidad">Política de privacidad</button> y la Ley 25.326.')+
-    '<h2>10. La ruleta (promoción)</h2>'+lp('La participación en la ruleta es gratuita y sin obligación de compra. Los premios, sus probabilidades, la frecuencia de participación, la vigencia de los códigos y las condiciones de uso se publican en la misma página de la ruleta, en "Premios, probabilidades y cómo funciona", y forman parte de estas bases. El premio se aplica automáticamente en el carrito, vale para un solo pedido y se valida con su código al confirmar la compra. Los premios de $3.000 y $6.000 y el envío gratis se suman al descuento por transferencia; los premios en porcentaje se aplican sobre una camiseta en stock y no se acumulan con ese descuento: se aplica el mayor beneficio. La Mystery Box es una camiseta sorpresa de regalo elegida por nosotros, sin compra mínima (envío aparte).')+
+    '<h2>10. La ruleta (promoción)</h2>'+lp('La participación en la ruleta es gratuita y sin obligación de compra. Los premios, sus probabilidades, la frecuencia de participación, la vigencia de los códigos y las condiciones de uso se publican en la misma página de la ruleta, en "Premios, probabilidades y cómo funciona", y forman parte de estas bases. El premio se aplica automáticamente en el carrito, vale para un solo pedido y se valida con su código al confirmar la compra. Los premios de $3.000 y $6.000 y el envío gratis se suman al descuento '+offW()+'; los premios en porcentaje se aplican sobre una camiseta en stock y no se acumulan con ese descuento: se aplica el mayor beneficio. La Mystery Box es una camiseta sorpresa de regalo elegida por nosotros, sin compra mínima (envío aparte).')+
     '<h2>11. Consultas y reclamos</h2>'+lp('Ante cualquier problema escribinos por '+contacto+'. También podés hacer un reclamo en <a href="'+RECLAMOS_URL+'" target="_blank" rel="noopener">Defensa de las y los Consumidores</a>.')+
     '<h2>12. Ley aplicable</h2>'+lp('Estos términos se rigen por las leyes de la República Argentina. Para cualquier conflicto son competentes los tribunales del domicilio del consumidor.');
   if(k==="privacidad") return ''+
@@ -1843,7 +1921,7 @@ co=Object.assign({pendingId:null,nombre:"",telefono:"",email:"",dni:"",entrega:"
 function saveCo(){try{var c=Object.assign({},co);delete c.notas;delete c.dni;delete c.aceptaEspera;delete c.terms;localStorage.setItem("laonce-checkout",JSON.stringify(c))}catch(e){}}
 function coTotals(){
   var sub=cart.reduce(function(a,l){var p=byId(l.id);return a+(p?linePrice(l)*l.cant:0)},0);
-  var d=Number(data.config.descuentoTransferencia)||0, td=co.pago==="transferencia"?sub*d/100:0;
+  var d=Number(data.config.descuentoTransferencia)||0, td=(co.pago==="transferencia"||co.pago==="mercadopago")?sub*d/100:0;
   var pz=prizeCalc(), pd=pz?pz.disc:0, stack=!!(pz&&pz.stack), usePrize=pd>0&&(stack||pd>Math.round(td)), desc=stack?td+pd:(usePrize?pd:td);
   var free=Number(data.config.envioGratisDesde)||0, envioPrize=!!(pz&&pz.envio&&co.entrega==="envio"&&!(free>0&&sub>=free)), gratis=co.entrega==="retiro"||(free>0&&sub>=free)||envioPrize;
   return {stack:stack,sub:sub,desc:desc,total:sub-desc,gratis:gratis,free:free,d:d,td:td,pd:pd,pz:pz,usePrize:usePrize,envioPrize:envioPrize,mysteryPrize:!!(pz&&pz.mystery)};
@@ -1870,7 +1948,10 @@ function fld(key,label,type,extra,full){
   return '<label class="cf'+(full?" full":"")+(coErr[key]?" err":"")+'"><span>'+label+'</span><input data-co="'+key+'" '+(type?'type="'+type+'"':"")+' value="'+esc(co[key])+'" '+(extra||"")+'>'+(coErr[key]?'<em>'+esc(coErr[key])+'</em>':"")+'</label>';
 }
 function renderCheckout(){
-  clearInterval(timer); validCart();
+  clearInterval(timer);
+  if(payView){renderPayView();return}
+  validCart();
+  if(PAYON&&PAYON.pagos){if(co.pago==="transferencia")co.pago="mercadopago"}else if(co.pago==="mercadopago")co.pago="transferencia";
   var u=me();
   if(u){ if(!co.nombre) co.nombre=u.nombre; if(!co.email) co.email=u.email; if(!co.telefono&&u.telefono) co.telefono=u.telefono;
     migrateAcc(u); var A=u.direcciones[0]; if(A&&!co.direccion){co.direccion=A.direccion||"";co.depto=A.depto||"";co.localidad=A.localidad||"";co.cp=A.cp||""} }
@@ -1890,10 +1971,10 @@ function renderCheckout(){
     '<section class="co-box"><h2>1. Tus datos</h2><div class="co-fields">'+fld("nombre","Nombre y apellido","","autocomplete=\"name\"",true)+fld("telefono","Teléfono / WhatsApp","tel","autocomplete=\"tel\" inputmode=\"tel\" maxlength=\"22\" placeholder=\"Ej: 11 6247-3815\"")+fld("email","Email","email","autocomplete=\"email\"")+'</div></section>'+
     '<section class="co-box"><h2>2. Entrega</h2><div class="co-opts">'+opt("entrega","envio","Envío a domicilio",esc(data.config.envios||"A todo el país")+(T.free>0?" · gratis desde "+money(T.free):""))+opt("entrega","retiro","Retiro",esc(data.config.zona||"A coordinar"))+'</div>'+
       (co.entrega==="envio"?'<div class="co-fields">'+fld("direccion","Dirección","","autocomplete=\"address-line1\"")+fld("depto","Número de departamento (opcional)","","autocomplete=\"address-line2\" placeholder=\"Ej: 4B\"")+fld("localidad","Localidad / provincia","","autocomplete=\"address-level2\"")+fld("cp","Código postal","","autocomplete=\"postal-code\" inputmode=\"numeric\"")+'</div>':"")+'</section>'+
-    '<section class="co-box"><h2>3. Pago</h2><div class="co-opts">'+opt("pago","transferencia","Transferencia bancaria",(T.d?T.d+"% off · ":"")+"Mercado Pago, Ualá, MODO o tu banco")+opt("pago","tarjeta","Tarjeta débito o crédito","")+(co.pago==="tarjeta"?'<p class="hint">Coordinamos un enlace de pago después de confirmar tu pedido. No ingreses datos de tarjeta acá.</p>':"")+(co.entrega==="retiro"?opt("pago","efectivo","Efectivo","Al retirar"):"")+'</div>'+
+    '<section class="co-box"><h2>3. Pago</h2><div class="co-opts">'+(PAYON&&PAYON.pagos?payOptions(T,opt):opt("pago","transferencia","Transferencia bancaria",(T.d?T.d+"% off · ":"")+"Mercado Pago, Ualá, MODO o tu banco")+opt("pago","tarjeta","Tarjeta débito o crédito","")+(co.pago==="tarjeta"?'<p class="hint">Coordinamos un enlace de pago después de confirmar tu pedido. No ingreses datos de tarjeta acá.</p>':"")+(co.entrega==="retiro"?opt("pago","efectivo","Efectivo","Al retirar"):""))+'</div>'+
       '<label class="cf full"><span>Notas (opcional)</span><input data-co="notas" value="'+esc(co.notas)+'" placeholder="Algo que tengamos que saber"></label></section>'+
-  '</div><aside class="co-sum"><h2>Tu pedido</h2>'+items+'<div class="co-rows"><div><span>Subtotal</span><span>'+money(T.sub)+'</span></div>'+(T.stack?(T.td?'<div class="co-desc"><span>Descuento transferencia</span><span>−'+money(T.td)+'</span></div>':"")+(T.pd?'<div class="co-desc"><span>Premio ruleta · '+esc(prizeLabel(T.pz))+'</span><span>−'+money(T.pd)+'</span></div>':""):T.desc?'<div class="co-desc"><span>'+(T.usePrize?'Premio ruleta · '+esc(prizeLabel(T.pz)):'Descuento transferencia')+'</span><span>−'+money(T.desc)+'</span></div>':"")+''+(T.mysteryPrize?'<div class="co-desc"><span>Mystery Box · premio ruleta</span><span>De regalo</span></div>':'')+'<div'+(T.envioPrize?' class="co-desc"':'')+'><span>Envío'+(T.envioPrize?' · premio ruleta':'')+'</span><span>'+(T.gratis?"Gratis":"A coordinar")+'</span></div><div class="co-total"><span>Total</span><span>'+money(T.total)+'</span></div></div>'+
-    checkoutGame()+(hasPreCart()?'<label class="pre-ack"><input id="acceptLeadTime" type="checkbox" '+(co.aceptaEspera?'checked':'')+'> Entiendo que los encargos tardan aproximadamente 30 días desde la confirmación, más la entrega local, y que el plazo puede variar.</label>'+(coErr.espera?'<p class="import-error" role="alert">'+esc(coErr.espera)+'</p>':''):'')+'<div class="co-notes">'+cartNotes()+'</div><label class="terms-ok'+(coErr.terms?" err":"")+'"><input type="checkbox" id="termsOk" '+(co.terms?"checked":"")+'><span>He leído y acepto los <button class="inline-link" data-legal="terminos">Términos y condiciones</button> y la <button class="inline-link" data-legal="privacidad">Política de privacidad</button>.</span></label>'+(coErr.terms?'<p class="terms-err">'+esc(coErr.terms)+'</p>':"")+'<button class="btn btn-ink co-confirm" id="coConfirm">Confirmar pedido</button><p class="hint">'+(waNumber()?'Al confirmar te abrimos WhatsApp con el pedido completo para coordinar el pago y la entrega.':'Al confirmar te escribimos a tu WhatsApp para coordinar el pago y la entrega.')+'</p>'+'</aside></div></main><div class="toast" id="toast"></div>';
+  '</div><aside class="co-sum"><h2>Tu pedido</h2>'+items+'<div class="co-rows"><div><span>Subtotal</span><span>'+money(T.sub)+'</span></div>'+(T.stack?(T.td?'<div class="co-desc"><span>Descuento '+offN()+'</span><span>−'+money(T.td)+'</span></div>':"")+(T.pd?'<div class="co-desc"><span>Premio ruleta · '+esc(prizeLabel(T.pz))+'</span><span>−'+money(T.pd)+'</span></div>':""):T.desc?'<div class="co-desc"><span>'+(T.usePrize?'Premio ruleta · '+esc(prizeLabel(T.pz)):'Descuento '+offN())+'</span><span>−'+money(T.desc)+'</span></div>':"")+''+(T.mysteryPrize?'<div class="co-desc"><span>Mystery Box · premio ruleta</span><span>De regalo</span></div>':'')+'<div'+(T.envioPrize?' class="co-desc"':'')+'><span>Envío'+(T.envioPrize?' · premio ruleta':'')+'</span><span>'+(T.gratis?"Gratis":"A coordinar")+'</span></div><div class="co-total"><span>Total</span><span>'+money(T.total)+'</span></div></div>'+
+    checkoutGame()+(hasPreCart()?'<label class="pre-ack"><input id="acceptLeadTime" type="checkbox" '+(co.aceptaEspera?'checked':'')+'> Entiendo que los encargos tardan aproximadamente 30 días desde la confirmación, más la entrega local, y que el plazo puede variar.</label>'+(coErr.espera?'<p class="import-error" role="alert">'+esc(coErr.espera)+'</p>':''):'')+'<div class="co-notes">'+cartNotes()+'</div><label class="terms-ok'+(coErr.terms?" err":"")+'"><input type="checkbox" id="termsOk" '+(co.terms?"checked":"")+'><span>He leído y acepto los <button class="inline-link" data-legal="terminos">Términos y condiciones</button> y la <button class="inline-link" data-legal="privacidad">Política de privacidad</button>.</span></label>'+(coErr.terms?'<p class="terms-err">'+esc(coErr.terms)+'</p>':"")+payButton()+(PAYON&&PAYON.pagos&&co.pago!=="efectivo"?'':'<p class="hint">'+(waNumber()?'Al confirmar te abrimos WhatsApp con el pedido completo para coordinar el pago y la entrega.':'Al confirmar te escribimos a tu WhatsApp para coordinar el pago y la entrega.')+'</p>')+'</aside></div></main><div class="toast" id="toast"></div>';
 }
 function coConfirm(){
   if(validCart()){renderCheckout();toast("Revisá el carrito actualizado antes de continuar");return}
@@ -1908,6 +1989,7 @@ function coConfirm(){
   if(hasPreCart()&&!co.aceptaEspera)coErr.espera="Confirmá que leíste el plazo de los encargos";
   if(!co.terms) coErr.terms="Tenés que aceptar los términos y condiciones para continuar";
   if(Object.keys(coErr).length||!cardOk){renderCheckout();var f=app.querySelector(".cf.err input")||app.querySelector(".terms-ok.err input")||app.querySelector("#acceptLeadTime");if(f){f.focus();f.scrollIntoView({block:"center"})}return}
+  if(PAYON&&PAYON.pagos&&co.pago!=="efectivo"){payOnline(coTotals());return}
   var n=waNumber();
   var T=coTotals(), pagos={transferencia:"Transferencia bancaria",tarjeta:"Tarjeta débito o crédito",efectivo:"Efectivo"};
   var msg="Hola! Quiero confirmar este pedido:\n"+cart.map(function(l){var p=byId(l.id);return "• "+l.cant+" x "+p.club+" "+p.titulo+" ["+(isPre(p)?"POR PEDIDO ≈ 30 días":"EN STOCK")+"] (talle "+l.talle+(l.pers?", "+persText(l.pers):"")+") "+money(linePrice(l)*l.cant)}).join("\n")+
@@ -2025,7 +2107,7 @@ app.addEventListener("change",function(e){
   if(t.dataset.preSize!=null){var pre=data.productos[+t.dataset.preSize];pre.tallesPedido=pre.tallesPedido||[];if(t.checked&&!pre.tallesPedido.includes(t.value))pre.tallesPedido.push(t.value);else if(!t.checked)pre.tallesPedido=pre.tallesPedido.filter(function(s){return s!==t.value});markDirty();return}
   if(t.dataset.k==='modalidad'){var pre=data.productos[+t.dataset.i];if(t.value==='pedido'&&!pre.tallesPedido)pre.tallesPedido=SIZES.slice()}
   if(t.dataset.co==="telefono"){var ph=phoneAR(t.value);if(ph.ok){t.value=ph.pretty;co.telefono=ph.pretty;saveCo();delete coErr.telefono;markField(t,"")}else if(t.value.trim()){coErr.telefono=ph.msg;markField(t,ph.msg)}return}
-  if(t.dataset.co&&t.type==="radio"){co[t.dataset.co]=t.value;if(co.entrega!=="retiro"&&co.pago==="efectivo")co.pago="transferencia";saveCo();renderCheckout();return}
+  if(t.dataset.co&&t.type==="radio"){co[t.dataset.co]=t.value;if(co.entrega!=="retiro"&&co.pago==="efectivo")co.pago=PAYON&&PAYON.pagos?"mercadopago":"transferencia";delete coErr.pay;saveCo();renderCheckout();return}
   if(t.dataset.filter){var key=t.dataset.filter;filt[key]=t.type==="checkbox"?t.checked:t.value;refreshCatalog();return}
   if(t.id==="sort"){filt.orden=t.value;refreshCatalog();return}
   if(t.dataset.tile&&t.tagName==="SELECT"){data.tiles[+t.dataset.tile][t.dataset.tk]=t.value;dirty=true;renderAdmin();return}
@@ -2055,6 +2137,173 @@ function requestShirt(){return '<section class="request-shirt"><div><h3>¿Tenés
 function catalogIntro(){var pre=sec==='pedido';return '<section class="catalog-intro"><span class="eyebrow">'+(pre?'Elegida por vos · Traída por nosotros':'La ONCE Kits')+'</span><h1>'+(pre?'Tu próxima camiseta puede esperar.':sec==='stock'?'La querés. La tenemos.':sec==='destacado'?'Las elegidas de La ONCE.':'Encontrá la tuya.')+'</h1><p>'+(pre?'Un catálogo más amplio, a un precio menor. Elegís el modelo y el talle; nosotros nos encargamos de traerlo. Aproximadamente un mes desde la confirmación.':sec==='stock'?'Modelos para coordinar envío o retiro sin esperar una importación.':'Buscá por club, época o talle. Cada modelo indica si está en stock o se trae por pedido.')+'</p>'+(pre?'<div class="pre-steps"><span><b>01</b> Elegís tu camiseta</span><span><b>02</b> Confirmamos y coordinamos el pago</span><span><b>03</b> La recibís en ≈ 30 días + entrega local</span></div>':'')+'<p class="prototype-note">'+(pre?'Modelos seleccionados de nuestros proveedores · Confirmamos disponibilidad antes del pago.':'Precios finales en pesos · Stock sujeto a disponibilidad.')+'</p></section>'}
 function openCustomRequest(){var d=document.getElementById('dlg');d.innerHTML='<form class="custom-form"><button type="button" class="close" aria-label="Cerrar">×</button><span class="eyebrow">La buscamos por vos</span><h2>¿Cuál te falta?</h2><p>Sin compromiso. Primero confirmamos si se puede conseguir y cuánto cuesta.</p><label>Club o selección<input name="club" required maxlength="100" placeholder="Ej.: Racing"></label><label>Año, versión o detalles<input name="modelo" required maxlength="180" placeholder="Ej.: titular 2001, manga corta"></label><label>Talle<select name="talle">'+SIZES.map(function(s){return '<option>'+s+'</option>'}).join('')+'</select></label><label>Enlace de referencia (opcional)<input type="url" name="url" placeholder="https://…" maxlength="1000"></label><button class="btn btn-ink" type="submit">Consultar por WhatsApp</button><p class="hint" role="status"></p></form>';d.querySelector('.close').onclick=function(){d.close()};d.querySelector('form').onsubmit=function(e){e.preventDefault();var n=waNumber();if(!n){d.querySelector('[role=status]').textContent='Falta configurar el WhatsApp del negocio. Tu consulta todavía no se envió.';return}var f=new FormData(e.target),u=String(f.get('url')||'');if(u&&!/^https?:\/\//i.test(u)){d.querySelector('[role=status]').textContent='Usá un enlace que empiece con https://';return}window.open('https://wa.me/'+n+'?text='+encodeURIComponent('Hola, busco una camiseta por pedido.\nClub: '+f.get('club')+'\nModelo: '+f.get('modelo')+'\nTalle: '+f.get('talle')+(u?'\nReferencia: '+u:'')+'\nSé que la demora estimada es de un mes desde la confirmación.'),'_blank','noopener')};d.showModal()}
 
+/* ---------- Pagos online con Mercado Pago (solo en la tienda publicada en Netlify) ----------
+   La página nunca toca datos de tarjeta: usa el formulario seguro de Mercado Pago.
+   Los precios, descuentos y premios los recalcula el servidor; el stock se descuenta cuando Mercado Pago acredita el pago. */
+var PAYON=null, payView=null, payBusy=false, payPoll=null, cardCtl=null, mpSdk=null;
+function offN(){return PAYON&&PAYON.pagos?'Mercado Pago':'transferencia'}
+function offW(){return (PAYON&&PAYON.pagos?'con ':'por ')+offN()}
+function loadPayConfig(){
+  if(!/^https?:$/.test(location.protocol))return;
+  fetch('/api/config',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
+    if(!j||typeof j!=='object'||!('pagos' in j))return;
+    PAYON={pagos:!!(j.pagos&&j.publicKey),publicKey:String(j.publicKey||''),ruleta:!!j.ruleta};
+    if(view!=='admin'&&!spinBusy&&!payView&&!(view==='checkout'&&document.activeElement&&app.contains(document.activeElement)&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)))render();
+  }).catch(function(){});
+}
+function payApi(path,body){
+  return fetch(path,{method:body?'POST':'GET',cache:'no-store',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined}).then(function(r){
+    return r.json().catch(function(){return {}}).then(function(j){if(!r.ok&&!j.estado)throw Error(j.error||'No pudimos conectarnos. Probá de nuevo en un momento.');return j});
+  },function(){throw Error('No hay conexión. Revisá internet y probá de nuevo.')});
+}
+function savePend(p){try{if(p)localStorage.setItem('laonce-pago',JSON.stringify(p));else localStorage.removeItem('laonce-pago')}catch(e){}}
+function loadPend(){try{return JSON.parse(localStorage.getItem('laonce-pago')||'null')}catch(e){return null}}
+
+function payOptions(T,opt){
+  return opt('pago','mercadopago','Mercado Pago',(T.d?'<b class="pay-tag">'+T.d+'% OFF</b> ':'')+'Pagás en la app con el dinero de tu cuenta')+
+    opt('pago','tarjeta','Tarjeta de débito, crédito o prepaga','Visa, Mastercard, American Express y más')+
+    (co.entrega==='retiro'?opt('pago','efectivo','Efectivo','Al retirar · te escribimos para coordinar'):'')+
+    '<p class="pay-safe"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Pago seguro procesado por Mercado Pago. Tus datos de tarjeta no pasan por nuestra página.</p>';
+}
+function payButton(){
+  var on=PAYON&&PAYON.pagos&&co.pago!=='efectivo';
+  var label=!on?'Confirmar pedido':co.pago==='tarjeta'?'Pagar con tarjeta':'Pagar con Mercado Pago';
+  return (coErr.pay?'<p class="pay-err" role="alert">'+esc(coErr.pay)+'</p>':'')+
+    '<button class="btn btn-ink co-confirm'+(on&&co.pago==='mercadopago'?' btn-mp':'')+'" id="coConfirm"'+(payBusy?' disabled':'')+'>'+(payBusy?'Preparando el pago…':label)+'</button>'+
+    (on?'<p class="hint">'+(co.pago==='tarjeta'?'Cargás tu tarjeta en el formulario seguro de Mercado Pago y el pedido queda confirmado al instante.':'Te llevamos a Mercado Pago con el monto ya cargado. Cuando se acredita, tu pedido queda confirmado.')+' El envío se coordina aparte'+(coTotals().gratis?' (el tuyo es gratis)':'')+'.</p>':'');
+}
+function buyerData(){
+  return {nombre:co.nombre.trim(),email:String(co.email).trim(),telefono:co.telefono,entrega:co.entrega,direccion:co.direccion,depto:co.depto,localidad:co.localidad,cp:co.cp,notas:co.notas||''};
+}
+function payOnline(T){
+  if(payBusy)return;
+  var r0=activeSpin(), metodo=co.pago==='tarjeta'?'tarjeta':'mercadopago';
+  payBusy=true; delete coErr.pay;
+  var btn=app.querySelector('#coConfirm'); if(btn){btn.disabled=true;btn.textContent='Preparando el pago…'}
+  payApi('/api/pedido',{metodo:metodo,comprador:buyerData(),items:cart.map(function(l){return {id:l.id,talle:l.talle,cant:l.cant,pers:l.pers||null}}),premioToken:r0&&!r0.used&&r0.token?r0.token:null}).then(function(r){
+    if(!r.codigo)throw Error(r.error||'No pudimos iniciar el pago.');
+    savePend({codigo:r.codigo,total:r.total,metodo:metodo,premio:!!r.premio,pagoUrl:r.pagoUrl||'',at:Date.now()});
+    recordOrder(r.codigo,r.total,metodo==='tarjeta'?'Tarjeta':'Mercado Pago','pendiente');
+    var diff=Math.abs(r.total-Math.round(T.total))>1;
+    if(metodo==='mercadopago'){
+      if(!/^https:\/\/([a-z0-9-]+\.)*mercadopago\.com(\.ar)?\//.test(String(r.pagoUrl||'')))throw Error('No pudimos abrir Mercado Pago. Probá de nuevo.');
+      if(r.avisoPremio||diff){payBusy=false;payNotice(r,function(){goMp(r.pagoUrl)});return}
+      goMp(r.pagoUrl);
+    }else{payBusy=false;renderCheckout();openCardPay(r)}
+  }).catch(function(e){payBusy=false;coErr.pay=e.message;renderCheckout();var b=app.querySelector('.pay-err');if(b)b.scrollIntoView({block:'center'})});
+}
+function goMp(url){var b=app.querySelector('#coConfirm');if(b){b.disabled=true;b.textContent='Abriendo Mercado Pago…'}location.href=url;setTimeout(function(){payBusy=false;if(view==='checkout'&&!payView)renderCheckout()},8000)}
+function payNotice(r,go){
+  var d=document.getElementById('dlg');if(!d)return go();
+  d.innerHTML='<div class="howto pay-note"><button class="close" aria-label="Cerrar">×</button><span class="eyebrow">Antes de pagar</span><h2>Total: '+money(r.total)+'</h2><p>'+(r.avisoPremio?esc(r.avisoPremio)+' ':'')+'Revisamos precios y descuentos y este es el total final de tu pedido.</p><button class="btn btn-ink btn-mp" id="payGo">Pagar '+money(r.total)+' con Mercado Pago</button></div>';
+  d.onclick=function(e){if(e.target===d||e.target.closest('.close')){d.close();renderCheckout();return}if(e.target.closest('#payGo')){d.close();go()}};d.showModal();
+}
+function recordOrder(codigo,total,pagoTxt,estado){
+  var u=me();if(!u)return;migrateAcc(u);u.pedidos=u.pedidos||[];
+  var o=u.pedidos.find(function(x){return x.id===codigo})||(co.pendingId&&u.pedidos.find(function(x){return x.id===co.pendingId&&x.estado==='pendiente'}));
+  var info={id:codigo,fecha:Date.now(),total:total,estado:estado,pago:pagoTxt,entrega:co.entrega==='envio'?'Envío a '+co.direccion+(co.depto?' (depto '+co.depto+')':'')+', '+co.localidad:'Retiro',items:cartSnapshot()};
+  if(o)Object.assign(o,info);else u.pedidos.push(info);
+  co.pendingId=codigo;saveCo();
+  if(!u.telefono)u.telefono=co.telefono;
+  if(co.entrega==='envio'&&!u.direcciones.some(function(a){return a.direccion===co.direccion}))u.direcciones.push({nombre:co.nombre,telefono:co.telefono,direccion:co.direccion,depto:co.depto,localidad:co.localidad,cp:co.cp});
+  saveAccounts();
+}
+
+/* ----- Tarjeta: formulario seguro de Mercado Pago (Card Payment Brick) ----- */
+function loadMpSdk(){
+  if(window.MercadoPago)return Promise.resolve();
+  if(mpSdk)return mpSdk;
+  mpSdk=new Promise(function(ok,bad){var s=document.createElement('script');s.src='https://sdk.mercadopago.com/js/v2';s.onload=ok;s.onerror=function(){mpSdk=null;s.remove();bad(Error('No pudimos cargar el formulario de pago. Revisá tu conexión y probá de nuevo.'))};document.head.appendChild(s)});
+  return mpSdk;
+}
+function openCardPay(r){
+  var d=document.getElementById('payDlg');
+  if(!d){d=document.createElement('dialog');d.id='payDlg';d.className='pay-dlg';document.body.appendChild(d)}
+  d.innerHTML='<div class="pay-box"><button class="close" aria-label="Cerrar">×</button><span class="eyebrow">Pago con tarjeta</span><h2>'+money(r.total)+'</h2><p class="pay-sub">Pedido N° <b>'+esc(r.codigo)+'</b>'+(r.avisoPremio?'<br>'+esc(r.avisoPremio):'')+'</p><div id="cardBrick" class="card-brick"><p class="pay-loading"><span class="spin" aria-hidden="true"></span>Cargando formulario seguro…</p></div><p class="pay-msg" role="status" aria-live="polite"></p><p class="pay-safe"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Procesado por Mercado Pago. Aceptamos Visa, Mastercard y otras, también prepagas.</p></div>';
+  d.querySelector('.close').onclick=function(){closeCard(d,true)};
+  d.oncancel=function(e){e.preventDefault();closeCard(d,true)};
+  if(!d.open)d.showModal();
+  mountCard(r,d);
+}
+function mountCard(r,d){
+  var msg=d.querySelector('.pay-msg');
+  if(cardCtl){try{cardCtl.unmount()}catch(e){}cardCtl=null}
+  loadMpSdk().then(function(){
+    if(!d.open)return null;
+    var box=d.querySelector('#cardBrick');box.innerHTML='';
+    var mp=new window.MercadoPago(PAYON.publicKey,{locale:'es-AR'}), cq=Number(data.config.cuotas)||0;
+    return mp.bricks().create('cardPayment','cardBrick',{
+      initialization:{amount:r.total,payer:{email:String(co.email).trim()}},
+      customization:{paymentMethods:{maxInstallments:cq>1?cq:1}},
+      callbacks:{
+        onReady:function(){},
+        onSubmit:function(cardData){
+          msg.className='pay-msg';msg.textContent='Procesando el pago…';
+          return payApi('/api/pagar-tarjeta',{codigo:r.codigo,card:cardData}).then(function(res){cardResult(res,r,d)},function(e){cardRetry(e.message,r,d)});
+        },
+        onError:function(err){if(err&&err.type==='critical'){msg.className='pay-msg err';msg.textContent='El formulario de pago tuvo un problema. Cerralo y probá de nuevo.'}}
+      }
+    });
+  }).then(function(c){if(c){if(d.open)cardCtl=c;else{try{c.unmount()}catch(e){}}}}).catch(function(e){msg.className='pay-msg err';msg.textContent=e.message});
+}
+function cardResult(res,r,d){
+  if(res.estado==='pagado'||res.estado==='revisar'){closeCard(d);paidDone(r.codigo,res.estado);return}
+  if(res.estado==='pendiente'){closeCard(d);showPay(r.codigo,'pendiente');pollPay(r.codigo,0);return}
+  cardRetry(res.motivo||res.error||'El pago fue rechazado.',r,d);
+}
+function cardRetry(t,r,d){
+  var m=d.querySelector('.pay-msg');if(m){m.className='pay-msg err';m.textContent=t+' Podés probar de nuevo o con otra tarjeta.'}
+  setTimeout(function(){if(d.open)mountCard(r,d)},60);
+}
+function closeCard(d,byUser){
+  if(cardCtl){try{cardCtl.unmount()}catch(e){}cardCtl=null}
+  if(d.open)d.close();
+  if(byUser)toast('El pago quedó sin hacer. Podés intentarlo de nuevo cuando quieras.');
+}
+
+/* ----- Resultado del pago ----- */
+function paidDone(codigo,estado){
+  var p=loadPend();
+  if(p&&p.codigo===codigo&&p.premio&&spinRecord){spinRecord.used=true;try{localStorage.setItem('laonce-ruleta-demo',JSON.stringify(spinRecord))}catch(e){}}
+  var u=me();if(u&&u.pedidos){var o=u.pedidos.find(function(x){return x.id===codigo});if(o){o.estado='pagado';saveAccounts()}}
+  if(p&&p.codigo===codigo){cart=[];saveCart();updateBadge(false);co.pendingId=null;saveCo();savePend(null)}
+  showPay(codigo,estado);
+}
+function showPay(codigo,estado){var p=loadPend();payView={codigo:codigo,estado:estado,metodo:p&&p.codigo===codigo?p.metodo:'',pagoUrl:p&&p.codigo===codigo?p.pagoUrl:''};view='checkout';renderCheckout();scrollTo(0,0)}
+function renderPayView(){
+  var v=payView,u=me(),h,txt,btns='';
+  var tel=co.telefono?' al WhatsApp <b>'+esc(co.telefono)+'</b>':'';
+  if(v.estado==='pagado'){h='¡Pago aprobado!';txt='Tu pedido está confirmado. Te escribimos'+tel+' para coordinar la entrega.'}
+  else if(v.estado==='revisar'){h='Recibimos tu pago';txt='Lo estamos verificando. Te escribimos'+tel+' para confirmar el pedido y coordinar la entrega.'}
+  else if(v.estado==='rechazado'){h='El pago no se completó';txt='No se hizo ningún cobro. Podés intentarlo de nuevo con Mercado Pago o con tarjeta.';
+    btns=(v.pagoUrl?'<a class="btn btn-ink btn-mp" href="'+esc(v.pagoUrl)+'">Reintentar con Mercado Pago</a>':'')+'<button class="btn '+(v.pagoUrl?'btn-ghost':'btn-ink')+'" id="payBack">Volver al checkout</button>'}
+  else{h='Confirmando tu pago…';txt='Estamos esperando la confirmación de Mercado Pago. Puede tardar unos segundos. Si ya pagaste, no hace falta que vuelvas a pagar.';btns='<button class="btn btn-ghost" id="payCheck">Actualizar</button>'}
+  var ok=v.estado==='pagado'||v.estado==='revisar', bad=v.estado==='rechazado';
+  app.innerHTML=coHeader()+'<main class="wrap co-done pay-result"><div class="co-ok'+(bad?' bad':ok?'':' wait')+'">'+(ok?'✓':bad?'!':'<span class="spin" aria-hidden="true"></span>')+'</div><h1>'+h+'</h1><p class="co-code">Pedido N° <b>'+esc(v.codigo)+'</b></p><p>'+txt+'</p><div class="co-done-btns">'+btns+(ok&&u?'<button class="btn btn-ghost" id="goAccount">Ver mis pedidos</button>':'')+(bad?'':'<button class="btn '+(ok?'btn-ink':'btn-ghost')+'" id="payHome">Volver al inicio</button>')+'</div></main><div class="toast" id="toast"></div>';
+  var b;
+  if((b=app.querySelector('#payHome')))b.onclick=function(){clearTimeout(payPoll);payView=null;go('inicio')};
+  if((b=app.querySelector('#payBack')))b.onclick=function(){clearTimeout(payPoll);payView=null;coDone=false;view='checkout';renderCheckout();scrollTo(0,0)};
+  if((b=app.querySelector('#payCheck')))b.onclick=function(){pollPay(v.codigo,0)};
+  if((b=app.querySelector('#goAccount')))b.addEventListener('click',function(){payView=null});
+}
+function pollPay(codigo,n,vuelta){
+  clearTimeout(payPoll);
+  payApi('/api/pedido-estado?codigo='+encodeURIComponent(codigo)).then(function(j){
+    if(!payView||payView.codigo!==codigo)return;
+    if(j.estado==='pagado'||j.estado==='revisar'){paidDone(codigo,j.estado);return}
+    if(j.estado==='rechazado'||(vuelta==='error'&&j.estado==='esperando_pago'&&n>=1)){payView.estado='rechazado';renderCheckout();return}
+    if(n<24)payPoll=setTimeout(function(){pollPay(codigo,n+1,vuelta)},n<8?2500:5000);
+  }).catch(function(){if(payView&&payView.codigo===codigo&&n<24)payPoll=setTimeout(function(){pollPay(codigo,n+1,vuelta)},5000)});
+}
+/* Vuelta desde Mercado Pago: /?pedido=LO...&r=ok|pendiente|error */
+function payReturn(){
+  var q;try{q=new URLSearchParams(location.search)}catch(e){return}
+  var codigo=q.get('pedido');if(!codigo||!/^LO\d{6}-[0-9A-F]{6}$/.test(codigo))return;
+  var r=q.get('r')||'';
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  showPay(codigo,'verificando');pollPay(codigo,0,r);
+}
+
 /* Ruleta de demostración. Todas las recompensas tienen una probabilidad positiva. */
 var PRIZES=[{label:'$3.000 OFF',short:'$3.000',weight:5900,discount:0,monto:3000},{label:'$6.000 OFF',short:'$6.000',weight:2500,discount:0,monto:6000},{label:'15% OFF',short:'15%',weight:1000,discount:15},{label:'25% OFF',short:'25%',weight:350,discount:25},{label:'Envío gratis',short:'ENVÍO',weight:150,discount:0,envio:true},{label:'Mystery Box',short:'MYSTERY',weight:100,discount:0,mystery:true}];
 var spinBusy=false,spinTurn=0,spinTimeout=null;
@@ -2063,8 +2312,8 @@ function loadSpin(){try{var v=JSON.parse(localStorage.getItem('laonce-ruleta-dem
 function activeSpin(){return spinRecord&&Date.now()-spinRecord.at<SPIN_INTERVAL?spinRecord:null}
 function choosePrize(n){var sum=0;for(var i=0;i<PRIZES.length;i++){sum+=PRIZES[i].weight;if(n<sum)return i}throw Error('Sorteo fuera de rango')}
 function randomTicket(){var a=new Uint32Array(1),max=Math.floor(4294967296/10000)*10000;do{crypto.getRandomValues(a)}while(a[0]>=max);return a[0]%10000}
-function prizeTicket(){var r=activeSpin();if(!r||spinBusy)return '';var p=PRIZES[r.prize];if(r.used)return '<div class="prize-ticket" role="status"><span class="eyebrow">Tu premio</span><h2>'+p.label+'</h2><p>Ya lo usaste en tu último pedido. Volvés a girar cuando se cumplan los 3 días.</p></div>';return '<div class="prize-ticket" role="status"><span class="eyebrow">Tu premio</span><h2>'+p.label+'</h2><p>'+(p.mystery?'Una camiseta sorpresa de regalo, elegida por nosotros. Se suma a tu próximo pedido o la pedís sola por WhatsApp (envío aparte).':p.envio?'Para tu próximo pedido con envío a domicilio.':p.monto?'Se descuenta de tu compra de camisetas en stock.':p.discount===100?'Una camiseta en stock gratis, la de menor precio de tu carrito. Envío aparte.':'Sobre una camiseta en stock, la de menor precio de tu carrito.')+(p.mystery?'':' Se aplica solo al finalizar la compra.')+'</p>'+(p.mystery&&waNumber()?'<a class="btn btn-wa mb-claim" target="_blank" rel="noopener" href="https://wa.me/'+waNumber()+'?text='+encodeURIComponent('Hola! Gané una Mystery Box en la ruleta. Código '+r.code)+'">Pedirla por WhatsApp</a>':'')+'<p>Vence '+new Date(r.at+SPIN_INTERVAL).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})+''+(p.mystery?'.':p.envio||p.monto?'. Se suma al descuento por transferencia.':'. No se suma al descuento por transferencia: te queda el mayor.')+'</p></div>'}
-function gameRules(){return '<details class="game-rules"><summary>Premios, probabilidades y cómo funciona</summary><div class="odds">'+PRIZES.map(function(p){return '<div><strong>'+p.short+'</strong><span>'+(p.weight/100).toLocaleString('es-AR')+'% de probabilidad</span></div>'}).join('')+'</div><div class="rules-copy"><p>Las porciones de la rueda son ilustrativas: las probabilidades son las indicadas arriba y suman 100%. Todos los premios pueden salir.</p><p>Podés girar una vez cada 3 días. Tu premio dura 3 días desde que girás y queda guardado aunque cierres la página.</p><p>Los premios de $3.000 y $6.000 se descuentan de una compra con camisetas en stock y se suman al descuento por transferencia. Los porcentajes se aplican sobre una camiseta en stock (la de menor precio del carrito), sin compra mínima; personalización aparte, y no se acumulan con el descuento por transferencia: se aplica el mayor beneficio. La Mystery Box es una camiseta sorpresa de regalo elegida por nosotros: se suma a tu próximo pedido o la pedís sola por WhatsApp, sin compra mínima (envío aparte). Los encargos no participan. El envío gratis vale para un pedido con envío a domicilio, incluidos los encargos, y sí se suma al descuento por transferencia.</p><p>El premio queda guardado en este navegador y se aplica automáticamente en el carrito y al finalizar la compra. Lo validamos con su código cuando coordinamos el pedido por WhatsApp. Un premio por pedido.</p></div></details>'}
+function prizeTicket(){var r=activeSpin();if(!r||spinBusy)return '';var p=PRIZES[r.prize];if(r.used)return '<div class="prize-ticket" role="status"><span class="eyebrow">Tu premio</span><h2>'+p.label+'</h2><p>Ya lo usaste en tu último pedido. Volvés a girar cuando se cumplan los 3 días.</p></div>';return '<div class="prize-ticket" role="status"><span class="eyebrow">Tu premio</span><h2>'+p.label+'</h2><p>'+(p.mystery?'Una camiseta sorpresa de regalo, elegida por nosotros. Se suma a tu próximo pedido o la pedís sola por WhatsApp (envío aparte).':p.envio?'Para tu próximo pedido con envío a domicilio.':p.monto?'Se descuenta de tu compra de camisetas en stock.':p.discount===100?'Una camiseta en stock gratis, la de menor precio de tu carrito. Envío aparte.':'Sobre una camiseta en stock, la de menor precio de tu carrito.')+(p.mystery?'':' Se aplica solo al finalizar la compra.')+'</p>'+(p.mystery&&waNumber()?'<a class="btn btn-wa mb-claim" target="_blank" rel="noopener" href="https://wa.me/'+waNumber()+'?text='+encodeURIComponent('Hola! Gané una Mystery Box en la ruleta. Código '+r.code)+'">Pedirla por WhatsApp</a>':'')+'<p>Vence '+new Date(r.at+SPIN_INTERVAL).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})+''+(p.mystery?'.':p.envio||p.monto?'. Se suma al descuento '+offW()+'.':'. No se suma al descuento '+offW()+': te queda el mayor.')+'</p></div>'}
+function gameRules(){return '<details class="game-rules"><summary>Premios, probabilidades y cómo funciona</summary><div class="odds">'+PRIZES.map(function(p){return '<div><strong>'+p.short+'</strong><span>'+(p.weight/100).toLocaleString('es-AR')+'% de probabilidad</span></div>'}).join('')+'</div><div class="rules-copy"><p>Las porciones de la rueda son ilustrativas: las probabilidades son las indicadas arriba y suman 100%. Todos los premios pueden salir.</p><p>Podés girar una vez cada 3 días. Tu premio dura 3 días desde que girás y queda guardado aunque cierres la página.</p><p>Los premios de $3.000 y $6.000 se descuentan de una compra con camisetas en stock y se suman al descuento '+offW()+'. Los porcentajes se aplican sobre una camiseta en stock (la de menor precio del carrito), sin compra mínima; personalización aparte, y no se acumulan con el descuento '+offW()+': se aplica el mayor beneficio. La Mystery Box es una camiseta sorpresa de regalo elegida por nosotros: se suma a tu próximo pedido o la pedís sola por WhatsApp, sin compra mínima (envío aparte). Los encargos no participan. El envío gratis vale para un pedido con envío a domicilio, incluidos los encargos, y sí se suma al descuento '+offW()+'.</p><p>El premio queda guardado en este navegador y se aplica automáticamente en el carrito y al finalizar la compra. Lo validamos al finalizar la compra. Un premio por pedido y por persona.</p></div></details>'}
 /* ---------- Ruleta estilo casino ---------- */
 /* Casilleros de la rueda (índice del premio en PRIZES). El 0 verde es la Mystery Box, como el cero del casino.
    La cantidad de casilleros es decorativa: la probabilidad real de cada premio es la de PRIZES. */
@@ -2108,7 +2357,7 @@ function prizeCalc(){var r=activeSpin();if(!r||r.used)return null;var P=PRIZES[r
 function demoDiscount(){var z=prizeCalc();return z?z.disc:0}
 function prizeLabel(z){return z.P.discount===100?'Camiseta gratis':z.P.label}
 function prizeLeft(r){var m=Math.max(1,Math.ceil((r.at+SPIN_INTERVAL-Date.now())/60000)),h=Math.floor(m/60);return (h?h+' h ':'')+(m%60)+' min'}
-function checkoutGame(){var T=coTotals(),z=T.pz;if(!z)return '';var msg;if(z.mystery)msg='Sumamos tu Mystery Box de regalo a este pedido: una camiseta sorpresa elegida por nosotros.';else if(z.envio)msg=T.envioPrize?'Tu envío a domicilio es gratis. Se suma al descuento por transferencia.':co.entrega==='envio'?'Tu pedido ya tiene envío gratis, así que tu premio queda guardado hasta que venza.':'Tu premio es envío gratis: se usa si elegís envío a domicilio.';else if(!z.disc)msg='Tu premio ('+esc(z.P.label)+') vale para compras con camisetas en stock. Los encargos no participan.';else if(z.stack)msg='Aplicamos '+esc(z.P.label)+' en tu compra'+(T.td?' y se suma al '+T.d+'% por transferencia.':'.');else if(T.usePrize)msg='Aplicamos '+(z.P.discount===100?'una camiseta gratis':esc(z.P.label))+' en '+esc(z.prod.club)+(T.td?'. No se suma al '+T.d+'% por transferencia: te dejamos el mayor beneficio.':'.');else msg='Con transferencia ya tenés '+T.d+'% en todo el pedido, que es igual o mejor que tu premio ('+esc(z.P.label)+'). Te aplicamos la transferencia y tu premio queda guardado hasta que venza.';return '<div class="game-checkout"><b>Premio de la ruleta</b><p>'+msg+'</p><p class="hint">Vence en '+prizeLeft(z.r)+'</p></div>'}
+function checkoutGame(){var T=coTotals(),z=T.pz;if(!z)return '';var msg;if(z.mystery)msg='Sumamos tu Mystery Box de regalo a este pedido: una camiseta sorpresa elegida por nosotros.';else if(z.envio)msg=T.envioPrize?'Tu envío a domicilio es gratis. Se suma al descuento '+offW()+'.':co.entrega==='envio'?'Tu pedido ya tiene envío gratis, así que tu premio queda guardado hasta que venza.':'Tu premio es envío gratis: se usa si elegís envío a domicilio.';else if(!z.disc)msg='Tu premio ('+esc(z.P.label)+') vale para compras con camisetas en stock. Los encargos no participan.';else if(z.stack)msg='Aplicamos '+esc(z.P.label)+' en tu compra'+(T.td?' y se suma al '+T.d+'% '+offW()+'.':'.');else if(T.usePrize)msg='Aplicamos '+(z.P.discount===100?'una camiseta gratis':esc(z.P.label))+' en '+esc(z.prod.club)+(T.td?'. No se suma al '+T.d+'% '+offW()+': te dejamos el mayor beneficio.':'.');else msg='Con '+offN()+' ya tenés '+T.d+'% en todo el pedido, que es igual o mejor que tu premio ('+esc(z.P.label)+'). Te aplicamos ese descuento y tu premio queda guardado hasta que venza.';return '<div class="game-checkout"><b>Premio de la ruleta</b><p>'+msg+'</p><p class="hint">Vence en '+prizeLeft(z.r)+'</p></div>'}
 function prizeBar(){if(view==='game')return '';var r=activeSpin();if(!r||r.used)return '';var P=PRIZES[r.prize];return '<button class="prize-bar" id="prizeBar" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-1.5-3.5-6-3.5-5 0 .4 1.2 2.8 1 5 0zm0 0c1.5-3.5 6-3.5 5 0-.4 1.2-2.8 1-5 0z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="pb-txt">Ganaste <b>'+(P.mystery?'una Mystery Box':P.envio?'envío gratis':esc(P.label))+'</b> en la ruleta<span class="pb-sep"> · </span><span class="pb-when">vence en <b class="pb-time">'+prizeLeft(r)+'</b></span></span><span class="pb-go">Usar ›</span></button>'}
 setInterval(function(){var el=document.querySelector('.pb-time');if(!el)return;var r=activeSpin();if(!r){render();return}el.textContent=prizeLeft(r)},30000);
 
@@ -2132,9 +2381,15 @@ function toggleSound(){soundEnabled=!soundEnabled;try{localStorage.setItem('laon
 function burstConfetti(jackpot){if(matchMedia('(prefers-reduced-motion: reduce)').matches||document.hidden)return;var old=document.getElementById('prizeConfetti');if(old)old.remove();cancelAnimationFrame(celebrationFrame);var cv=document.createElement('canvas');cv.id='prizeConfetti';cv.setAttribute('aria-hidden','true');document.body.appendChild(cv);var w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);cv.width=w*dpr;cv.height=h*dpr;var ctx=cv.getContext('2d');if(!ctx){cv.remove();return}ctx.scale(dpr,dpr);var colors=['#eabc4e','#f3e8ce','#3c918a','#69b9ec','#ec7962'],particles=[];for(var i=0;i<(jackpot?190:120);i++){var side=i%2?1:-1;particles.push({x:side===1?w:0,y:h*.65,vx:-side*(100+Math.random()*520),vy:-260-Math.random()*600,r:Math.random()*6.28,vr:(Math.random()-.5)*12,size:5+Math.random()*7,color:colors[i%colors.length]})}var begin=performance.now(),last=begin;function frame(now){var dt=Math.min((now-last)/1000,.04),age=(now-begin)/1000;last=now;if(age>3.8||view!=='game'||document.hidden){cv.remove();return}ctx.clearRect(0,0,w,h);ctx.globalAlpha=Math.min(1,(3.8-age)/.8);particles.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=440*dt;p.vx*=Math.pow(.96,dt*60);p.r+=p.vr*dt;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.color;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.5);ctx.restore()});celebrationFrame=requestAnimationFrame(frame)}celebrationFrame=requestAnimationFrame(frame)}
 function celebratePrize(index){var surface=document.querySelector('.club-surface'),ticket=document.querySelector('.prize-ticket'),area=document.querySelector('.wheel-area');if(surface)surface.classList.add('celebrating');if(index===5&&surface)surface.classList.add('jackpot');if(ticket){ticket.classList.add('prize-reveal');if(innerWidth<=720)ticket.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'center'})}if(area)area.classList.add('winner');burstConfetti(index===5);victorySound(index===5)}
 var spinBallA=0,spinBallR=BALL_TRACK;
-function spinWheel(){if(spinBusy||activeSpin())return;prepareSound();var index=choosePrize(randomTicket()),opts=[];POCKETS.forEach(function(p,k){if(p===index)opts.push(k)});var a=new Uint32Array(1);crypto.getRandomValues(a);var pocket=opts[a[0]%opts.length];
-  spinRecord={prize:index,pocket:pocket,at:Date.now(),code:'ONCE-'+Date.now().toString(36).toUpperCase()};try{localStorage.setItem('laonce-ruleta-demo',JSON.stringify(spinRecord))}catch(e){}
-  spinBusy=true;spinTurn=0;spinBallA=0;spinBallR=BALL_TRACK;var btn=app.querySelector('#spinWheel');btn.disabled=true;btn.textContent='Girando…';clearTimeout(gameClock);cancelAnimationFrame(spinFrame);
+/* En la tienda publicada (Netlify) el premio lo sortea y lo firma el servidor; sin servidor se sortea acá. */
+function spinWheel(){if(spinBusy||activeSpin())return;prepareSound();
+  if(PAYON&&PAYON.ruleta){spinBusy=true;var b0=app.querySelector('#spinWheel');if(b0){b0.disabled=true;b0.textContent='Girando…'}
+    payApi('/api/ruleta',{}).then(function(d){spinBusy=false;if(!(Number.isInteger(d.premio)&&PRIZES[d.premio]&&POCKETS[d.bolsillo]===d.premio&&d.token))throw Error('Respuesta inválida');runSpin(d.premio,d.bolsillo,{at:Math.min(Date.now(),Number(d.at)||Date.now()),code:String(d.codigo),token:String(d.token)})}).catch(function(){spinBusy=false;if(view==='game')renderGame();toast('No pudimos girar la ruleta. Probá de nuevo en un momento.')});return}
+  var index=choosePrize(randomTicket()),opts=[];POCKETS.forEach(function(p,k){if(p===index)opts.push(k)});var a=new Uint32Array(1);crypto.getRandomValues(a);
+  runSpin(index,opts[a[0]%opts.length],{at:Date.now(),code:'ONCE-'+Date.now().toString(36).toUpperCase()})}
+function runSpin(index,pocket,info){
+  spinRecord={prize:index,pocket:pocket,at:info.at,code:info.code};if(info.token)spinRecord.token=info.token;try{localStorage.setItem('laonce-ruleta-demo',JSON.stringify(spinRecord))}catch(e){}
+  spinBusy=true;spinTurn=0;spinBallA=0;spinBallR=BALL_TRACK;var btn=app.querySelector('#spinWheel');if(btn){btn.disabled=true;btn.textContent='Girando…'}clearTimeout(gameClock);cancelAnimationFrame(spinFrame);
   var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,duration=reduced?100:6200,start=performance.now(),from=0,rest=(360-pocket*POCKET_DEG)%360,target=360*4+rest,lastPocket=-1,ballTurns=5;
   var area=app.querySelector('.casino-wheel');if(area){area.classList.add('spinning');if(innerWidth<=720){var rr=area.getBoundingClientRect();if(rr.top<0||rr.bottom>innerHeight)area.scrollIntoView({behavior:reduced?'instant':'smooth',block:'center'})}}
   function easeOut(t,p){return 1-Math.pow(1-t,p)}
@@ -2151,7 +2406,9 @@ function spinWheel(){if(spinBusy||activeSpin())return;prepareSound();var index=c
 
 co.aceptaEspera=false;delete co.dni;
 go(decodeURIComponent(location.hash.slice(1))||'inicio',true);
+payReturn();
 loadSheet();
+loadPayConfig();
 })();
 </script>
 </body>
