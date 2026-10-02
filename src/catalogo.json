@@ -18,7 +18,8 @@
     "domicilio": "",
     "emailContacto": "",
     "dataFiscalUrl": "",
-    "avisosUrl": ""
+    "avisosUrl": "",
+    "precioPersonalizacion": 8000
   },
   "productos": [
     {
