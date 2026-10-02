@@ -251,7 +251,42 @@ function openDetail(id){
 /* ---------- Aviso de stock ---------- */
 /* Avisos de stock: se envían a la dirección configurada en el panel (Formspree, Google Apps Script o el servidor propio).
    Sin dirección configurada, se abre el email o WhatsApp del negocio; si no hay ninguno, queda guardado en este navegador. */
+/* ---------- Planilla de Google: productos (lectura) y pedidos/avisos (Apps Script) ---------- */
+function sheetId(){var v=String(data.config.planilla||"").trim(),m=v.match(/\/d\/([a-zA-Z0-9_-]{20,})/);return m?m[1]:(/^[a-zA-Z0-9_-]{20,}$/.test(v)?v:"")}
+function sheetApp(){var v=String(data.config.planillaApp||"").trim();return /^https:\/\/script\.google(usercontent)?\.com\//.test(v)?v:""}
+function sendSheet(info){var u=sheetApp();if(!u)return Promise.resolve(false);return fetch(u,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(info)}).then(function(){return true})}
+function sheetBool(v,def){if(v==null||v==="")return def;return !/^(no|n|false|0)$/i.test(String(v).trim())}
+function applySheet(rows){
+  var SZ=["S","M","L","XL","XXL"],seen={},changed=false;
+  rows.forEach(function(r){
+    var id=String(r.id||"").trim();if(!/^[a-zA-Z0-9_-]{1,70}$/.test(id)||seen[id])return;seen[id]=1;
+    var pre=String(r.modalidad||"").trim().toLowerCase()==="pedido",p=byId(id),isNew=!p;
+    if(isNew){p={id:id,club:"",titulo:"",categoria:"Sudamérica",epoca:"Actual",precio:0,precioAnterior:0,patron:{tipo:"liso",c1:"#FFFFFF",c2:"#0F2A5C"},foto:null,stock:{S:0,M:0,L:0,XL:0,XXL:0},destacado:false,nuevo:false,modalidad:"stock"}}
+    if(r.club)p.club=String(r.club).slice(0,100);if(r.titulo)p.titulo=String(r.titulo).slice(0,140);
+    if(CATS.indexOf(r.categoria)>=0)p.categoria=r.categoria;if(EPOCAS.indexOf(r.epoca)>=0)p.epoca=r.epoca;
+    var pr=Math.round(Number(r.precio));if(pr>0)p.precio=pr;p.precioAnterior=Math.max(0,Math.round(Number(r.precio_anterior)||0));
+    p.modalidad=pre?"pedido":"stock";
+    if(pre){p.tallesPedido=SZ.filter(function(z){return Number(r[z])>0||/^s[ií]$/i.test(String(r[z]||"").trim())});p.stock={S:0,M:0,L:0,XL:0,XXL:0}}
+    else{p.stock={};SZ.forEach(function(z){p.stock[z]=Math.max(0,Math.floor(Number(r[z])||0))});delete p.tallesPedido}
+    var f=String(r.foto||"").trim();if(/^https:\/\//i.test(f))p.foto=f;else if(!f&&!(p.foto&&String(p.foto).indexOf("data:")===0))p.foto=null;
+    p.destacado=sheetBool(r.destacado,false);p.nuevo=sheetBool(r.nuevo,false);p.activo=sheetBool(r.activo,true);
+    if(!p.club||!(p.precio>0))return;
+    if(isNew)data.productos.push(p);changed=true;
+  });
+  if(changed){data.productos=data.productos.filter(function(p){return p.activo!==false})}
+  return changed;
+}
+function loadSheet(){
+  var id=sheetId();if(!id||view==="admin")return;
+  fetch("https://docs.google.com/spreadsheets/d/"+id+"/gviz/tq?tqx=out:json&headers=1&sheet=Productos",{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){
+    var j=JSON.parse(t.slice(t.indexOf("(")+1,t.lastIndexOf(")")));if(!j.table)return;
+    var cols=j.table.cols.map(function(c){return String(c.label||"").trim()});
+    var rows=(j.table.rows||[]).map(function(row){var o={};(row.c||[]).forEach(function(c,i){o[cols[i]]=c?(c.v!=null?c.v:c.f):null});return o});
+    if(applySheet(rows)&&view!=="admin"&&view!=="checkout"){validCart();render()}
+  }).catch(function(){});
+}
 function sendStockAlert(info){
+  if(sheetApp())return sendSheet(info);
   var c=data.config, url=String(c.avisosUrl||"").trim();
   if(/^https:\/\//i.test(url)){
     return fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(info)}).then(function(r){if(!r.ok)throw Error("HTTP "+r.status)});
@@ -264,7 +299,9 @@ function sendStockAlert(info){
   return Promise.resolve();
 }
 /* Pedidos sin WhatsApp del negocio: se mandan a la dirección de avisos/pedidos o al email del negocio. */
-function sendOrder(info){
+function sendOrder(info,viaWa){
+  if(sheetApp()){sendSheet(info).catch(function(){});return}
+  if(viaWa)return;
   var c=data.config, url=String(c.avisosUrl||"").trim();
   if(/^https:\/\//i.test(url)){try{fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(info)}).catch(function(){})}catch(e){}return}
   if(c.emailContacto){try{window.open("mailto:"+encodeURIComponent(c.emailContacto)+"?subject="+encodeURIComponent("Nuevo pedido de "+info.nombre)+"&body="+encodeURIComponent(info.detalle),"_blank")}catch(e){}}
@@ -429,7 +466,7 @@ function renderAdmin(){
      f("% descuento por transferencia","descuentoTransferencia","number","min=\"0\" max=\"50\"")+f("Nombre y número en encargos ($ extra por camiseta)","precioPersonalizacion","number","min=\"0\" step=\"500\"")+f("Envío gratis desde ($, 0 = no)","envioGratisDesde","number","min=\"0\" step=\"1000\"")+f("Cuotas sin interés (0 = no)","cuotas","number","min=\"0\" max=\"12\"")+
      f("Envíos","envios")+f("Retiro / zona","zona")+
    '</div></section><section class="panel"><h3>Datos legales (se muestran al pie de la página)</h3><div class="fields">'+
-     f("Razón social o nombre del titular","razonSocial")+f("CUIT","cuit","","inputmode=\"numeric\" placeholder=\"20-12345678-9\"")+f("Domicilio comercial","domicilio")+f("Email de contacto","emailContacto","email")+f("Avisos de stock y pedidos: dirección que los recibe (Formspree, Google o servidor propio)","avisosUrl","url","placeholder=\"https://formspree.io/f/...\"")+f("Link del QR de Data Fiscal (ARCA)","dataFiscalUrl","url","placeholder=\"https://qr.afip.gob.ar/?qr=...\"")+
+     f("Razón social o nombre del titular","razonSocial")+f("CUIT","cuit","","inputmode=\"numeric\" placeholder=\"20-12345678-9\"")+f("Domicilio comercial","domicilio")+f("Email de contacto","emailContacto","email")+f("Planilla de Google: link de la planilla (productos, stock y fotos)","planilla","url","placeholder=\"https://docs.google.com/spreadsheets/d/...\"")+f("Planilla de Google: URL de la app de pedidos (termina en /exec)","planillaApp","url","placeholder=\"https://script.google.com/macros/s/.../exec\"")+f("Avisos de stock y pedidos: dirección que los recibe (Formspree, Google o servidor propio)","avisosUrl","url","placeholder=\"https://formspree.io/f/...\"")+f("Link del QR de Data Fiscal (ARCA)","dataFiscalUrl","url","placeholder=\"https://qr.afip.gob.ar/?qr=...\"")+
    '</div></section>'+
    supplierPanel()+'<section class="panel"><h3>Banners de categorías (inicio)</h3><div class="tile-edit">'+tileList().map(function(t,i){
       var o='<option value="center 15%">Arriba</option><option value="center 30%">Un poco arriba</option><option value="center">Centro</option><option value="center 70%">Abajo</option>'.replace('value="'+(t.pos||"center")+'"','value="'+(t.pos||"center")+'" selected');
@@ -750,7 +787,7 @@ function renderLegal(){
 
 
 /* ---------- Checkout ---------- */
-var coDone=false, coDoneTel="", coErr={};
+var coDone=false, coDoneTel="", coDoneCode="", coErr={};
 var co=(function(){try{return JSON.parse(localStorage.getItem("laonce-checkout")||"{}")}catch(e){return {}}})();
 co=Object.assign({pendingId:null,nombre:"",telefono:"",email:"",dni:"",entrega:"envio",direccion:"",depto:"",localidad:"",cp:"",pago:"transferencia",notas:""},co);
 function saveCo(){try{var c=Object.assign({},co);delete c.notas;delete c.dni;delete c.aceptaEspera;delete c.terms;localStorage.setItem("laonce-checkout",JSON.stringify(c))}catch(e){}}
@@ -789,7 +826,7 @@ function renderCheckout(){
     migrateAcc(u); var A=u.direcciones[0]; if(A&&!co.direccion){co.direccion=A.direccion||"";co.depto=A.depto||"";co.localidad=A.localidad||"";co.cp=A.cp||""} }
   if(coDone){
     var viaWa=/^https:\/\/wa\.me\//.test(String(coDone));
-    app.innerHTML=coHeader()+'<main class="wrap co-done"><div class="co-ok">✓</div>'+(viaWa?'<h1>Solicitud preparada</h1><p>Tu pedido queda pendiente de confirmación y pago. Enviá el detalle por WhatsApp para coordinarlo. Si no se abrió, tocá el botón.</p>':'<h1>¡Recibimos tu pedido!</h1><p>Te vamos a escribir'+(coDoneTel?' al WhatsApp <b>'+esc(coDoneTel)+'</b>':'')+' para confirmar disponibilidad y coordinar el pago y la entrega.</p>')+'<div class="co-done-btns">'+(viaWa?'<a class="btn btn-wa" target="_blank" rel="noopener" href="'+esc(coDone)+'">Abrir WhatsApp</a>':'')+(u?'<button class="btn btn-ghost" id="goAccount">Ver mis pedidos</button>':'')+'<button class="btn btn-ghost" data-nav="inicio">Volver al inicio</button></div></main><div class="toast" id="toast"></div>';
+    app.innerHTML=coHeader()+'<main class="wrap co-done"><div class="co-ok">✓</div>'+(viaWa?'<h1>Solicitud preparada</h1><p>Tu pedido queda pendiente de confirmación y pago. Enviá el detalle por WhatsApp para coordinarlo. Si no se abrió, tocá el botón.</p>':'<h1>¡Recibimos tu pedido!</h1>'+(coDoneCode?'<p class="co-code">Pedido N° <b>'+esc(coDoneCode)+'</b></p>':'')+'<p>Te vamos a escribir'+(coDoneTel?' al WhatsApp <b>'+esc(coDoneTel)+'</b>':'')+' para confirmar disponibilidad y coordinar el pago y la entrega.</p>')+'<div class="co-done-btns">'+(viaWa?'<a class="btn btn-wa" target="_blank" rel="noopener" href="'+esc(coDone)+'">Abrir WhatsApp</a>':'')+(u?'<button class="btn btn-ghost" id="goAccount">Ver mis pedidos</button>':'')+'<button class="btn btn-ghost" data-nav="inicio">Volver al inicio</button></div></main><div class="toast" id="toast"></div>';
     return;
   }
   if(!cart.length){
@@ -828,9 +865,12 @@ function coConfirm(){
     "\n\nNombre: "+co.nombre+"\nTeléfono: "+co.telefono+"\nEmail: "+co.email+
     (T.mysteryPrize?"\nMystery Box de regalo (premio ruleta, código "+T.pz.r.code+")":"")+"\nEntrega: "+(co.entrega==="envio"?"Envío a "+co.direccion+(co.depto?" (depto "+co.depto+")":"")+", "+co.localidad+" ("+co.cp+")"+(T.envioPrize?" — envío gratis (premio ruleta, código "+T.pz.r.code+")":T.gratis?" — envío gratis":""):"Retiro")+
     (hasPreCart()?"\nEncargos: acepto plazo estimado de 30 días desde confirmación, más entrega local. Si hay stock y encargo, coordinar envíos separados.":"")+"\nPago: "+pagos[co.pago]+(co.notas?"\nNotas: "+co.notas:"");
+  var code="LO"+new Date().toISOString().slice(2,10).replace(/-/g,"")+"-"+String(Date.now()).slice(-4);
+  msg="Pedido N° "+code+"\n"+msg;
   var href=n?"https://wa.me/"+n+"?text="+encodeURIComponent(msg):"";
   if(href){try{window.open(href,"_blank","noopener")}catch(e){}}
-  else sendOrder({tipo:"pedido",nombre:co.nombre,telefono:co.telefono,email:co.email,total:T.total,detalle:msg,fecha:new Date().toISOString()});
+  sendOrder({tipo:"pedido",codigo:code,nombre:co.nombre,telefono:co.telefono,email:co.email,entrega:co.entrega==="envio"?"Envío a "+co.direccion+(co.depto?" (depto "+co.depto+")":"")+", "+co.localidad+" ("+co.cp+")":"Retiro",pago:pagos[co.pago],total:Math.round(T.total),detalle:msg,fecha:new Date().toISOString()},!!href);
+  coDoneCode=code;
   coDoneTel=co.telefono;
   var u=me();
   if(u){
@@ -968,4 +1008,5 @@ function openCustomRequest(){var d=document.getElementById('dlg');d.innerHTML='<
 /* @include ruleta.js */
 co.aceptaEspera=false;delete co.dni;
 go(decodeURIComponent(location.hash.slice(1))||'inicio',true);
+loadSheet();
 })();

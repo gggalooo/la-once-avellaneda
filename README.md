@@ -61,3 +61,14 @@ La rueda desacelera, hace clics, muestra confeti y reproduce un festejo breve al
 El dominio propio puede esperar. GitHub Pages dispone de direcciones `github.io` para publicar una vista del prototipo; sus condiciones dependen del plan y de la visibilidad del repositorio. Guardar el código en GitHub no publica automáticamente la página. Más adelante pueden conectar un dominio propio. [Documentación de GitHub Pages](https://docs.github.com/en/pages/quickstart).
 
 Las imágenes proceden del prototipo y de fichas de proveedores; no se agregó una licencia abierta sobre esos materiales.
+
+## Planilla de Google (stock, fotos y pedidos)
+
+La página puede leer el catálogo desde una planilla de Google y anotar ahí los pedidos y los avisos de stock.
+
+1. Importar `planilla/La-ONCE-planilla.xlsx` a Google Drive y guardarla como Hoja de cálculo de Google.
+2. Compartir → "Cualquier persona con el enlace" → Lector.
+3. Extensiones → Apps Script: pegar `planilla/codigo-apps-script.txt` e implementarlo como Aplicación web (Ejecutar como: Yo · Acceso: Cualquier persona).
+4. Cargar en `src/catalogo.json` → `config.planilla` el link de la planilla y en `config.planillaApp` la URL que termina en `/exec`. Después `npm run build`.
+
+Pestaña **Productos**: en stock, los talles S–XXL son cantidades; en pedido, 1 = se puede encargar y 0 = no. `activo = NO` oculta la camiseta. Los cambios aparecen al recargar la página (Google puede demorar 1 o 2 minutos).

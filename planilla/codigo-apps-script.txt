@@ -1,0 +1,69 @@
+/**
+ * La ONCE Avellaneda — recibe pedidos y avisos de stock desde la página
+ * y los anota en esta planilla.
+ *
+ * Cómo instalarlo:
+ * 1. En la planilla: Extensiones → Apps Script.
+ * 2. Borrá todo lo que haya y pegá este código. Guardá (ícono de disquete).
+ * 3. Implementar → Nueva implementación → tipo "Aplicación web".
+ *    Ejecutar como: Yo. Quién tiene acceso: Cualquier persona.
+ * 4. Implementar, autorizá con tu cuenta y copiá la URL que termina en /exec.
+ *
+ * Si más adelante cambiás este código: Implementar → Administrar implementaciones →
+ * editar (lápiz) → Versión: "Nueva versión" → Implementar. La URL sigue siendo la misma.
+ */
+
+var HOJA_PEDIDOS = 'Pedidos';
+var HOJA_AVISOS = 'Avisos de stock';
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (d.tipo === 'pedido') {
+      ss.getSheetByName(HOJA_PEDIDOS).appendRow([
+        new Date(),
+        txt(d.codigo, 30),
+        txt(d.nombre, 80),
+        "'" + txt(d.telefono, 30),
+        txt(d.email, 120),
+        txt(d.entrega, 200),
+        txt(d.pago, 60),
+        Number(d.total) || 0,
+        txt(d.detalle, 4000),
+        'Nuevo'
+      ]);
+    } else if (d.tipo === 'aviso_stock') {
+      ss.getSheetByName(HOJA_AVISOS).appendRow([
+        new Date(),
+        txt(d.email, 120),
+        txt(d.producto, 200),
+        txt(d.id, 80)
+      ]);
+    } else {
+      return respuesta({ ok: false, error: 'tipo desconocido' });
+    }
+    return respuesta({ ok: true });
+  } catch (err) {
+    return respuesta({ ok: false, error: String(err) });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Para probar que la URL funciona: abrila en el navegador y tiene que decir {"ok":true}.
+function doGet() {
+  return respuesta({ ok: true, tienda: 'La ONCE Avellaneda' });
+}
+
+// Texto seguro: corta el largo y evita que algo empiece con "=" y se tome como fórmula.
+function txt(v, max) {
+  var s = String(v == null ? '' : v).slice(0, max);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+
+function respuesta(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}

@@ -20,7 +20,9 @@
     "dataFiscalUrl": "",
     "avisosUrl": "",
     "precioPersonalizacion": 8000,
-    "logo": "assets/logo-once.webp"
+    "logo": "assets/logo-once.webp",
+    "planilla": "",
+    "planillaApp": ""
   },
   "productos": [
     {
