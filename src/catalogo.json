@@ -586,8 +586,8 @@
   ],
   "heroJugadores": [
     {
-      "foto": "assets/paredes-boca.webp",
-      "alt": "Leandro Paredes con la camiseta titular de Boca Juniors"
+      "foto": "assets/94ef99990411e4fd.webp",
+      "alt": "Thiago Almada con la camiseta alternativa de River Plate"
     },
     {
       "foto": "assets/0acf4da3b9b30e9f.webp",
@@ -598,8 +598,8 @@
       "alt": "Jugador de espaldas con camiseta roja"
     },
     {
-      "foto": "assets/94ef99990411e4fd.webp",
-      "alt": "Jugador con camiseta blanca y roja"
+      "foto": "assets/paredes-boca.webp",
+      "alt": "Leandro Paredes con la camiseta titular de Boca Juniors"
     }
   ],
   "heroFondo": "assets/estadio-champions.webp",

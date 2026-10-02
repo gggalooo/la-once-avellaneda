@@ -164,7 +164,7 @@ function tileList(){
   return data.tiles.map(function(t,i){var d=def[i]||def[0];if(!t.patron)t.patron=d.patron;return t});
 }
 function playersHTML(list){
- var positions=[["35%","0%",1],["42%","20%",3],["43%","46%",4],["34%","71%",5]];
+ var positions=[["38%","-1%",1],["42%","20%",3],["43%","46%",4],["30%","77%",2]];
  return list.slice(0,4).map(function(j,i){var p=positions[i];return '<img src="'+esc(j.foto)+'" alt="'+esc(j.alt||"")+'" style="--w:'+p[0]+';--x:'+p[1]+';--z:'+p[2]+';--d:'+(i*.08)+'s">'}).join("");
 }
 function startTimer(){
