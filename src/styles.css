@@ -1001,3 +1001,14 @@ body{font-family:var(--body)}
 nav.cats [data-nav="ruleta"]{font-family:"Montserrat","Segoe UI",system-ui,sans-serif}
 @media (max-width:720px){nav.cats button:not([data-nav="ruleta"]){font-size:14.5px}}
 @media (max-width:370px){nav.cats button:not([data-nav="ruleta"]){font-size:13.5px}}
+
+/* "Cómo comprar" */
+.howto{padding:30px 28px 26px;position:relative;max-width:520px}
+.howto h2{margin:6px 0 16px;font-size:30px}
+.howto ol{margin:0 0 20px;padding-left:22px;display:flex;flex-direction:column;gap:12px}
+.howto li>b{display:block;margin-bottom:2px}
+.howto li span b{display:inline;color:var(--ink)}
+.howto .close{position:absolute;top:12px;right:12px}
+.howto li span{color:var(--muted);font-size:14.5px;line-height:1.45}
+.howto .btn{width:100%}
+dialog:has(.howto){max-width:min(520px,94vw)}

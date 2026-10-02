@@ -72,3 +72,10 @@ La página puede leer el catálogo desde una planilla de Google y anotar ahí lo
 4. Cargar en `src/catalogo.json` → `config.planilla` el link de la planilla y en `config.planillaApp` la URL que termina en `/exec`. Después `npm run build`.
 
 Pestaña **Productos**: en stock, los talles S–XXL son cantidades; en pedido, 1 = se puede encargar y 0 = no. `activo = NO` oculta la camiseta. Los cambios aparecen al recargar la página (Google puede demorar 1 o 2 minutos).
+
+## Publicar en Netlify
+
+- **Conectando el repositorio de GitHub (recomendado):** en Netlify, "Add new site" → "Import an existing project" → GitHub → este repositorio. Netlify lee `netlify.toml`: arma la página con `node scripts/netlify.cjs` y publica la carpeta `dist`. Cada cambio que se sube a GitHub se publica solo.
+- **Arrastrando la carpeta:** ejecutar `npm run netlify` y arrastrar la carpeta `dist` a app.netlify.com/drop.
+
+El script usa la dirección del sitio que da Netlify para los links de Google y de redes. Si usan un dominio propio, se puede fijar con la variable `SITE_URL` en la configuración del sitio en Netlify.

@@ -1,0 +1,24 @@
+# Netlify: arma la página con "npm run netlify" y publica la carpeta dist.
+[build]
+  command = "node scripts/netlify.cjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# La página siempre se revisa al entrar (para ver precios y cambios al día).
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

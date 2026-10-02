@@ -63,7 +63,7 @@ function logoWord(n){
 function footer(){
   var c=data.config, ig=String(c.instagram||"").replace(/^@/,"");
   return (ig?'<section class="insta"><div class="wrap"><h2>Seguinos en Instagram</h2><p>Novedades, ingresos y sorteos.</p><a class="btn btn-ink" target="_blank" rel="noopener" href="https://instagram.com/'+esc(ig)+'">@'+esc(ig)+'</a></div></section>':'<div style="height:40px"></div>')+
-  '<footer><div class="wrap"><div><h4>'+esc(c.nombre)+'</h4><p>'+esc(c.envios||"")+(c.zona?"<br>"+esc(c.zona):"")+'</p></div><div><h4>Categorías</h4><ul>'+CATS.map(function(k){return '<li><button data-nav="'+esc(k)+'">'+esc(k)+'</button></li>'}).join("")+'</ul></div><div><h4>Ayuda</h4><ul><li><button id="howto">Cómo comprar</button></li>'+(waNumber()?'<li><a href="https://wa.me/'+waNumber()+'" target="_blank" rel="noopener">WhatsApp</a></li>':"")+'<li><button id="goAdmin">Panel de socios</button></li></ul></div></div></footer>'+legalFooter();
+  '<footer><div class="wrap"><div><h4>'+esc(c.nombre)+'</h4><p>'+esc(c.envios||"")+(c.zona?"<br>"+esc(c.zona):"")+'</p></div><div><h4>Categorías</h4><ul>'+CATS.map(function(k){return '<li><button data-nav="'+esc(k)+'">'+esc(k)+'</button></li>'}).join("")+'</ul></div><div><h4>Ayuda</h4><ul><li><button id="howto">Cómo comprar</button></li>'+(waNumber()?'<li><a href="https://wa.me/'+waNumber()+'" target="_blank" rel="noopener">WhatsApp</a></li>':"")+'</ul></div></div></footer>'+legalFooter();
 }
 function card(p){
   var t=available(p), b="";
@@ -306,6 +306,13 @@ function sendOrder(info,viaWa){
   if(/^https:\/\//i.test(url)){try{fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(info)}).catch(function(){})}catch(e){}return}
   if(c.emailContacto){try{window.open("mailto:"+encodeURIComponent(c.emailContacto)+"?subject="+encodeURIComponent("Nuevo pedido de "+info.nombre)+"&body="+encodeURIComponent(info.detalle),"_blank")}catch(e){}}
 }
+function openHowTo(){var d=document.getElementById("dlg");if(!d)return;var off=Number(data.config.descuentoTransferencia)||0,free=Number(data.config.envioGratisDesde)||0;
+  d.innerHTML='<div class="howto"><button class="close" aria-label="Cerrar">×</button><span class="eyebrow">Cómo comprar</span><h2>Así de simple</h2><ol>'+
+  '<li><b>Elegí tu camiseta y el talle.</b> <span>Las <b>en stock</b> salen enseguida. Las <b>por pedido</b> las traemos en ≈ 30 días y podés sumarles nombre y número.</span></li>'+
+  '<li><b>Agregala al carrito y finalizá la compra.</b> <span>Completás tus datos y la entrega. No hace falta crear una cuenta.</span></li>'+
+  '<li><b>Te escribimos por WhatsApp.</b> <span>Confirmamos disponibilidad y coordinamos el pago'+(off?' (con '+off+'% off por transferencia)':'')+' y el envío'+(free?' (gratis desde '+money(free)+')':'')+'.</span></li></ol>'+
+  '<button class="btn btn-ink" id="howtoGo">Ver camisetas</button></div>';
+  d.onclick=function(e){if(e.target===d||e.target.closest(".close")){d.close();return}if(e.target.closest("#howtoGo")){d.close();go("todo")}};d.showModal()}
 function openNotify(p){
   var d=document.getElementById("notifyDlg");
   if(!d){d=document.createElement("dialog");d.id="notifyDlg";d.className="notify";document.body.appendChild(d)}
@@ -837,7 +844,7 @@ function renderCheckout(){
   var items=cart.map(function(l){var p=byId(l.id);return '<div class="co-item"><div class="art">'+art(p)+'<span class="co-q">'+l.cant+'</span></div><div><strong>'+esc(p.club)+'</strong><span class="hint">'+esc(p.titulo)+' · '+(isPre(p)?'Por pedido ≈ 30 días':'En stock')+' · Talle '+esc(l.talle)+(l.pers?' · '+esc(persText(l.pers)):'')+'</span></div><strong>'+money(linePrice(l)*l.cant)+'</strong></div>'}).join("");
   function opt(group,val,title,sub){return '<label class="co-opt'+(co[group]===val?" on":"")+'"><input type="radio" name="'+group+'" data-co="'+group+'" value="'+val+'" '+(co[group]===val?"checked":"")+'><span><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':"")+'</span></label>'}
   app.innerHTML=coHeader()+'<main class="wrap co"><h1 class="co-title">Tu pedido</h1>'+cartAlert()+cartDelivery()+'<div class="co-grid"><div class="co-form">'+
-    '<section class="co-box"><h2>1. Tus datos</h2><div class="co-fields">'+fld("nombre","Nombre y apellido","","autocomplete=\"name\"",true)+fld("telefono","Teléfono / WhatsApp","tel","autocomplete=\"tel\" inputmode=\"tel\" maxlength=\"22\" placeholder=\"11 6247-3815\"")+fld("email","Email","email","autocomplete=\"email\"")+'</div></section>'+
+    '<section class="co-box"><h2>1. Tus datos</h2><div class="co-fields">'+fld("nombre","Nombre y apellido","","autocomplete=\"name\"",true)+fld("telefono","Teléfono / WhatsApp","tel","autocomplete=\"tel\" inputmode=\"tel\" maxlength=\"22\" placeholder=\"Ej: 11 6247-3815\"")+fld("email","Email","email","autocomplete=\"email\"")+'</div></section>'+
     '<section class="co-box"><h2>2. Entrega</h2><div class="co-opts">'+opt("entrega","envio","Envío a domicilio",esc(data.config.envios||"A todo el país")+(T.free>0?" · gratis desde "+money(T.free):""))+opt("entrega","retiro","Retiro",esc(data.config.zona||"A coordinar"))+'</div>'+
       (co.entrega==="envio"?'<div class="co-fields">'+fld("direccion","Dirección","","autocomplete=\"address-line1\"")+fld("depto","Número de departamento (opcional)","","autocomplete=\"address-line2\" placeholder=\"Ej: 4B\"")+fld("localidad","Localidad / provincia","","autocomplete=\"address-level2\"")+fld("cp","Código postal","","autocomplete=\"postal-code\" inputmode=\"numeric\"")+'</div>':"")+'</section>'+
     '<section class="co-box"><h2>3. Pago</h2><div class="co-opts">'+opt("pago","transferencia","Transferencia bancaria",(T.d?T.d+"% off · ":"")+"Mercado Pago, Ualá, MODO o tu banco")+opt("pago","tarjeta","Tarjeta débito o crédito","")+(co.pago==="tarjeta"?'<p class="hint">Coordinamos un enlace de pago después de confirmar tu pedido. No ingreses datos de tarjeta acá.</p>':"")+(co.entrega==="retiro"?opt("pago","efectivo","Efectivo","Al retirar"):"")+'</div>'+
@@ -936,7 +943,7 @@ app.addEventListener("click",function(e){
   if(t.closest("#prizeBar")){if(cart.some(function(l){var p=byId(l.id);return p&&!isPre(p)}))openBag();else go("stock");return}
   if(t.closest("#openBag")){openBag();return}
   if(t.closest("#clear")){clearTimeout(qTimer);filt=emptyFilters();sec="todo";refreshCatalog();return}
-  if(t.closest("#howto")){alert("1. Elegí la camiseta y el talle.\n2. Agregala a tu pedido.\n3. Tocá \"Enviar pedido por WhatsApp\" y coordinamos pago y envío.");return}
+  if(t.closest("#howto")){openHowTo();return}
   if(t.closest("#goAdmin")){view="admin";setHash("#socios",true);render();scrollTo(0,0);return}
   if(t.closest("#add")){
     data.productos.unshift({id:uid(),club:"Club",titulo:"Modelo",categoria:"Sudamérica",epoca:"Actual",precio:60000,precioAnterior:0,patron:{tipo:"liso",c1:"#FFFFFF",c2:"#0F2A5C"},foto:null,stock:{S:0,M:0,L:0,XL:0,XXL:0},destacado:false,nuevo:true});
