@@ -5,7 +5,7 @@ var SIZES=["S","M","L","XL","XXL"];
 var CATS=["Sudamérica","Europa","Selecciones"];
 var EPOCAS=["Actual","Retro"];
 var PATTERNS={liso:"Liso",bastones:"Bastones",banda:"Banda horizontal",diagonal:"Banda diagonal",aros:"Rayas horizontales",mitades:"Mitad y mitad"};
-var HEAD_FONTS='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Onest:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
+var HEAD_FONTS='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700;1,800;1,900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">';
 var NAV=[{k:"inicio",t:"Inicio"},{k:"stock",t:"En stock"},{k:"pedido",t:"Por pedido"},{k:"todo",t:"Todas"},{k:"ruleta",t:"La ruleta"}];
 
 var saved=JSON.parse(document.getElementById("store-data").textContent);

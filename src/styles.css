@@ -992,3 +992,12 @@ nav.cats [data-nav="ruleta"]{font-family:var(--mont),system-ui,sans-serif;font-s
 /* Logo nuevo (imagen) */
 .logo-mark.logo-img{width:48px;height:48px;border:0;background:none;padding:0;border-radius:50%;object-fit:contain;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
 @media (max-width:720px){.logo-mark.logo-img{width:42px;height:42px}}
+
+/* ===== Tipografía estilo Champions: Source Sans 3 (libre, de la familia de Myriad) en toda la página ===== */
+:root{--display:"Source Sans 3","Segoe UI",system-ui,sans-serif;--body:"Source Sans 3","Segoe UI",system-ui,sans-serif;--mont:"Source Sans 3","Segoe UI",system-ui,sans-serif}
+body{font-family:var(--body)}
+.nt-name,.nt-ok h3{font-family:var(--body)}
+/* El botón rojo de La ruleta mantiene Montserrat */
+nav.cats [data-nav="ruleta"]{font-family:"Montserrat","Segoe UI",system-ui,sans-serif}
+@media (max-width:720px){nav.cats button:not([data-nav="ruleta"]){font-size:14.5px}}
+@media (max-width:370px){nav.cats button:not([data-nav="ruleta"]){font-size:13.5px}}
