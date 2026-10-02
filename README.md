@@ -1,4 +1,4 @@
-# La ONCE Avellaneda
+# La ONCE Kits
 
 Prototipo de la tienda: stock local, camisetas por encargo y ruleta de demostración. Repositorio público de trabajo: **gggalooo/la-once-avellaneda**.
 

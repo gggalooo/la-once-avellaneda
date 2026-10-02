@@ -1,5 +1,5 @@
 /**
- * La ONCE Avellaneda — recibe pedidos y avisos de stock desde la página
+ * La ONCE Kits — recibe pedidos y avisos de stock desde la página
  * y los anota en esta planilla.
  *
  * Cómo instalarlo:
@@ -55,7 +55,7 @@ function doPost(e) {
 
 // Para probar que la URL funciona: abrila en el navegador y tiene que decir {"ok":true}.
 function doGet() {
-  return respuesta({ ok: true, tienda: 'La ONCE Avellaneda' });
+  return respuesta({ ok: true, tienda: 'La ONCE Kits' });
 }
 
 // Texto seguro: corta el largo y evita que algo empiece con "=" y se tome como fórmula.
