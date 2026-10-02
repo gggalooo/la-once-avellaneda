@@ -902,3 +902,8 @@ nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#fff1bc;box-shado
 
 /* Porción "Envío gratis" de la ruleta: palabra más larga, mismo tamaño que "Camiseta" */
 .wheel-rim .wheel-label.wl-word{font-size:6.2cqw}
+
+/* Probabilidades de la ruleta: que "CAMISETA" no empuje la grilla en celulares chicos */
+.odds{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (min-width:721px){.odds{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (max-width:420px){.odds{gap:6px}.odds div{padding:12px 4px}.odds strong{font-size:14px;letter-spacing:-.01em}}
