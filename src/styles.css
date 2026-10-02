@@ -984,3 +984,7 @@ nav.cats [data-nav="ruleta"]::before{width:18px;height:18px;vertical-align:0;mar
 @media (max-width:720px){nav.cats [data-nav="ruleta"]{font-size:14px;letter-spacing:.02em;padding:8px 10px}nav.cats [data-nav="ruleta"]::before{width:13px;height:13px;margin-right:5px}}
 @media (max-width:400px){nav.cats button{padding-left:5px;padding-right:5px}nav.cats [data-nav="ruleta"]{padding:8px 8px;letter-spacing:0}}
 @media (max-width:370px){nav.cats [data-nav="ruleta"]{font-size:13px;padding:8px 7px}nav.cats [data-nav="ruleta"]::before{width:12px;height:12px;margin-right:4px}}
+/* Botón "La ruleta": tipografía simple, sin cursiva */
+nav.cats [data-nav="ruleta"]{font-family:var(--mont),system-ui,sans-serif;font-style:normal;font-weight:800;text-transform:none;letter-spacing:0;font-size:17px}
+@media (max-width:720px){nav.cats [data-nav="ruleta"]{font-size:13.5px;letter-spacing:0}}
+@media (max-width:370px){nav.cats [data-nav="ruleta"]{font-size:12.5px}}
