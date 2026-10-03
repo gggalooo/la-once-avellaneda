@@ -1,5 +1,5 @@
 /**
- * La ONCE Kits — recibe pedidos, pagos y avisos de stock y los anota en esta planilla.
+ * La ONCE Avellaneda — recibe pedidos, pagos y avisos de stock y los anota en esta planilla.
  *
  * Cómo instalarlo:
  * 1. En la planilla: Extensiones → Apps Script.
@@ -120,7 +120,7 @@ function buscarFila(hoja, codigo) {
 
 // Para probar que la URL funciona: abrila en el navegador y tiene que decir {"ok":true}.
 function doGet() {
-  return respuesta({ ok: true, tienda: 'La ONCE Kits' });
+  return respuesta({ ok: true, tienda: 'La ONCE Avellaneda' });
 }
 
 // Texto seguro: corta el largo y evita que algo empiece con "=" y se tome como fórmula.

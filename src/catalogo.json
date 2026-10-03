@@ -1,6 +1,6 @@
 {
   "config": {
-    "nombre": "La ONCE Kits",
+    "nombre": "La ONCE Avellaneda",
     "whatsapp": "",
     "instagram": "",
     "descuentoTransferencia": 10,
@@ -586,8 +586,8 @@
   ],
   "heroJugadores": [
     {
-      "foto": "assets/94ef99990411e4fd.webp",
-      "alt": "Thiago Almada con la camiseta alternativa de River Plate"
+      "foto": "assets/river-portada-avellaneda.png",
+      "alt": "Jugador de River Plate mostrando el escudo de la camiseta"
     },
     {
       "foto": "assets/0acf4da3b9b30e9f.webp",

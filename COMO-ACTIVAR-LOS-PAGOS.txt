@@ -1,4 +1,4 @@
-LA ONCE KITS — CÓMO ACTIVAR LOS PAGOS CON MERCADO PAGO
+LA ONCE AVELLANEDA — CÓMO ACTIVAR LOS PAGOS CON MERCADO PAGO
 =======================================================
 
 Qué va a ver el cliente al pagar
@@ -22,7 +22,7 @@ PASO 1 — Crear la aplicación en Mercado Pago
 --------------------------------------------
 1. Entrá a https://www.mercadopago.com.ar/developers con la cuenta de Mercado Pago
    del negocio (la que va a recibir la plata).
-2. "Tus integraciones" → "Crear aplicación". Nombre: La ONCE Kits.
+2. "Tus integraciones" → "Crear aplicación". Nombre: La ONCE Avellaneda.
    Tipo de solución: Pagos online. Producto: Checkout Pro y Checkout API / Bricks
    (si pregunta por plataforma: "No uso plataforma de e-commerce").
 3. Entrá a la aplicación → "Credenciales de prueba". Copiá:

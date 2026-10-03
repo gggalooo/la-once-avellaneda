@@ -131,14 +131,14 @@ export async function crearPreferencia(o) {
   const pref = await mp("/checkout/preferences", {
     method: "POST",
     body: JSON.stringify({
-      items: [{ id: o.codigo, title: `La ONCE Kits · Pedido ${o.codigo}`, description: o.lineas.map((l) => `${l.cant}x ${l.club} ${l.talle}`).join(", ").slice(0, 250), quantity: 1, currency_id: "ARS", unit_price: o.total }],
+      items: [{ id: o.codigo, title: `La ONCE Avellaneda · Pedido ${o.codigo}`, description: o.lineas.map((l) => `${l.cant}x ${l.club} ${l.talle}`).join(", ").slice(0, 250), quantity: 1, currency_id: "ARS", unit_price: o.total }],
       payer: { name: o.comprador.nombre, email: o.comprador.email },
       external_reference: o.codigo,
       notification_url: u.notif,
       back_urls: { success: u.back("ok"), failure: u.back("error"), pending: u.back("pendiente") },
       auto_return: "approved",
       binary_mode: true,
-      statement_descriptor: "LA ONCE KITS",
+      statement_descriptor: "LA ONCE AVELLANEDA",
       payment_methods: {
         excluded_payment_types: [{ id: "credit_card" }, { id: "debit_card" }, { id: "prepaid_card" }, { id: "ticket" }, { id: "atm" }],
         installments: 1,
@@ -160,14 +160,14 @@ export async function pagarConTarjeta(o, card) {
     body: JSON.stringify({
       transaction_amount: o.total,
       token: card.token,
-      description: `La ONCE Kits · Pedido ${o.codigo}`,
+      description: `La ONCE Avellaneda · Pedido ${o.codigo}`,
       installments: Math.max(1, Math.floor(Number(card.installments) || 1)),
       payment_method_id: card.payment_method_id,
       issuer_id: card.issuer_id || undefined,
       payer: { email: payer.email || o.comprador.email, identification: payer.identification && payer.identification.number ? payer.identification : undefined },
       external_reference: o.codigo,
       notification_url: u.notif,
-      statement_descriptor: "LA ONCE KITS",
+      statement_descriptor: "LA ONCE AVELLANEDA",
       binary_mode: true,
       metadata: { pedido: o.codigo },
     }),
