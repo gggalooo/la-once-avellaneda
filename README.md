@@ -79,7 +79,7 @@ El formulario permite hasta seis fotos por camiseta, elegir portada, editar nomb
 
 El instalador se genera con `npm run build` a partir de `codigo-apps-script.txt`, `editor.gs` y `Panel.html`. Después de cambiarlo, actualizar el código del proyecto y crear una nueva versión de su implementación, conservando la URL.
 
-Pestaña **Productos**: en stock, los talles S–XXL son cantidades; en pedido, 1 = se puede encargar y 0 = no. `activo = NO` oculta la camiseta. Los cambios aparecen al recargar la página (Google puede demorar 1 o 2 minutos).
+Pestaña **Productos**: en stock, los talles S–XXL son cantidades; en pedido, 1 = se puede encargar y 0 = no. En la tienda, los talles con 0 quedan bloqueados y se muestran como «Agotado» (stock) o «No disponible» (pedido). Por ejemplo, S = 0, M = 2 y L = 1 permite elegir solo M y L; completá también XL y XXL con 0 si no hay. `activo = NO` oculta la camiseta. Los cambios aparecen al recargar la página (Google puede demorar 1 o 2 minutos).
 
 ## Publicar en Netlify
 

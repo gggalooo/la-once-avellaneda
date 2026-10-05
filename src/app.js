@@ -108,7 +108,16 @@ var SLIDES=[
   {cls:"s2",t:"Retro que",yr:"marcó época",p:"Las camisetas de los partidos que todavía te acordás de memoria.",cta:"Ver retro",nav:"Retro",retro:true,kits:["p8","p11","p12"]},
   {cls:"s3",t:"Pagá como",yr:"quieras",p:"",cta:"Ver descuentos",nav:"oferta",pay:true,kits:["p10","p7","p14"]}
 ];
-function renderHome(){
+function renderHome(refreshProductsOnly){
+  var rowN=0;
+  function row(title,k,max,sub){
+    var all=data.productos.filter(function(p){return inSection(p,k)}), l=sortList(all).slice(0,max||8);
+    if(!l.length) return "";
+    rowN++;
+    return '<section class="row row-'+esc(k)+'"><div class="row-head"><div><h2>'+esc(title)+'</h2>'+(sub?'<p>'+esc(sub)+'</p>':"")+'</div><button class="see-all" data-nav="'+esc(k)+'">Ver todas <span aria-hidden="true">('+all.length+')</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="grid">'+l.map(card).join("")+'</div></section>';
+  }
+  var productRows=row("Elegidas de nuestro stock","destacado",4,"Para vivir el fútbol, adentro y afuera de la cancha.")+row("Para los que saben esperar","pedido",4,"Por encargo · Aproximadamente un mes desde la confirmación");
+  if(refreshProductsOnly){var target=app.querySelector(".home-products");if(target){target.innerHTML=productRows;return}}
   var c=data.config;
   SLIDES[2].p="Transferí desde tu cuenta bancaria y llevate "+(Number(c.descuentoTransferencia)||0)+"% off.";
   var sl=SLIDES.map(function(s,i){
@@ -142,17 +151,10 @@ function renderHome(){
     if(t.foto) return '<button class="tile photo" style="background:'+esc(t.color)+'" data-nav="'+esc(t.nav)+'"><img src="'+esc(t.foto)+'" alt="" style="object-position:'+esc(t.pos||"center")+'"><span>'+esc(t.titulo)+'</span></button>';
     return '<button class="tile" style="background:'+esc(t.color)+'" data-nav="'+esc(t.nav)+'"><span>'+esc(t.titulo)+'</span>'+jersey(t.patron)+'</button>';
   }).join("");
-  var rowN=0;
-  function row(title,k,max,sub){
-    var all=data.productos.filter(function(p){return inSection(p,k)}), l=sortList(all).slice(0,max||8);
-    if(!l.length) return "";
-    rowN++;
-    return '<section class="row row-'+esc(k)+'"><div class="row-head"><div><h2>'+esc(title)+'</h2>'+(sub?'<p>'+esc(sub)+'</p>':"")+'</div><button class="see-all" data-nav="'+esc(k)+'">Ver todas <span aria-hidden="true">('+all.length+')</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="grid">'+l.map(card).join("")+'</div></section>';
-  }
   app.innerHTML=header()+
     '<section class="hero" aria-roledescription="carrusel" aria-label="Destacados"><div class="slides" style="transform:translateX(-'+(slide*100)+'%)">'+sl+'</div><div class="dots">'+dots+'</div><button class="arrow prev" data-dir="-1" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="arrow next" data-dir="1" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></section>'+
     '<div class="perks">'+perks+'</div>'+
-    '<main class="wrap">'+modeIntro()+'<div class="tiles">'+tiles+'</div>'+row("Elegidas de nuestro stock","destacado",4,"Para vivir el fútbol, adentro y afuera de la cancha.")+row("Para los que saben esperar","pedido",4,"Por encargo · Aproximadamente un mes desde la confirmación")+clubInvite()+'</main>'+
+    '<main class="wrap">'+modeIntro()+'<div class="tiles">'+tiles+'</div><div class="home-products">'+productRows+'</div>'+clubInvite()+'</main>'+
     footer()+'<dialog id="dlg"></dialog><dialog id="bagDlg" class="drawer"></dialog><div class="toast" id="toast"></div>';
   setSlide(slide);startTimer();
   var hero=app.querySelector(".hero"), x0=null;
@@ -213,7 +215,7 @@ function openDetail(id){
   SIZES.some(function(s){if(capacity(p,s)>0&&SIZES.filter(function(x){return capacity(p,x)>0}).length===1){sel=s;return true}});
   function draw(){
     var t=available(p), n=waNumber();
-    var btns=SIZES.map(function(s){var k=capacity(p,s)||0;return '<button data-s="'+s+'" aria-pressed="'+(sel===s)+'" '+(k?"":"disabled")+'>'+s+'</button>'}).join("");
+    var btns=SIZES.map(function(s){var k=capacity(p,s)||0,missing=isPre(p)?'No disponible':'Agotado';return '<button data-s="'+s+'" aria-pressed="'+(sel===s)+'" aria-label="Talle '+s+(k?' disponible':' · '+missing)+'" '+(k?"":"disabled")+'><span>'+s+'</span>'+(k?'':'<small>'+missing+'</small>')+'</button>'}).join("");
     var left=sel?capacity(p,sel)||0:0;
     var inCart=sel?cart.filter(function(l){return l.id===p.id&&l.talle===sel}).reduce(function(a,l){return a+l.cant},0):0;
     var maxQ=Math.max(0,left-inCart); if(qty>maxQ) qty=Math.max(1,maxQ);
@@ -302,7 +304,7 @@ function loadSheet(){
   if(endpoint){
     var cb='onceCatalog_'+Date.now()+'_'+Math.random().toString(36).slice(2),script=document.createElement('script'),timeout;
     function cleanup(){clearTimeout(timeout);delete window[cb];script.remove()}
-    window[cb]=function(payload){cleanup();if(!payload||!payload.ok||!Array.isArray(payload.productos))return;if(applySheet(payload.productos,true)&&view!=='admin'&&view!=='checkout'){validCart();render()}};
+    window[cb]=function(payload){cleanup();if(!payload||!payload.ok||!Array.isArray(payload.productos))return;if(applySheet(payload.productos,true)&&view!=='admin'&&view!=='checkout'){validCart();if(view==='home')renderHome(true);else render()}};
     script.onerror=cleanup;timeout=setTimeout(cleanup,15000);script.src=endpoint+(endpoint.indexOf('?')<0?'?':'&')+'action=catalogo&callback='+cb;document.head.appendChild(script);return;
   }
   var id=sheetId();if(!id)return;
@@ -310,7 +312,7 @@ function loadSheet(){
     var j=JSON.parse(t.slice(t.indexOf('(')+1,t.lastIndexOf(')')));if(!j.table)return;
     var cols=j.table.cols.map(function(c){return String(c.label||'').trim()});
     var rows=(j.table.rows||[]).map(function(row){var o={};(row.c||[]).forEach(function(c,i){o[cols[i]]=c?(c.v!=null?c.v:c.f):null});return o});
-    if(applySheet(rows)&&view!=='admin'&&view!=='checkout'){validCart();render()}
+    if(applySheet(rows)&&view!=='admin'&&view!=='checkout'){validCart();if(view==='home')renderHome(true);else render()}
   }).catch(function(){});
 }
 function sendStockAlert(info){
