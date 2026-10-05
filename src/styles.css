@@ -922,8 +922,8 @@ nav.cats [data-nav="ruleta"][aria-current="true"]{border-color:#fff1bc;box-shado
 .prize-ticket .mb-claim{display:flex;justify-content:center;align-items:center;margin:12px auto 0;max-width:280px;min-height:44px;text-decoration:none}
 
 /* ===== Ruleta estilo casino: paño verde, madera y dorado ===== */
-.club-surface.casino{--felt:#0d4a35;--gold:#e2b54c;--gold-2:#f3d77e;--cream:#fbf3dc;background-color:var(--felt);background-image:radial-gradient(ellipse at 72% 42%,#1a6d4f 0%,#0e4c36 48%,#07301f 100%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");background-blend-mode:normal;color:var(--cream);border:0;border-radius:18px;box-shadow:inset 0 0 0 2px #b8862e66,inset 0 0 140px #0000006b,0 24px 50px -28px #000}
-.club-surface.casino .club-topline{background:linear-gradient(180deg,#6a3517,#3d1d0a);border-bottom:2px solid #c9962c;color:var(--gold-2)}
+.club-surface.casino{--felt:#0d4a35;--gold:#e2b54c;--gold-2:#f3d77e;--cream:#fbf3dc;background-color:var(--felt);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 70% 40%,#195e46 0%,#104a37 48%,#082f25 100%);background-blend-mode:soft-light,normal;color:var(--cream);border:0;border-radius:18px;box-shadow:inset 0 0 0 1px #d1ad6559,inset 0 0 100px #00000045,0 18px 40px -26px #000}
+.club-surface.casino .club-topline{background:linear-gradient(180deg,#493025,#342219);border-bottom:2px solid #ae884d;color:#edd5a2;box-shadow:inset 0 1px 0 #ffffff0d}
 .club-surface.casino .club-demo{background:linear-gradient(180deg,#f6dc84,#c9962c);color:#2a1306}
 .club-surface.casino .club-copy .eyebrow{color:var(--gold-2)}
 .club-surface.casino .club-copy h1{color:var(--cream);text-shadow:0 3px 0 #04251799}
@@ -1159,6 +1159,170 @@ dialog::backdrop{background:rgba(2,6,24,.72)}
 }
 @media(prefers-reduced-motion:reduce){.tile.photo::before{animation:none!important}.item .art img,.gallery-stage img{transition:none}.gallery-stage:hover img{transform:none}.gallery-stage[aria-pressed="true"] img{transform:scale(1.75)}}
 
+/* Encabezado y catálogo compactos */
+.game-compact,.game-compact *{box-sizing:border-box}
+.game-compact{height:var(--game-height,calc(100svh - 100px));min-height:360px;padding-top:12px;padding-bottom:8px;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px}
+.club-main.game-compact .club-surface{display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0}
+.club-main.game-compact .club-topline{padding:9px 20px;font-size:11px;line-height:20px}
+.club-main.game-compact .club-layout{min-height:0;padding:20px 28px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);grid-template-rows:auto auto;gap:18px 30px;align-content:center;align-items:center}
+.game-heading h1{font:900 clamp(36px,4vw,64px)/1 var(--display);letter-spacing:-.6px;margin:0;color:#fbf3dc;text-shadow:0 3px 0 #04251799}
+.game-heading h1 em{font-style:normal;color:#e2b54c}
+.game-heading p{margin:8px 0 0;font-size:14px;line-height:1.4;color:#cfe2d7}
+.club-main.game-compact .wheel-area.casino-wheel{grid-column:2;grid-row:1/3;width:min(100%,calc(var(--game-height,600px) - 130px),460px);max-height:100%;min-height:0;justify-self:center;align-self:center}
+.game-actions{display:grid;gap:8px;min-width:0}
+.club-main.game-compact .spin-button{width:100%;min-width:0;min-height:48px;padding:10px 16px;margin:0;font-size:16px}
+.club-main.game-compact .game-use{min-height:40px;border:1px solid #e2b54c;border-radius:999px;background:#f3d77e;color:#2a1306;font-size:14px;font-weight:700;cursor:pointer;padding:8px 14px}
+.club-main.game-compact .game-sound{justify-self:center;margin:0;padding:6px 12px;min-height:36px;font-size:12px}
+.club-main.game-compact .prize-ticket{margin:0;padding:10px 14px;max-width:none;border-width:1px;border-radius:8px;box-shadow:none}
+.club-main.game-compact .prize-ticket .eyebrow{font-size:9px}
+.club-main.game-compact .prize-ticket h2{font:800 26px/1.1 var(--display);margin:3px 0}
+.club-main.game-compact .prize-ticket p{font-size:12px;line-height:1.3;margin:3px 0}
+.club-main.game-compact .prize-ticket .mb-claim{min-height:40px;margin:6px 0 0;max-width:none;padding:7px 12px;font-size:13px}
+.game-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:11px;line-height:1.3}
+.game-foot .linkish{min-height:32px;font-size:12px;flex:none}
+@media(max-width:720px) and (orientation:portrait){
+ .game-compact{min-height:430px;padding:8px 12px 6px;gap:6px}
+ .club-main.game-compact .club-topline{padding:6px 14px;font-size:10px;line-height:18px}
+ .club-main.game-compact .club-layout{padding:10px 14px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(100px,1fr) auto;gap:8px;align-content:stretch}
+ .game-heading{text-align:center}
+ .game-heading h1{font-size:34px}
+ .game-heading p{font-size:12px;margin:4px 0 0}
+ .club-main.game-compact .wheel-area.casino-wheel{grid-column:1;grid-row:2;width:100%;height:100%;min-height:0;aspect-ratio:auto;align-self:stretch;container-type:size;filter:drop-shadow(0 10px 10px #0006)}
+ .club-main.game-compact .wheel-area .cw-svg{width:min(100cqw,100cqh,340px);height:min(100cqw,100cqh,340px);max-width:100%;max-height:100%}
+ .club-main.game-compact .game-actions{gap:6px}
+ .club-main.game-compact .spin-button{min-height:44px;font-size:14px;padding:9px 12px}
+ .club-main.game-compact .game-sound{min-height:32px;padding:4px 10px}
+ .club-main.game-compact .prize-ticket{padding:7px 10px}
+ .club-main.game-compact .prize-ticket h2{font-size:22px}
+ .club-main.game-compact .prize-ticket p{font-size:11px}
+ .club-main.game-compact:has(.prize-ticket) .game-heading h1{font-size:28px}
+ .club-main.game-compact:has(.prize-ticket) .game-heading p{display:none}
+ .club-main.game-compact .prize-ticket .eyebrow{display:none}
+ .club-main.game-compact .game-actions:has(.prize-ticket){grid-template-columns:minmax(0,1fr) auto}
+ .club-main.game-compact .game-actions:has(.prize-ticket) .prize-ticket{grid-column:1/3;grid-row:1}
+ .club-main.game-compact .game-actions:has(.prize-ticket) .spin-button{grid-column:1/3;grid-row:2}
+ .club-main.game-compact .game-actions:has(.prize-ticket) .game-use{grid-column:1;grid-row:3}
+ .club-main.game-compact .game-actions:has(.prize-ticket) .game-sound{grid-column:2;grid-row:3;font-size:10px;padding:4px 6px}
+ .game-foot{font-size:10px}
+}
+@media(max-height:520px) and (orientation:landscape){
+ .game-compact{min-height:180px;padding-top:6px;padding-bottom:4px;gap:4px}
+ .club-main.game-compact .club-topline{padding:3px 12px;font-size:9px;line-height:18px}
+ .club-main.game-compact .club-layout{padding:8px 14px;gap:6px 16px;grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
+ .game-heading h1{font-size:28px}
+ .game-heading p{display:none}
+ .club-main.game-compact .wheel-area.casino-wheel{width:min(100%,calc(var(--game-height,300px) - 115px))}
+ .club-main.game-compact .game-actions{gap:4px;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+ .club-main.game-compact .spin-button{font-size:12px;min-height:40px;padding:6px 10px}
+ .club-main.game-compact .game-sound{font-size:10px;padding:4px 8px;min-height:32px}
+ .club-main.game-compact .prize-ticket{grid-column:1/3;padding:4px 8px}
+ .club-main.game-compact .prize-ticket .eyebrow{display:none}
+ .club-main.game-compact .prize-ticket h2{font-size:20px;margin:0}
+ .club-main.game-compact .prize-ticket p{font-size:10px;margin:2px 0}
+ .club-main.game-compact .prize-ticket .mb-claim{min-height:32px;padding:4px 8px;margin-top:3px}
+ .club-main.game-compact .game-use{font-size:12px;min-height:36px;padding:4px 10px}
+ .club-main.game-compact .prize-ticket p:first-of-type{display:none}
+ .club-main.game-compact .game-sound{grid-column:2;grid-row:2}
+ .club-main.game-compact .spin-button{grid-column:1;grid-row:2}
+ .club-main.game-compact .game-use{grid-column:1/3;grid-row:3}
+ .club-main.game-compact .game-actions:not(:has(.prize-ticket)) .spin-button{grid-row:1}
+ .club-main.game-compact .game-actions:not(:has(.prize-ticket)) .game-sound{grid-row:1}
+ .game-foot{font-size:10px}
+}
+header.site,header.site *,.catalog .cat-head,.catalog .cat-tools,.catalog .sort,.catalog .filter-panel,.catalog .filter-panel *{box-sizing:border-box}
+@media(max-height:360px) and (orientation:landscape){
+ .club-main.game-compact:has(.prize-ticket) .game-heading{display:none}
+ .club-main.game-compact:has(.prize-ticket) .game-actions{grid-row:1/3}
+ .club-main.game-compact .spin-button{font-size:10px;white-space:nowrap}
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px)}
+.topbar{background:#4CD6EE;color:#051034;border:0;font-size:13px;line-height:20px;padding:5px 12px;letter-spacing:0}
+header.site .head-row{height:68px;flex-wrap:nowrap;gap:12px;padding-top:0;padding-bottom:0}
+header.site .logo{flex:none;gap:8px}
+header.site .logo-word{font-size:27px}
+header.site .logo-mark{width:40px;height:40px}
+header.site nav.cats{border:0;flex:none}
+header.site nav.cats>div{display:flex;align-items:center;gap:2px}
+header.site nav.cats button{font-size:14px;padding:10px 9px;min-height:44px}
+header.site nav.cats [data-nav="ruleta"]{font-size:14px;padding:8px 12px;margin:0 0 0 5px;min-height:40px}
+header.site nav.cats [data-nav="ruleta"]::before{width:15px;height:15px;margin-right:6px}
+.head-search{position:relative;flex:0 1 240px;min-width:160px;margin-left:auto}
+.search-icon{position:absolute;right:13px;top:50%;transform:translateY(-50%);width:19px;height:19px;fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linecap:round;pointer-events:none}
+header.site #headerNav [data-nav="ruleta"]{display:none}
+header.site .roulette-slot{flex:none}
+header.site .roulette-slot [data-nav="ruleta"]{margin-left:0}
+.delivery-overview{margin:0;padding:14px 0;font-size:13px;line-height:1.5;color:var(--muted)}
+.delivery-overview>span{font-weight:600;color:var(--ink)}
+header.site .search{display:block;width:100%;max-width:none;margin:0;padding:9px 40px 9px 13px;font-size:14px;min-width:0;height:40px}
+header.site .acc-head{margin:0;flex:none}
+.head-toggle,.head-account{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;padding:10px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.head-toggle svg,.head-account svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.head-toggle:hover,.head-account:hover{background:var(--surface)}
+header.site .head-toggle{display:none}
+header.site .bag{width:44px;height:44px;margin:0}
+.prize-bar{min-height:30px;padding:4px 12px;gap:8px;font-size:13px;line-height:20px}
+.prize-bar svg{width:16px;height:16px}
+.prize-bar .pb-go{padding:0 9px;font-size:12px}
+.prize-bar .pb-when{display:inline;font-size:inherit}
+.prize-bar .pb-sep{display:inline}
+.catalog .cat-head{align-items:center;gap:8px 16px;margin:0;padding:18px 0 12px;border:0}
+.catalog .cat-head h1{margin:0;font:700 24px/1.2 var(--body);font-style:normal;letter-spacing:0;text-transform:none;text-shadow:none}
+.catalog .cat-tools{display:flex;align-items:center;gap:12px}
+.catalog .sort{padding:7px 10px;font-size:14px;min-height:38px}
+.catalog-note{margin:0 0 12px;font-size:13px;color:var(--muted)}
+.catalog .filter-panel{padding:0;border:0;border-radius:0;background:none;margin:0 0 14px}
+.catalog .filter-controls{margin:0;gap:12px;display:flex;align-items:center;flex-wrap:wrap}
+.catalog .filter-field{display:flex;align-items:center;gap:7px}
+.catalog .filter-field select{min-height:38px;font-size:14px;padding:7px 9px}
+.catalog .filter-panel summary{display:none}
+.catalog .active-filters{margin:0 0 14px;gap:6px}
+.catalog .filter-tag{font-size:12px;padding:4px 9px}
+.catalog #clear{font-size:13px;min-height:32px}
+.filter-count{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:999px;background:var(--celeste);color:#051034;font-size:12px}
+@media(max-width:1099px){
+ header.site nav.roulette-slot{display:none}
+ header.site #headerNav [data-nav="ruleta"]{display:inline-flex}
+ header.site .head-row{height:64px;gap:6px}
+ header.site .head-toggle{display:inline-flex}
+ header.site .logo{margin-right:auto}
+ header.site #headerNav,.head-search{display:none;position:absolute;left:0;right:0;top:100%;margin:0;padding:12px 20px;background:#06123A;border-bottom:1px solid var(--line);box-shadow:0 10px 20px #0004}
+ header.site[data-panel="menu"] #headerNav{display:block}
+ header.site[data-panel="menu"] #headerNav>div{max-width:1160px;margin:auto;flex-wrap:wrap;gap:6px}
+ header.site[data-panel="search"] .head-search{display:block}
+ header.site .search{max-width:1160px;margin:auto;font-size:16px;height:44px}
+ header.site .search-icon{right:max(33px,calc((100% - 1160px)/2 + 13px))}
+}
+@media(max-width:359px){
+ header.site .head-row.wrap{padding-left:8px;padding-right:8px;gap:0}
+ header.site .logo .logo-word{font-size:18px}
+ header.site .logo .logo-mark{width:28px;height:28px}
+ header.site .head-row .logo{gap:4px}
+}
+@media(max-width:720px){
+ header.site .head-row{padding-left:12px;padding-right:12px;gap:2px}
+ header.site .logo-word{font-size:22px}
+ header.site .logo-word small{font-size:7px;letter-spacing:1.5px}
+ header.site .logo-mark{width:32px;height:32px}
+ header.site .logo{gap:6px}
+ .topbar{font-size:11px;line-height:18px;padding:6px 8px}
+ .prize-bar{font-size:11px;gap:5px;padding:4px 8px}
+ .prize-bar .pb-txt{flex:0 1 auto}
+ .prize-bar .pb-go{font-size:11px;white-space:nowrap}
+ .prize-bar .pb-when{white-space:nowrap}
+ .catalog .cat-head{padding:14px 0 10px;gap:8px}
+ .catalog .cat-head h1{font-size:21px;flex-basis:100%}
+ .catalog .cat-tools{width:100%;justify-content:space-between}
+ .catalog .sort{font-size:16px;min-height:44px}
+ .catalog .filter-panel summary{display:flex;align-items:center;gap:8px;width:fit-content;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-size:14px;list-style:none}
+ .catalog .filter-panel summary::-webkit-details-marker{display:none}
+ .catalog .filter-panel summary::after{content:'+';margin-left:8px}
+ .catalog .filter-panel[open] summary::after{content:'−'}
+ .catalog .filter-panel:not([open]) .filter-controls{display:none}
+ .catalog .filter-panel[open] .filter-controls{margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .catalog .filter-field{display:grid;gap:4px;min-width:0}
+ .catalog .filter-field select{font-size:16px;min-height:44px;width:100%}
+}
+
 /* Disponibilidad de talles: estado explícito además del botón bloqueado. */
 .pick button:disabled{opacity:1;border-style:dashed;color:var(--muted);text-decoration:none}
 .pick button:disabled>span{text-decoration:line-through;opacity:.65}
@@ -1177,3 +1341,116 @@ dialog::backdrop{background:rgba(2,6,24,.72)}
 /* Zoom: solo al hacer clic (o tocar) sobre la foto; acerca un poco y sigue el cursor. */
 .gallery-stage img{transition:transform .3s ease,transform-origin .08s linear}
 .acc-local{margin:-4px 0 14px}
+
+/* El paño verde cubre también los márgenes y el pie de la ruleta. */
+body:has(.game-compact){background:#0b3529}
+body:has(.game-compact)::before{background:radial-gradient(ellipse at 70% 40%,#174b3a 0%,#0b3529 75%);background-size:cover;background-position:center}
+body:has(.game-compact) header.site{background:#051034}
+body:has(.game-compact) .game-foot{color:#c3d8cd}
+.club-main.game-compact{max-width:none;padding:0;gap:0}
+.club-main.game-compact .club-surface.casino{background:none;border:0;border-radius:0;box-shadow:none}
+.club-main.game-compact .club-layout{width:100%;max-width:1200px;margin:0 auto}
+.club-main.game-compact .club-topline{padding-left:max(20px,calc((100% - 1200px)/2 + 28px));padding-right:max(20px,calc((100% - 1200px)/2 + 28px))}
+.club-main.game-compact .game-foot{width:100%;max-width:1200px;margin:0 auto;padding:4px 28px}
+@media(max-width:720px){
+ .club-main.game-compact .club-topline{padding-left:14px;padding-right:14px}
+ .club-main.game-compact .game-foot{padding:4px 14px}
+}
+
+/* Ruleta: composición integrada sobre el paño, sin sombras pesadas. */
+body:has(.game-rework)::before{background:radial-gradient(ellipse at 73% 43%,#19513e 0%,#0f3d30 44%,#092d24 100%)}
+.game-rework.game-compact .club-topline{padding-top:5px;padding-bottom:5px;border-bottom:1px solid #d9b76b38;background:linear-gradient(180deg,#3f2d24,#34261e);font-size:10px;line-height:18px}
+.game-rework.game-compact .club-demo{padding:2px 8px;border:1px solid #d9b76b50;background:none;color:#ecd6aa;font-size:9px}
+.game-rework.game-compact .club-layout{max-width:1160px;padding:24px 36px;grid-template-columns:minmax(0,.9fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:64px;align-content:stretch}
+.game-panel{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;gap:24px;min-width:0;max-width:420px}
+.game-rework .game-heading h1{font-size:clamp(36px,4.6vw,62px);letter-spacing:-1px;text-shadow:none}
+.game-rework .game-heading p{font-size:14px;color:#b9d1c4;margin-top:10px}
+.game-rework.game-compact .wheel-area.casino-wheel{grid-column:2;grid-row:1;width:min(100%,calc(var(--game-height,600px) - 125px),480px);filter:none}
+.game-rework.game-compact .wheel-area.casino-wheel::before{content:"";position:absolute;bottom:-7px;left:20%;width:60%;height:16px;background:radial-gradient(ellipse,#00000029,transparent 70%);filter:blur(5px);pointer-events:none}
+.game-rework .cw-svg{position:relative;z-index:1}
+.game-rework .game-actions{grid-template-columns:minmax(0,1fr) auto;gap:10px 12px}
+.game-rework.game-compact .prize-ticket{grid-column:1/3;grid-row:1;background:linear-gradient(110deg,#153e30,#11352a);color:#f8efdc;border:1px solid #d5b76b3b;border-left:3px solid #dfbd70;border-radius:6px;padding:16px 18px;box-shadow:none}
+.game-rework.game-compact .prize-ticket .eyebrow{color:#d8bb79;font-size:9px;letter-spacing:1.7px}
+.game-rework.game-compact .prize-ticket h2{color:#f4d88c;font-size:34px;margin:6px 0 4px}
+.game-rework.game-compact .prize-ticket p{color:#c9dacf;font-size:12px;line-height:1.4}
+.game-rework.game-compact .prize-ticket p:last-of-type{margin-top:9px;font-size:11px;color:#acc6b6}
+.game-rework.game-compact .prize-ticket .mb-claim{background:#d7bb72;color:#173427;border-radius:5px;border:0}
+.game-rework.game-compact .spin-button,.game-rework.game-compact .game-use{grid-column:1/3;min-height:48px;border-radius:7px;padding:11px 18px;background:linear-gradient(180deg,#efcf80,#d8b45e);border:1px solid #f6db9b80;color:#29200c;font-size:15px;font-weight:800;letter-spacing:0;box-shadow:0 2px 0 #84632270;text-shadow:none;text-transform:none}
+.game-rework.game-compact .spin-button:hover:not(:disabled),.game-rework.game-compact .game-use:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.game-rework.game-compact .spin-button:active:not(:disabled),.game-rework.game-compact .game-use:active{transform:translateY(1px);box-shadow:none}
+.game-rework.game-compact .spin-button:disabled{grid-column:1;grid-row:3;min-height:34px;background:none;border:0;border-radius:0;box-shadow:none;color:#b2cdbb;text-align:left;padding:4px 0;font-size:12px;font-weight:500;opacity:1;transform:none}
+.game-rework.game-compact .game-use{grid-row:2}
+.game-rework.game-compact .game-sound{grid-column:2;grid-row:2;min-height:34px;padding:4px 0;border:0;border-radius:0;background:none;color:#b9d1c4;font-size:11px;justify-self:end}
+.game-rework.game-compact:has(.prize-ticket) .game-sound{grid-row:3}
+.game-hint{grid-column:1;grid-row:2;margin:0;font-size:11px;line-height:1.4;color:#b2cdbb;align-self:center}
+.game-rework.game-compact .wheel-area.winner{animation:game-wheel-win .8s ease-out 2}
+@keyframes game-wheel-win{0%,100%{transform:scale(1)}45%{transform:scale(1.012)}}
+@media(max-width:720px) and (orientation:portrait){
+ .game-rework.game-compact .club-layout{padding:12px 20px 8px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(100px,1fr) auto;gap:10px}
+ .game-panel{display:contents}
+ .game-rework .game-heading{grid-row:1}
+ .game-rework .game-heading h1{font-size:34px}
+ .game-rework .game-heading p{font-size:12px;margin-top:5px}
+ .game-rework.game-compact .wheel-area.casino-wheel{grid-column:1;grid-row:2;width:100%;height:100%;aspect-ratio:auto}
+ .game-rework.game-compact .wheel-area.casino-wheel::before{display:none}
+ .game-rework .game-actions{grid-column:1;grid-row:3;gap:6px 10px}
+ .game-rework.game-compact .prize-ticket{padding:9px 12px}
+ .game-rework.game-compact .prize-ticket h2{font-size:26px;margin:3px 0}
+ .game-rework.game-compact .prize-ticket p{font-size:11px;margin:2px 0}
+ .game-rework.game-compact .prize-ticket p:last-of-type{margin-top:5px;font-size:10px}
+ .game-rework.game-compact .spin-button,.game-rework.game-compact .game-use{min-height:44px;font-size:14px;padding:8px 12px}
+ .game-rework.game-compact .game-actions:has(.prize-ticket) .spin-button:disabled{grid-column:1;grid-row:3;min-height:32px;font-size:10px;padding:3px 0}
+ .game-rework.game-compact .game-sound{grid-column:2;grid-row:2;font-size:10px;min-height:32px}
+ .game-rework.game-compact:has(.prize-ticket) .game-sound{grid-column:2;grid-row:3}
+ .game-rework.game-compact .game-actions:has(.prize-ticket) .game-use{grid-column:1/3;grid-row:2}
+ .game-rework.game-compact:has(.prize-ticket) .game-heading h1{font-size:28px}
+}
+@media(max-height:520px) and (orientation:landscape){
+ .game-rework.game-compact .club-layout{padding:10px 24px;gap:24px;grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
+ .game-panel{gap:12px}
+ .game-rework .game-heading h1{font-size:30px}
+ .game-rework .game-heading p{display:none}
+ .game-rework.game-compact .wheel-area.casino-wheel{grid-column:2;grid-row:1;width:min(100%,calc(var(--game-height,300px) - 85px))}
+ .game-rework .game-actions{gap:6px 8px}
+ .game-rework.game-compact .prize-ticket{padding:6px 10px}
+ .game-rework.game-compact .prize-ticket h2{font-size:23px;margin:0}
+ .game-rework.game-compact .prize-ticket p:last-of-type{font-size:10px;margin-top:3px}
+ .game-rework.game-compact .spin-button,.game-rework.game-compact .game-use{min-height:36px;font-size:12px;padding:6px 10px}
+ .game-rework.game-compact .spin-button:disabled{min-height:28px;padding:2px 0;font-size:10px;white-space:nowrap}
+ .game-rework.game-compact .game-sound{grid-row:2;font-size:10px;min-height:28px}
+ .game-rework.game-compact:has(.prize-ticket) .game-sound{grid-row:3}
+ .game-rework .game-hint{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.game-rework .wheel-area.winner{animation:none}}
+
+/* Banners: luces y partículas más presentes, con movimiento suave. */
+.hero .slide.stadium .stadium-photo{filter:saturate(1.26) contrast(1.1) brightness(1.05)}
+.hero .fx-beams::before,.hero .fx-beams::after{background:linear-gradient(90deg,#8cd2ff00 0%,#aae1ff8c 50%,#8cd2ff00 100%);filter:blur(7px)}
+.hero .fx-beams::before{animation-duration:8s}
+.hero .fx-beams::after{animation-duration:10s}
+.hero .fx-sparks{animation-duration:12s;filter:drop-shadow(0 0 3px #d9f1ff70)}
+.hero .fx-fog{opacity:.46}
+.hero .slide.stadium .players-glow{opacity:.3}
+.hero .slide.retro{--banner-particle:#ffc471}
+.hero .slide.pay{--banner-particle:#65e9dc}
+.hero .slide.retro .retro-bg::before,.hero .slide.pay .retro-bg::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,#fff9e8e6 0 1px,transparent 2px),radial-gradient(circle,var(--banner-particle) 0 1.5px,transparent 2.6px),radial-gradient(circle,var(--banner-particle) 0 .8px,transparent 1.8px);background-size:190px 210px,270px 260px,140px 170px;background-position:0 0,60px 90px,30px 40px;opacity:.65;animation:banner-particles 12s linear infinite;mask-image:linear-gradient(90deg,transparent 22%,#000 58%);-webkit-mask-image:linear-gradient(90deg,transparent 22%,#000 58%)}
+.hero .slide.retro .retro-shirt::before{background:radial-gradient(circle,#ffae6666 0%,#ff782e33 40%,transparent 70%);animation:banner-halo 5.5s ease-in-out infinite alternate}
+.hero .slide.retro .retro-shirt.trio img{filter:drop-shadow(0 18px 22px #0007) drop-shadow(0 0 18px #ffab4938)}
+.hero .retro-shirt.trio .k1{animation:banner-retro-left 5.4s ease-in-out infinite}
+.hero .retro-shirt.trio .k2{animation:banner-retro-right 5.8s ease-in-out infinite}
+.hero .retro-shirt.trio .k3{animation:banner-retro-center 6s ease-in-out -1.2s infinite}
+.hero .pay-stage::before{background:radial-gradient(circle,#3fe0b078 0%,#50aaff38 42%,transparent 70%);animation-duration:4s}
+.hero .pcard::after{background:linear-gradient(115deg,transparent 40%,#ffffffb3 50%,transparent 60%);animation-duration:4.4s}
+.hero .pc-mp{animation-duration:5.6s}
+.hero .pc-modo{animation-duration:6s}
+.hero .pc-modo::after{animation-delay:-1.4s}
+.hero .pc-uala{animation-duration:6.4s}
+.hero .pc-uala::after{animation-delay:-2.8s}
+@keyframes banner-particles{from{background-position:0 0,60px 90px,30px 40px}to{background-position:35px -210px,85px -170px,5px -300px}}
+@keyframes banner-halo{from{opacity:.65;transform:scale(.96)}to{opacity:1;transform:scale(1.06)}}
+@keyframes banner-retro-left{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-18px) rotate(1deg)}}
+@keyframes banner-retro-right{0%,100%{transform:translateY(-10px) rotate(1deg)}50%{transform:translateY(8px) rotate(-1.2deg)}}
+@keyframes banner-retro-center{0%,100%{transform:translateY(0) rotate(0) scale(1)}30%{transform:translateY(-15px) rotate(-1.2deg) scale(1.018)}65%{transform:translateY(-6px) rotate(1deg) scale(1.008)}}
+.hero .slide[aria-hidden="true"] *,.hero .slide[aria-hidden="true"] *::before,.hero .slide[aria-hidden="true"] *::after{animation-play-state:paused!important}
+@media(max-width:720px){.hero .fx-fog{opacity:.32}.hero .slide.retro .retro-bg::before,.hero .slide.pay .retro-bg::before{opacity:.45}}
+@media(prefers-reduced-motion:reduce){.hero *,.hero *::before,.hero *::after{animation:none!important;transition:none!important}}
