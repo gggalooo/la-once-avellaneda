@@ -385,7 +385,7 @@
       "precio": 44900,
       "proveedor": "GRKITS",
       "fuente": "https://www.grkits7.com/2026-27-Argentina-Home-1-1-Fans-Soccer-Jersey-p3674924.html",
-      "foto": "assets/59a3059931f90e4d.webp",
+      "foto": "assets/59a3059931f90e4d-recorte.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -422,7 +422,7 @@
       "precio": 44900,
       "proveedor": "GRKITS",
       "fuente": "https://www.grkits7.com/2026-27-BAR-Home-1-1-Fans-Soccer-Jersey-p3626208.html",
-      "foto": "assets/f11559f1cb3f3939.webp",
+      "foto": "assets/f11559f1cb3f3939-recorte.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -459,7 +459,7 @@
       "precio": 49900,
       "proveedor": "SSDAYS",
       "fuente": "https://www.ssdays2.com/1998-Vasco-Home-Retro-Soccer-Jersey-p3538669.html",
-      "foto": "assets/39c7870bd17fdcce.webp",
+      "foto": "assets/39c7870bd17fdcce-recorte.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -496,7 +496,7 @@
       "precio": 49900,
       "proveedor": "SSDAYS",
       "fuente": "https://www.ssdays2.com/25-26-Brazil-Away-Player-Version-Soccer-Jersey-p3031827.html",
-      "foto": "assets/5dd29207f434aee5.webp",
+      "foto": "assets/5dd29207f434aee5-recorte.webp",
       "modalidad": "pedido",
       "tallesPedido": [
         "S",
@@ -587,19 +587,19 @@
   ],
   "heroJugadores": [
     {
-      "foto": "assets/2640c9dae6f3b6cd.png",
+      "foto": "assets/2640c9dae6f3b6cd.webp",
       "alt": "Jugador de River Plate mostrando el escudo de la camiseta"
     },
     {
-      "foto": "assets/1273cbffb410e510.png",
+      "foto": "assets/1273cbffb410e510.webp",
       "alt": "Jugador con camiseta celeste"
     },
     {
-      "foto": "assets/7b89cd5bfb67b759.png",
+      "foto": "assets/7b89cd5bfb67b759.webp",
       "alt": "Jugador de espaldas con camiseta roja"
     },
     {
-      "foto": "assets/c3f8efdae26e257e.png",
+      "foto": "assets/c3f8efdae26e257e.webp",
       "alt": "Leandro Paredes con la camiseta titular de Boca Juniors"
     }
   ],
@@ -610,7 +610,7 @@
     "alt": "Camiseta blanca del Santos FC con BMG, sin percha",
     "foto2": "assets/29a36af564856cf3.webp",
     "alt2": "Camiseta roja del Manchester United 2008 con AIG, sin percha",
-    "foto3": "assets/606788f20408f4a0.png",
+    "foto3": "assets/606788f20408f4a0.webp",
     "alt3": "Camiseta retro del Barcelona con el 10"
   },
   "heroPago": {

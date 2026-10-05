@@ -49,7 +49,20 @@ function bool(v, def) {
   return !/^(no|n|false|0)$/i.test(String(v).trim());
 }
 
+// Lee las filas de la pestaña Productos. Primero por la app de la planilla (action=catalogo, lo mismo
+// que usa la página); si no hay app, por el link público de la planilla.
 async function productosDePlanilla() {
+  const app = sheetAppUrl();
+  if (app) {
+    const url = app + (app.includes("?") ? "&" : "?") + "action=catalogo&callback=onceServidor";
+    const r = await fetch(url, { cache: "no-store", redirect: "follow", signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error("planilla app " + r.status);
+    const t = (await r.text()).trim();
+    const cuerpo = t.startsWith("{") ? t : t.slice(t.indexOf("(") + 1, t.lastIndexOf(")"));
+    const j = JSON.parse(cuerpo);
+    if (!j || !j.ok || !Array.isArray(j.productos)) throw new Error("planilla app sin productos");
+    return { filas: j.productos, autoritativa: true };
+  }
   const id = sheetId();
   if (!id) return null;
   const r = await fetch(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&headers=1&sheet=Productos`, { cache: "no-store", signal: AbortSignal.timeout(4000) });
@@ -57,11 +70,14 @@ async function productosDePlanilla() {
   const t = await r.text();
   const j = JSON.parse(t.slice(t.indexOf("(") + 1, t.lastIndexOf(")")));
   const cols = j.table.cols.map((c) => String(c.label || "").trim());
-  return (j.table.rows || []).map((row) => {
-    const o = {};
-    (row.c || []).forEach((c, i) => (o[cols[i]] = c ? (c.v != null ? c.v : c.f) : null));
-    return o;
-  });
+  return {
+    filas: (j.table.rows || []).map((row) => {
+      const o = {};
+      (row.c || []).forEach((c, i) => (o[cols[i]] = c ? (c.v != null ? c.v : c.f) : null));
+      return o;
+    }),
+    autoritativa: false,
+  };
 }
 
 // Devuelve un mapa id -> {id, club, titulo, precio, pedido(bool), stock{S..}, talles[]}
@@ -76,9 +92,15 @@ export async function cargarCatalogo() {
       talles: pedido ? (p.tallesPedido || []) : TALLES.filter((t) => Number((p.stock || {})[t]) > 0),
     });
   }
-  let filas = null;
-  try { filas = await productosDePlanilla(); } catch (e) { filas = null; }
+  let hoja = null;
+  try { hoja = await productosDePlanilla(); } catch (e) { console.error("catalogo planilla", e); hoja = null; }
+  const filas = hoja && hoja.filas;
   if (filas) {
+    // Igual que la página: con la app de la planilla, lo que no está en la planilla no se vende.
+    if (hoja.autoritativa) {
+      const ids = new Set(filas.map((r) => String(r.id || "").trim()));
+      for (const id of [...base.keys()]) if (!ids.has(id)) base.delete(id);
+    }
     for (const r of filas) {
       const id = String(r.id || "").trim();
       if (!id) continue;
@@ -86,6 +108,7 @@ export async function cargarCatalogo() {
       const pedido = String(r.modalidad || "").trim().toLowerCase() === "pedido";
       const prev = base.get(id) || { id, club: "", titulo: "" };
       const precio = Math.round(Number(r.precio));
+      if (!Number.isFinite(precio) && !prev.precio) continue;
       const p = { ...prev, pedido, club: r.club ? String(r.club) : prev.club, titulo: r.titulo ? String(r.titulo) : prev.titulo, precio: precio > 0 ? precio : prev.precio || 0 };
       if (pedido) { p.stock = {}; p.talles = TALLES.filter((t) => Number(r[t]) > 0 || /^s[ií]$/i.test(String(r[t] || "").trim())); }
       else { p.stock = {}; TALLES.forEach((t) => (p.stock[t] = Math.max(0, Math.floor(Number(r[t]) || 0)))); p.talles = TALLES.filter((t) => p.stock[t] > 0); }

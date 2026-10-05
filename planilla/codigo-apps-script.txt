@@ -10,6 +10,10 @@
  *    Ejecutar como: Yo. Quién tiene acceso: Cualquier persona.
  * 5. Implementar, autorizá con tu cuenta y copiá la URL que termina en /exec.
  *
+ * SI YA TENÉS UN APPS SCRIPT CON OTRAS COSAS (por ejemplo el menú "La ONCE → Cargar camisetas"):
+ * no borres esas funciones. Reemplazá solo doPost y doGet por las de este archivo y agregá las
+ * funciones que no tengas (registrarPago, agregarPedido, buscarFila, leerProductos, txt, respuesta).
+ *
  * Si más adelante cambiás este código: Implementar → Administrar implementaciones →
  * editar (lápiz) → Versión: "Nueva versión" → Implementar. La URL sigue siendo la misma.
  */
@@ -118,9 +122,31 @@ function buscarFila(hoja, codigo) {
   return 0;
 }
 
-// Para probar que la URL funciona: abrila en el navegador y tiene que decir {"ok":true}.
-function doGet() {
-  return respuesta({ ok: true, tienda: 'La ONCE Kits' });
+// GET: ?action=catalogo devuelve la pestaña Productos (la usan la página y el servidor de pagos).
+// Sin action: para probar que la URL funciona, abrila en el navegador y tiene que decir {"ok":true}.
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  var out = { ok: true, tienda: 'La ONCE' };
+  if (p.action === 'catalogo') out = { ok: true, productos: leerProductos() };
+  var cb = String(p.callback || '');
+  if (/^[A-Za-z_][A-Za-z0-9_.]{0,80}$/.test(cb)) {
+    return ContentService.createTextOutput(cb + '(' + JSON.stringify(out) + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return respuesta(out);
+}
+
+function leerProductos() {
+  var hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(HOJA_PRODUCTOS);
+  var datos = hoja.getDataRange().getValues();
+  var cab = datos[0].map(function (h) { return String(h).trim(); });
+  var filas = [];
+  for (var r = 1; r < datos.length; r++) {
+    if (!String(datos[r][cab.indexOf('id')] || '').trim()) continue;
+    var o = {};
+    for (var c = 0; c < cab.length; c++) if (cab[c]) o[cab[c]] = datos[r][c];
+    filas.push(o);
+  }
+  return filas;
 }
 
 // Texto seguro: corta el largo y evita que algo empiece con "=" y se tome como fórmula.

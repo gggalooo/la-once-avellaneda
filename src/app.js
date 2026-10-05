@@ -10,7 +10,9 @@ var NAV=[{k:"inicio",t:"Inicio"},{k:"stock",t:"En stock"},{k:"pedido",t:"Por ped
 
 var saved=JSON.parse(document.getElementById("store-data").textContent);
 var data=clone(saved);
-var view=location.hash==="#socios"?"admin":"home";
+/* El editor de socios solo se abre con la página guardada en la compu (no en la tienda publicada). */
+function adminOk(){return location.protocol==="file:"||/^(localhost|127\.0\.0\.1)$/.test(location.hostname)}
+var view=location.hash==="#socios"&&adminOk()?"admin":"home";
 var sec="todo";
 function emptyFilters(){return {q:"",categoria:"",epoca:"",talle:"",nuevo:false,oferta:false,orden:"rel"}}
 var filt=emptyFilters(), filtersOpen=innerWidth>720;
@@ -274,12 +276,12 @@ function openDetail(id){
   dlg.ontouchend=function(e){if(touchX===null)return;var dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>45)changePhoto(photoIndex+(dx<0?1:-1))};
   var zoomDrag=false;
   dlg.onpointerdown=function(e){var stage=e.target.closest('.gallery-stage');if(stage&&e.pointerType!=='mouse'&&stage.getAttribute('aria-pressed')==='true'){zoomDrag=false;stage.setPointerCapture(e.pointerId)}};
-  dlg.onpointermove=function(e){var stage=e.target.closest('.gallery-stage');if(stage&&(e.pointerType==='mouse'||stage.getAttribute('aria-pressed')==='true')){if(e.pointerType!=='mouse')zoomDrag=true;var r=stage.getBoundingClientRect();stage.style.setProperty('--zx',Math.max(0,Math.min(100,(e.clientX-r.x)/r.width*100))+'%');stage.style.setProperty('--zy',Math.max(0,Math.min(100,(e.clientY-r.y)/r.height*100))+'%')}};
+  dlg.onpointermove=function(e){var stage=e.target.closest('.gallery-stage');if(stage&&stage.getAttribute('aria-pressed')==='true'){if(e.pointerType!=='mouse')zoomDrag=true;var r=stage.getBoundingClientRect();stage.style.setProperty('--zx',Math.max(0,Math.min(100,(e.clientX-r.x)/r.width*100))+'%');stage.style.setProperty('--zy',Math.max(0,Math.min(100,(e.clientY-r.y)/r.height*100))+'%')}};
   dlg.onclick=function(e){
     var thumb=e.target.closest('[data-gallery-index]'),step=e.target.closest('[data-gallery-step]'),zoom=e.target.closest('[data-gallery-zoom]');
     if(thumb){changePhoto(+thumb.dataset.galleryIndex,'[data-gallery-index="'+thumb.dataset.galleryIndex+'"]');return}
     if(step){changePhoto(photoIndex+Number(step.dataset.galleryStep),'[data-gallery-step="'+step.dataset.galleryStep+'"]');return}
-    if(zoom){if(zoomDrag){zoomDrag=false;return}var enlarged=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(enlarged));zoom.setAttribute('aria-label',enlarged?'Reducir foto':'Ampliar foto');zoom.querySelector('.gallery-zoom-label').textContent=enlarged?'− Reducir':'＋ Ampliar';return}
+    if(zoom){if(zoomDrag){zoomDrag=false;return}var enlarged=zoom.getAttribute('aria-pressed')!=='true';if(enlarged&&e.clientX){var zr=zoom.getBoundingClientRect();zoom.style.setProperty('--zx',Math.max(0,Math.min(100,(e.clientX-zr.x)/zr.width*100))+'%');zoom.style.setProperty('--zy',Math.max(0,Math.min(100,(e.clientY-zr.y)/zr.height*100))+'%')}zoom.setAttribute('aria-pressed',String(enlarged));zoom.setAttribute('aria-label',enlarged?'Reducir foto':'Ampliar foto');zoom.querySelector('.gallery-zoom-label').textContent=enlarged?'− Reducir':'＋ Ampliar';return}
     if(e.target===dlg||e.target.closest(".close")){dlg.close();return}
     var b=e.target.closest("[data-s]"); if(b&&!b.disabled){if(sel!==b.dataset.s){sel=b.dataset.s;qty=1}draw();return}
     if(e.target.closest("#favBtn")){var wasIn=!!me();toggleFav(p.id,function(){draw();if(view==="account")renderAccount()});if(!wasIn)dlg.close();return}
@@ -323,7 +325,7 @@ function applySheet(rows,authoritative){
     if(pre){p.tallesPedido=SZ.filter(function(z){return Number(r[z])>0||/^s[ií]$/i.test(String(r[z]||"").trim())});p.stock={S:0,M:0,L:0,XL:0,XXL:0}}
     else{p.stock={};SZ.forEach(function(z){p.stock[z]=Math.max(0,Math.floor(Number(r[z])||0))});delete p.tallesPedido}
     var hasPhotos=['foto','foto2','foto3','foto4','foto5','foto6','fotos'].some(function(k){return Object.prototype.hasOwnProperty.call(r,k)});
-    if(hasPhotos){var fotos=[r.foto,r.foto2,r.foto3,r.foto4,r.foto5,r.foto6].concat(Array.isArray(r.fotos)?r.fotos:[]).map(safePhoto).filter(function(u,i,a){return /^https:\/\//i.test(u)&&a.indexOf(u)===i});setProductPhotos(p,fotos)}
+    if(hasPhotos){var fotos=[r.foto,r.foto2,r.foto3,r.foto4,r.foto5,r.foto6].concat(Array.isArray(r.fotos)?r.fotos:[]).map(safePhoto).filter(function(u,i,a){return /^https:\/\//i.test(u)&&a.indexOf(u)===i});if(fotos.length)setProductPhotos(p,fotos)}
     p.destacado=sheetBool(r.destacado,false);p.nuevo=sheetBool(r.nuevo,false);p.activo=sheetBool(r.activo,true);
     if(!p.club||!(p.precio>0))return;
     if(isNew)data.productos.push(p);changed=true;
@@ -701,7 +703,7 @@ function accSummary(u){
     '<div class="acc-card"><div><h3><button class="linkish plain" data-jump="orders">Mis pedidos</button> <em>('+P.length+')</em></h3><ul><li>Pendientes de pago <em>('+cnt("pendiente")+')</em></li><li>Pagados <em>('+cnt("pagado")+')</em></li></ul></div>'+
       '<div><h3>Descuento <em>('+(Number(data.config.descuentoTransferencia)||0)+'%)</em></h3><p class="hint">Pagando '+offW()+'</p><h3>Cupones <em>(0)</em></h3></div></div></section>'+
     (editProfile?'<section class="acc-sec"><h2>Mis datos</h2><div class="co-fields"><label class="cf"><span>Nombre y apellido</span><input data-pf="nombre" value="'+esc(u.nombre)+'"></label><label class="cf"><span>Teléfono / WhatsApp</span><input data-pf="telefono" type="tel" value="'+esc(u.telefono||"")+'"></label></div><div class="acc-btns"><button class="btn btn-ink" id="saveProfile">Guardar</button><button class="btn btn-ghost" id="cancelProfile">Cancelar</button></div></section>':"")+
-    '<section class="acc-sec" id="orders"><h2>Mis pedidos</h2>'+(P.length?'<div class="tbl-wrap"><table class="otbl"><thead><tr><th>Número de pedido</th><th>Total</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Todavía no hiciste ningún pedido.<br><br><button class="btn btn-ink" data-nav="inicio">Ir a la tienda</button></div>')+'</section>';
+    '<section class="acc-sec" id="orders"><h2>Mis pedidos</h2><p class="hint acc-local">Tu cuenta y tus pedidos se guardan en este dispositivo y navegador. Si entrás desde otro celu o compu no los vas a ver; ante cualquier duda, escribinos con tu número de pedido.</p>'+(P.length?'<div class="tbl-wrap"><table class="otbl"><thead><tr><th>Número de pedido</th><th>Total</th><th>Estado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Todavía no hiciste ningún pedido.<br><br><button class="btn btn-ink" data-nav="inicio">Ir a la tienda</button></div>')+'</section>';
 }
 function accFavs(u){
   var favs=u.favs.map(byId).filter(Boolean);
@@ -728,7 +730,7 @@ function accCart(u){
     '<div class="cs-rows"><div><span>Productos ('+units+')</span><span>'+money(sub)+'</span></div>'+(pd?'<div class="co-desc"><span>Premio ruleta · '+esc(prizeLabel(pz))+'</span><span>−'+money(pd)+'</span></div>':"")+(d?'<div class="co-desc"><span>Con '+offN()+'</span><span>'+money(pz&&pz.stack?sub*(1-d/100)-pd:sub-Math.max(pd,sub*d/100))+'</span></div>':"")+'<div class="cs-total"><span>Total</span><span>'+money(sub-pd)+'</span></div></div>'+
     '<button class="btn btn-ink btn-checkout" id="cartCheckout">Finalizar compra</button><button class="linkish keep" data-nav="inicio">‹ Seguir comprando</button></aside></div></section>';
 }
-function cartNotes(){return '<div class="cart-notes"><p>Revisá modelo, talle y datos de entrega. Antes del pago confirmamos disponibilidad, importe final y condiciones de compra por WhatsApp.</p></div>'}
+function cartNotes(){return '<div class="cart-notes"><p>'+(PAYON&&PAYON.pagos?'Revisá modelo, talle y datos de entrega. Pagás online con Mercado Pago y tu pedido queda confirmado cuando se acredita el pago. Después te escribimos por WhatsApp para coordinar la entrega.':'Revisá modelo, talle y datos de entrega. Antes del pago confirmamos disponibilidad, importe final y condiciones de compra por WhatsApp.')+'</p></div>'}
 function accPw(u){
   return '<section class="acc-sec first"><h2>Cambiar contraseña</h2><div class="pw-box"><label class="cf"><span>Contraseña actual</span><input type="password" data-pw="old" autocomplete="current-password"></label><label class="cf"><span>Contraseña nueva</span><input type="password" data-pw="n1" autocomplete="new-password"></label><label class="cf"><span>Repetir contraseña nueva</span><input type="password" data-pw="n2" autocomplete="new-password"></label>'+(pwMsg?'<p class="'+(pwMsg.ok?"pw-ok":"auth-err")+'">'+esc(pwMsg.t)+'</p>':"")+'<button class="btn btn-ink" id="savePw">Cambiar contraseña</button></div></section>';
 }
@@ -968,7 +970,7 @@ function setHash(h,replace){try{history[replace?'replaceState':'pushState'](null
 function go(k,fromHistory){
  if(String(k).indexOf('legal-')===0){goLegal(String(k).slice(6),fromHistory);return}
  clearTimeout(qTimer);filt=emptyFilters();sec=['stock','pedido','destacado'].includes(k)?k:'todo';
- if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'){view='admin'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
+ if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'&&adminOk()){view='admin'}else if(k==='socios'){view='home'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
  if(!fromHistory&&location.hash!=='#'+k)setHash('#'+encodeURIComponent(k));
  render();scrollTo(0,0);
 }
@@ -1012,7 +1014,7 @@ app.addEventListener("click",function(e){
   if(t.closest("#openBag")){openBag();return}
   if(t.closest("#clear")){clearTimeout(qTimer);filt=emptyFilters();sec="todo";refreshCatalog();return}
   if(t.closest("#howto")){openHowTo();return}
-  if(t.closest("#goAdmin")){view="admin";setHash("#socios",true);render();scrollTo(0,0);return}
+  if(t.closest("#goAdmin")&&adminOk()){view="admin";setHash("#socios",true);render();scrollTo(0,0);return}
   if(t.closest("#add")){
     data.productos.unshift({id:uid(),club:"Club",titulo:"Modelo",categoria:"Sudamérica",epoca:"Actual",precio:60000,precioAnterior:0,patron:{tipo:"liso",c1:"#FFFFFF",c2:"#0F2A5C"},foto:null,stock:{S:0,M:0,L:0,XL:0,XXL:0},destacado:false,nuevo:true});
     dirty=true;renderAdmin();var fi=app.querySelector('.tbl input[data-k="club"]');if(fi){fi.focus();fi.select()}return}
@@ -1072,9 +1074,9 @@ function isPre(p){return !!p&&p.modalidad==='pedido'}
 function capacity(p,s){return isPre(p)?(p.activo!==false&&(p.tallesPedido||[]).includes(s)?5:0):Math.max(0,Math.floor(Number((p.stock||{})[s])||0))}
 function available(p){return isPre(p)?SIZES.reduce(function(n,s){return n+capacity(p,s)},0):total(p)}
 function modeBadge(p){return '<span class="mode-badge'+(isPre(p)?' pre':'')+'">'+(isPre(p)?'POR PEDIDO · ≈ 30 DÍAS':'EN STOCK')+'</span>'}
-function deliveryInfo(p){return isPre(p)?'<div class="delivery-note pre"><b>Esta camiseta se trae por encargo.</b><p>Plazo estimado: 30 días desde la confirmación, más la entrega local. Puede variar por transporte o aduana. Confirmamos modelo, talle y precio antes del pago.</p><p>Foto de referencia del proveedor. Precio final en pesos. Nombre y número opcionales en «Agregar adicionales».</p></div>':'<div class="delivery-note"><b>Sale de nuestro stock.</b><p>Coordinamos despacho o retiro al confirmar el pedido. El plazo de entrega depende de tu localidad.</p></div>'}
+function deliveryInfo(p){return isPre(p)?'<div class="delivery-note pre"><b>Esta camiseta se trae por encargo.</b><p>Plazo estimado: 30 días desde la confirmación, más la entrega local. Puede variar por transporte o aduana. '+(PAYON&&PAYON.pagos?'Si no pudiéramos conseguirla, te devolvemos el total pagado.':'Confirmamos modelo, talle y precio antes del pago.')+'</p><p>Foto de referencia del proveedor. Precio final en pesos. Nombre y número opcionales en «Agregar adicionales».</p></div>':'<div class="delivery-note"><b>Sale de nuestro stock.</b><p>'+(PAYON&&PAYON.pagos?'La despachamos o coordinamos el retiro apenas se acredita el pago.':'Coordinamos despacho o retiro al confirmar el pedido.')+' El plazo de entrega depende de tu localidad.</p></div>'}
 function hasPreCart(){return cart.some(function(l){return isPre(byId(l.id))})}
-function cartDelivery(){var pre=hasPreCart(),st=cart.some(function(l){return !isPre(byId(l.id))});return '<div class="delivery-note'+(pre?' pre':'')+'"><b>'+ (pre?(st?'Tu pedido combina dos tiempos de entrega':'Tu pedido es por encargo'):'Tu pedido sale de stock')+'</b><p>'+(pre?'Los encargos demoran aproximadamente 30 días desde la confirmación, más la entrega local. '+(st?'Las prendas en stock pueden salir antes; coordinamos si preferís uno o dos envíos y su costo.':'Confirmamos disponibilidad y precio antes del pago.'):'Confirmamos disponibilidad y coordinamos el envío o retiro antes del pago.')+'</p></div>'}
+function cartDelivery(){var pre=hasPreCart(),st=cart.some(function(l){return !isPre(byId(l.id))});return '<div class="delivery-note'+(pre?' pre':'')+'"><b>'+ (pre?(st?'Tu pedido combina dos tiempos de entrega':'Tu pedido es por encargo'):'Tu pedido sale de stock')+'</b><p>'+(pre?'Los encargos demoran aproximadamente 30 días desde la confirmación, más la entrega local. '+(st?'Las prendas en stock pueden salir antes; coordinamos si preferís uno o dos envíos y su costo.':(PAYON&&PAYON.pagos?'El plazo empieza a correr cuando se acredita el pago.':'Confirmamos disponibilidad y precio antes del pago.')):(PAYON&&PAYON.pagos?'Lo despachamos o coordinamos el retiro apenas se acredita el pago.':'Confirmamos disponibilidad y coordinamos el envío o retiro antes del pago.'))+'</p></div>'}
 function modeIntro(){return '<section class="mode-intro"><span class="eyebrow">Dos formas de encontrar la tuya</span><h1>La misma pasión. Vos elegís cómo.</h1><div class="mode-grid"><button class="mode-link" data-nav="stock"><span class="eyebrow">La querés ahora</span><strong>En stock</strong><p>Camisetas que ya tenemos. Elegí tu talle y coordiná la entrega.</p><span class="go-arrow" aria-hidden="true">↗</span></button><button class="mode-link pre" data-nav="pedido"><span class="eyebrow">La espera vale la pena</span><strong>Por pedido</strong><p>Más modelos, menor precio. La traemos para vos en aproximadamente un mes.</p><span class="go-arrow" aria-hidden="true">↗</span></button></div><p class="prototype-note">Precios finales en pesos · Stock sujeto a disponibilidad.</p></section>'}
 function clubInvite(){return '<section class="club-invite"><div><span class="eyebrow">La ruleta de La ONCE</span><h2>Probá tu suerte.</h2><p>Descuentos, envío gratis y una Mystery Box en juego. Girá gratis cada 3 días.</p></div><button class="btn" data-nav="ruleta">Ir a la ruleta ↗</button></section>'}
 function requestShirt(){return '<section class="request-shirt"><div><h3>¿Tenés una camiseta en mente?</h3><p>Decinos el club, el año y el talle. La buscamos por vos.</p></div><button class="btn btn-ghost" id="customRequest">Pedir otro modelo ↗</button></section>'}

@@ -1114,7 +1114,6 @@ dialog::backdrop{background:rgba(2,6,24,.72)}
 @media(hover:hover) and (pointer:fine){
  .tile.photo:hover::before{animation:tile-sheen .85s ease-out}
  .item .art:hover img,.item .art:focus-visible img{transform:scale(1.055)}
- .gallery-stage:hover img{transform:scale(2.2)}
 }
 .tile.photo:focus-visible::before{animation:tile-sheen .85s ease-out}
 .gallery-slot{min-width:0;align-self:start;position:sticky;top:0}
@@ -1122,7 +1121,7 @@ dialog::backdrop{background:rgba(2,6,24,.72)}
 .gallery-stage{position:relative;display:block;width:100%;aspect-ratio:1;overflow:hidden;border:0;border-radius:12px;background:radial-gradient(circle at 50% 40%,#fff,#e6edf9 70%,#c8d6ee);padding:0;cursor:zoom-in;touch-action:pan-y}
 .gallery-stage img{width:100%;height:100%;object-fit:contain;transition:transform .35s ease;transform-origin:var(--zx,50%) var(--zy,50%)}
 .gallery-stage[aria-pressed="true"]{cursor:zoom-out;touch-action:none}
-.gallery-stage[aria-pressed="true"] img{transform:scale(3)}
+.gallery-stage[aria-pressed="true"] img{transform:scale(1.75)}
 .gallery-zoom-label{position:absolute;right:12px;bottom:12px;background:rgba(6,18,58,.88);color:#fff;padding:6px 11px;border-radius:20px;font-size:12px;font-weight:700;pointer-events:none}
 .gallery-controls{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)}
 .gallery-controls button{width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:var(--surface);font-size:25px;cursor:pointer;line-height:1}
@@ -1158,7 +1157,7 @@ dialog::backdrop{background:rgba(2,6,24,.72)}
  .gallery-stage img{display:block}
  .gallery-controls,.gallery-thumbs{margin-inline:16px}
 }
-@media(prefers-reduced-motion:reduce){.tile.photo::before{animation:none!important}.item .art img,.gallery-stage img{transition:none}.gallery-stage:hover img{transform:none}.gallery-stage[aria-pressed="true"] img{transform:scale(3)}}
+@media(prefers-reduced-motion:reduce){.tile.photo::before{animation:none!important}.item .art img,.gallery-stage img{transition:none}.gallery-stage:hover img{transform:none}.gallery-stage[aria-pressed="true"] img{transform:scale(1.75)}}
 
 /* Disponibilidad de talles: estado explícito además del botón bloqueado. */
 .pick button:disabled{opacity:1;border-style:dashed;color:var(--muted);text-decoration:none}
@@ -1170,3 +1169,12 @@ dialog::backdrop{background:rgba(2,6,24,.72)}
 .detail .gallery-placeholder>.art{height:100%;min-height:0;aspect-ratio:auto}
 .detail .gallery-placeholder>.art svg{max-height:85%;object-fit:contain}
 .detail .gallery-placeholder>.art:hover svg{transform:none}
+
+/* Fotos de encargo recortadas (sin fondo): se ven limpias sobre la luz de estudio. */
+.item .art img,.gallery-stage img,.gallery-thumbs img{mix-blend-mode:normal}
+.item .art img{filter:drop-shadow(0 10px 14px rgba(8,20,60,.22))}
+.gallery-stage img{filter:drop-shadow(0 14px 20px rgba(8,20,60,.22))}
+/* Zoom: solo al hacer clic (o tocar) sobre la foto; acerca un poco y sigue el cursor. */
+.gallery-stage img{transition:transform .3s ease,transform-origin .08s linear}
+.gallery-stage[aria-pressed="true"] .gallery-zoom-label{opacity:.85}
+.acc-local{margin:-4px 0 14px}
