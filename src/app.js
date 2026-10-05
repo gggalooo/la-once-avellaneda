@@ -46,7 +46,41 @@ function jersey(pt){
   var shape="M62 18 L86 10 Q100 26 114 10 L138 18 L186 48 L168 90 L150 80 L150 206 Q100 214 50 206 L50 80 L32 90 L14 48 Z";
   return '<svg viewBox="0 0 200 220" aria-hidden="true"><defs><clipPath id="'+id+'"><path d="'+shape+'"/></clipPath></defs><g clip-path="url(#'+id+')">'+fill+'</g><path d="'+shape+'" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.5"/><path d="M86 10 Q100 26 114 10" fill="none" stroke="'+c2+'" stroke-width="6"/></svg>';
 }
-function art(p){if(!p.foto&&isPre(p))return '<div class="missing-photo"><div><b>Foto pendiente</b><br>'+esc(p.club)+'<br>Referencia del proveedor</div></div>';return p.foto?'<img src="'+esc(p.foto)+'" alt="'+esc(p.club+" "+p.titulo)+'" loading="lazy" decoding="async">':jersey(p.patron)}
+/* Fotos del producto: portada compatible con `foto`, hasta seis vistas en `fotos`. */
+function safePhoto(value){
+ var s=String(value||'').trim();
+ return /^(https:\/\/[^\s]+|data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+|assets\/[a-z0-9._/-]+\.(?:png|jpe?g|webp))$/i.test(s)?s:'';
+}
+function productPhotos(p){
+ return [p.foto].concat(Array.isArray(p.fotos)?p.fotos:[]).map(safePhoto).filter(function(s,i,a){return s&&a.indexOf(s)===i}).slice(0,6);
+}
+function setProductPhotos(p,photos){p.fotos=photos.slice(0,6);p.foto=p.fotos[0]||null}
+function productGallery(p,index){
+ var photos=productPhotos(p);if(!photos.length)return '<div class="product-gallery" aria-label="Imagen de prueba de '+esc(p.club)+'"><div class="gallery-stage gallery-placeholder"><div class="art">'+art(p)+'</div><span class="gallery-zoom-label">Imagen de prueba · Foto pendiente</span></div></div>';
+ index=Math.min(index,photos.length-1);
+ var name=p.club+' '+p.titulo;
+ return '<div class="product-gallery" aria-label="Fotos de '+esc(name)+'">'+
+ '<button type="button" class="gallery-stage" data-gallery-zoom aria-pressed="false" aria-label="Ampliar foto '+(index+1)+' de '+esc(name)+'"><img src="'+esc(photos[index])+'" alt="'+esc(name)+' · Foto '+(index+1)+'" decoding="async"><span class="gallery-zoom-label">＋ Ampliar</span></button>'+
+ (photos.length>1?'<div class="gallery-controls"><button type="button" data-gallery-step="-1" aria-label="Foto anterior">‹</button><span aria-live="polite">Foto '+(index+1)+' de '+photos.length+'</span><button type="button" data-gallery-step="1" aria-label="Foto siguiente">›</button></div><div class="gallery-thumbs" aria-label="Elegir foto">'+photos.map(function(src,i){return '<button type="button" data-gallery-index="'+i+'" aria-label="Ver foto '+(i+1)+'" aria-pressed="'+(i===index)+'"><img src="'+esc(src)+'" alt="" loading="lazy"></button>'}).join('')+'</div>':'')+'</div>';
+}
+function editorPhotos(p,i){
+ var photos=productPhotos(p);
+ return '<div class="editor-photos">'+photos.map(function(src,n){return '<div><img src="'+esc(src)+'" alt="Foto '+(n+1)+'"><div><button type="button" data-photo-cover="'+i+':'+n+'" '+(n===0?'disabled':'')+' aria-label="Usar foto '+(n+1)+' como portada">'+(n===0?'Portada':'Portada ↑')+'</button><button type="button" data-photo-remove="'+i+':'+n+'" aria-label="Quitar foto '+(n+1)+'">×</button></div></div>'}).join('')+
+ (photos.length<6?'<label class="photo-upload">＋ Fotos<input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-photo="'+i+'"></label>':'')+'<small>'+photos.length+'/6 fotos</small></div>';
+}
+function readProductPhoto(file){
+ return new Promise(function(resolve,reject){
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type)){reject(Error('Elegí fotos JPG, PNG o WebP.'));return}
+  if(file.size>12*1024*1024){reject(Error('Cada foto puede pesar hasta 12 MB.'));return}
+  var url=URL.createObjectURL(file),img=new Image();
+  img.onload=function(){
+   try{var s=Math.min(1,1400/Math.max(img.width,img.height)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(img.width*s));cv.height=Math.max(1,Math.round(img.height*s));cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);resolve(cv.toDataURL('image/webp',.9))}catch(e){reject(Error('No pudimos preparar la foto.'))}finally{URL.revokeObjectURL(url)}
+  };
+  img.onerror=function(){URL.revokeObjectURL(url);reject(Error('No se pudo abrir una de las fotos.'))};img.src=url;
+ });
+}
+
+function art(p){var photo=productPhotos(p)[0];if(!photo&&isPre(p))return '<div class="missing-photo"><div><b>Foto pendiente</b><br>'+esc(p.club)+'<br>Referencia del proveedor</div></div>';return photo?'<img src="'+esc(photo)+'" alt="'+esc(p.club+" "+p.titulo)+'" loading="lazy" decoding="async">':jersey(p.patron)}
 function waNumber(){return String(data.config.whatsapp||"").replace(/\D/g,"")}
 
 /* ---------- Partes comunes ---------- */
@@ -57,7 +91,7 @@ function header(){
   return '<div class="topbar">'+esc(top)+'</div>'+prizeBar()+'<header class="site"><div class="wrap head-row"><button class="logo" data-nav="inicio" aria-label="Ir al inicio">'+(c.logo?'<img class="logo-mark logo-img" src="'+esc(c.logo)+'" alt="" width="46" height="46">':'<span class="logo-mark">11</span>')+'<span class="logo-word">'+logoWord(c.nombre)+'</span></button><input class="search" type="search" placeholder="Buscar camiseta" aria-label="Buscar" value="'+esc(filt.q)+'"><div class="acc-head">'+accountLink()+'</div><button class="bag" id="openBag" aria-label="Carrito'+(n?', '+n+(n===1?' camiseta':' camisetas'):', vacío')+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.1 10.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.5-1.2L21 8H6.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="currentColor"/><circle cx="17" cy="19.5" r="1.6" fill="currentColor"/></svg>'+(n?'<i>'+n+'</i>':'')+'</button></div><nav class="cats" aria-label="Categorías"><div class="wrap">'+nav+'</div></nav></header>';
 }
 function logoWord(n){
- if(n==="La ONCE Kits") return '<span>La <b>ONCE</b></span><small>Kits</small>';
+ if(n==="La ONCE Avellaneda") return '<span>La <b>ONCE</b></span><small>Avellaneda</small>';
  return esc(n);
 }
 function footer(){
@@ -107,7 +141,16 @@ var SLIDES=[
   {cls:"s2",t:"Retro que",yr:"marcó época",p:"Las camisetas de los partidos que todavía te acordás de memoria.",cta:"Ver retro",nav:"Retro",retro:true,kits:["p8","p11","p12"]},
   {cls:"s3",t:"Pagá como",yr:"quieras",p:"",cta:"Ver descuentos",nav:"oferta",pay:true,kits:["p10","p7","p14"]}
 ];
-function renderHome(){
+function renderHome(refreshProductsOnly){
+  var rowN=0;
+  function row(title,k,max,sub){
+    var all=data.productos.filter(function(p){return inSection(p,k)}), l=sortList(all).slice(0,max||8);
+    if(!l.length) return "";
+    rowN++;
+    return '<section class="row row-'+esc(k)+'"><div class="row-head"><div><h2>'+esc(title)+'</h2>'+(sub?'<p>'+esc(sub)+'</p>':"")+'</div><button class="see-all" data-nav="'+esc(k)+'">Ver todas <span aria-hidden="true">('+all.length+')</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="grid">'+l.map(card).join("")+'</div></section>';
+  }
+  var productRows=row("Elegidas de nuestro stock","destacado",4,"Para vivir el fútbol, adentro y afuera de la cancha.")+row("Para los que saben esperar","pedido",4,"Por encargo · Aproximadamente un mes desde la confirmación");
+  if(refreshProductsOnly){var target=app.querySelector(".home-products");if(target){target.innerHTML=productRows;return}}
   var c=data.config;
   SLIDES[2].p="Transferí desde tu cuenta bancaria y llevate "+(Number(c.descuentoTransferencia)||0)+"% off.";
   var sl=SLIDES.map(function(s,i){
@@ -141,17 +184,10 @@ function renderHome(){
     if(t.foto) return '<button class="tile photo" style="background:'+esc(t.color)+'" data-nav="'+esc(t.nav)+'"><img src="'+esc(t.foto)+'" alt="" style="object-position:'+esc(t.pos||"center")+'"><span>'+esc(t.titulo)+'</span></button>';
     return '<button class="tile" style="background:'+esc(t.color)+'" data-nav="'+esc(t.nav)+'"><span>'+esc(t.titulo)+'</span>'+jersey(t.patron)+'</button>';
   }).join("");
-  var rowN=0;
-  function row(title,k,max,sub){
-    var all=data.productos.filter(function(p){return inSection(p,k)}), l=sortList(all).slice(0,max||8);
-    if(!l.length) return "";
-    rowN++;
-    return '<section class="row row-'+esc(k)+'"><div class="row-head"><div><h2>'+esc(title)+'</h2>'+(sub?'<p>'+esc(sub)+'</p>':"")+'</div><button class="see-all" data-nav="'+esc(k)+'">Ver todas <span aria-hidden="true">('+all.length+')</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="grid">'+l.map(card).join("")+'</div></section>';
-  }
   app.innerHTML=header()+
     '<section class="hero" aria-roledescription="carrusel" aria-label="Destacados"><div class="slides" style="transform:translateX(-'+(slide*100)+'%)">'+sl+'</div><div class="dots">'+dots+'</div><button class="arrow prev" data-dir="-1" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="arrow next" data-dir="1" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></section>'+
     '<div class="perks">'+perks+'</div>'+
-    '<main class="wrap">'+modeIntro()+'<div class="tiles">'+tiles+'</div>'+row("Elegidas de nuestro stock","destacado",4,"Para vivir el fútbol, adentro y afuera de la cancha.")+row("Para los que saben esperar","pedido",4,"Por encargo · Aproximadamente un mes desde la confirmación")+clubInvite()+'</main>'+
+    '<main class="wrap">'+modeIntro()+'<div class="tiles">'+tiles+'</div><div class="home-products">'+productRows+'</div>'+clubInvite()+'</main>'+
     footer()+'<dialog id="dlg"></dialog><dialog id="bagDlg" class="drawer"></dialog><div class="toast" id="toast"></div>';
   setSlide(slide);startTimer();
   var hero=app.querySelector(".hero"), x0=null;
@@ -159,12 +195,13 @@ function renderHome(){
   hero.addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>45){setSlide((slide+(dx<0?1:-1)+SLIDES.length)%SLIDES.length);startTimer()}});
 }
 function tileList(){
-  var def=[{titulo:"Retro Sudamérica",nav:"Retro",color:"#6B2D1F",patron:{tipo:"banda",c1:"#10245E",c2:"#F2C230"}},{titulo:"Clubes de Europa",nav:"Europa",color:"#0F2A5C",patron:{tipo:"bastones",c1:"#004D98",c2:"#A50044"}},{titulo:"Selecciones",nav:"Selecciones",color:"#1E6B45",patron:{tipo:"bastones",c1:"#FFFFFF",c2:"#7CC0F0"}}];
+  var def=[{titulo:"Sudamérica",nav:"Sudamérica",color:"#6B2D1F",patron:{tipo:"banda",c1:"#10245E",c2:"#F2C230"}},{titulo:"Clubes de Europa",nav:"Europa",color:"#0F2A5C",patron:{tipo:"bastones",c1:"#004D98",c2:"#A50044"}},{titulo:"Selecciones",nav:"Selecciones",color:"#1E6B45",patron:{tipo:"bastones",c1:"#FFFFFF",c2:"#7CC0F0"}}];
   if(!Array.isArray(data.tiles)) data.tiles=clone(def);
   return data.tiles.map(function(t,i){var d=def[i]||def[0];if(!t.patron)t.patron=d.patron;return t});
 }
 function playersHTML(list){
- var positions=[["38%","-1%",1],["42%","20%",3],["43%","46%",4],["32%","70%",5]];
+ // Enzo y Rashford conservan su escala, separación y orden de superposición.
+ var positions=[["50%","-14%",5],["42%","20%",3],["43%","46%",4],["41%","68%",5]];
  return list.slice(0,4).map(function(j,i){var p=positions[i];return '<img src="'+esc(j.foto)+'" alt="'+esc(j.alt||"")+'" style="--w:'+p[0]+';--x:'+p[1]+';--z:'+p[2]+';--d:'+(i*.08)+'s">'}).join("");
 }
 function startTimer(){
@@ -203,7 +240,7 @@ function renderCatalog(){
 
 function openDetail(id){
   var p=byId(id); if(!p) return;
-  var dlg=document.getElementById("dlg"), sel=null, qty=1, persOpen=false, pers={nombre:"",numero:""};
+  var dlg=document.getElementById("dlg"), sel=null, qty=1, persOpen=false, pers={nombre:"",numero:""}, photoIndex=0;
   function persOn(){return persOpen&&isPre(p)&&!!(pers.nombre||pers.numero)}
   function addLabel(maxQ){return 'Agregar al pedido'+(sel&&maxQ?' · '+money((p.precio+(persOn()?persPrice():0))*qty):"")}
   function extras(){if(!isPre(p))return "";if(!persOpen)return '<button type="button" class="add-extras" id="persToggle" aria-expanded="false"><span class="ae-plus" aria-hidden="true">+</span><span><b>Agregar adicionales</b><small>Nombre y número en la espalda</small></span></button>';
@@ -211,7 +248,7 @@ function openDetail(id){
   SIZES.some(function(s){if(capacity(p,s)>0&&SIZES.filter(function(x){return capacity(p,x)>0}).length===1){sel=s;return true}});
   function draw(){
     var t=available(p), n=waNumber();
-    var btns=SIZES.map(function(s){var k=capacity(p,s)||0;return '<button data-s="'+s+'" aria-pressed="'+(sel===s)+'" '+(k?"":"disabled")+'>'+s+'</button>'}).join("");
+    var btns=SIZES.map(function(s){var k=capacity(p,s)||0,missing=isPre(p)?'No disponible':'Agotado';return '<button data-s="'+s+'" aria-pressed="'+(sel===s)+'" aria-label="Talle '+s+(k?' disponible':' · '+missing)+'" '+(k?"":"disabled")+'><span>'+s+'</span>'+(k?'':'<small>'+missing+'</small>')+'</button>'}).join("");
     var left=sel?capacity(p,sel)||0:0;
     var inCart=sel?cart.filter(function(l){return l.id===p.id&&l.talle===sel}).reduce(function(a,l){return a+l.cant},0):0;
     var maxQ=Math.max(0,left-inCart); if(qty>maxQ) qty=Math.max(1,maxQ);
@@ -219,14 +256,30 @@ function openDetail(id){
     var note=isPre(p)?(sel?"Talle a confirmar con el proveedor. Máximo 5 unidades por talle en esta solicitud.":"Elegí el talle que querés consultar."):t===0?"":(sel?(!maxQ?"Ya agregaste todas las que hay en talle "+sel+".":(left<=2?"Quedan "+left+" en talle "+sel+".":"Hay stock en talle "+sel+".")):"Elegí un talle.");
     var avisar=n?"https://wa.me/"+n+"?text="+encodeURIComponent("Hola! Me avisan cuando vuelva la camiseta de "+p.club+" "+p.titulo+"?"):"#";
     var cuotas=Number(data.config.cuotas)||0;
-    dlg.innerHTML='<div class="detail"><div class="art">'+art(p)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' '+offW()+'</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
+    dlg.innerHTML='<div class="detail"><div class="gallery-slot">'+productGallery(p,photoIndex)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' '+offW()+'</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
       '<div><p class="hint" style="margin-bottom:8px">Talle</p><div class="pick">'+btns+'</div></div>'+stepper+(note?'<p class="hint">'+note+'</p>':"")+extras()+
       (t?'<button class="btn btn-ink" id="addBag" '+(sel&&maxQ?"":"disabled")+'>'+addLabel(maxQ)+'</button>':'<button class="btn btn-nostock" disabled>Sin stock</button><button class="btn btn-notify" id="notifyBtn">¿Querés que te avise cuando haya stock?</button>')+
       ""+
       deliveryInfo(p)+'<p class="hint legal-mini">Tenés 10 días desde que la recibís para arrepentirte de la compra, y garantía por falla. <button class="inline-link" data-legal="cambios">Cambios y devoluciones</button></p>'+
       shipBlock()+'</div></div><button class="close" aria-label="Cerrar">×</button>';
   }
+  function changePhoto(index,focus){
+    var photos=productPhotos(p);if(!photos.length)return;
+    photoIndex=(index+photos.length)%photos.length;
+    dlg.querySelector('.gallery-slot').innerHTML=productGallery(p,photoIndex);
+    if(focus){var b=dlg.querySelector(focus);if(b)b.focus({preventScroll:true})}
+  }
+  var touchX=null;
+  dlg.ontouchstart=function(e){var stage=e.target.closest('.gallery-stage');touchX=stage&&stage.getAttribute('aria-pressed')!=='true'?e.touches[0].clientX:null};
+  dlg.ontouchend=function(e){if(touchX===null)return;var dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>45)changePhoto(photoIndex+(dx<0?1:-1))};
+  var zoomDrag=false;
+  dlg.onpointerdown=function(e){var stage=e.target.closest('.gallery-stage');if(stage&&e.pointerType!=='mouse'&&stage.getAttribute('aria-pressed')==='true'){zoomDrag=false;stage.setPointerCapture(e.pointerId)}};
+  dlg.onpointermove=function(e){var stage=e.target.closest('.gallery-stage');if(stage&&(e.pointerType==='mouse'||stage.getAttribute('aria-pressed')==='true')){if(e.pointerType!=='mouse')zoomDrag=true;var r=stage.getBoundingClientRect();stage.style.setProperty('--zx',Math.max(0,Math.min(100,(e.clientX-r.x)/r.width*100))+'%');stage.style.setProperty('--zy',Math.max(0,Math.min(100,(e.clientY-r.y)/r.height*100))+'%')}};
   dlg.onclick=function(e){
+    var thumb=e.target.closest('[data-gallery-index]'),step=e.target.closest('[data-gallery-step]'),zoom=e.target.closest('[data-gallery-zoom]');
+    if(thumb){changePhoto(+thumb.dataset.galleryIndex,'[data-gallery-index="'+thumb.dataset.galleryIndex+'"]');return}
+    if(step){changePhoto(photoIndex+Number(step.dataset.galleryStep),'[data-gallery-step="'+step.dataset.galleryStep+'"]');return}
+    if(zoom){if(zoomDrag){zoomDrag=false;return}var enlarged=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(enlarged));zoom.setAttribute('aria-label',enlarged?'Reducir foto':'Ampliar foto');zoom.querySelector('.gallery-zoom-label').textContent=enlarged?'− Reducir':'＋ Ampliar';return}
     if(e.target===dlg||e.target.closest(".close")){dlg.close();return}
     var b=e.target.closest("[data-s]"); if(b&&!b.disabled){if(sel!==b.dataset.s){sel=b.dataset.s;qty=1}draw();return}
     if(e.target.closest("#favBtn")){var wasIn=!!me();toggleFav(p.id,function(){draw();if(view==="account")renderAccount()});if(!wasIn)dlg.close();return}
@@ -238,7 +291,7 @@ function openDetail(id){
     if(e.target.closest("#shipCalc")){var inp=dlg.querySelector("#shipIn");shipCp=(inp?inp.value:"").trim();try{localStorage.setItem("laonce-cp",shipCp)}catch(_){}draw();return}
     if(e.target.closest("#shipChange")){shipCp="";draw();var i2=dlg.querySelector("#shipIn");if(i2)i2.focus();return}
   };
-  dlg.onkeydown=function(e){if(e.key==="Enter"&&e.target.id==="shipIn"){e.preventDefault();dlg.querySelector("#shipCalc").click()}};
+  dlg.onkeydown=function(e){if(e.target.closest('.product-gallery')&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();changePhoto(photoIndex+(e.key==='ArrowRight'?1:-1),'[data-gallery-index="'+((photoIndex+(e.key==='ArrowRight'?1:-1)+productPhotos(p).length)%productPhotos(p).length)+'"]');return}if(e.key==="Enter"&&e.target.id==="shipIn"){e.preventDefault();dlg.querySelector("#shipCalc").click()}};
   dlg.oninput=function(e){var t=e.target;if(t.id!=="persNombre"&&t.id!=="persNumero")return;
     if(t.id==="persNombre"){var v=t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÜÑ .'-]/g,"").slice(0,12);if(v!==t.value)t.value=v;pers.nombre=v.trim()}
     else{var u=t.value.replace(/\D/g,"").slice(0,2);if(u!==t.value)t.value=u;pers.numero=u}
@@ -256,7 +309,8 @@ function sheetId(){var v=String(data.config.planilla||"").trim(),m=v.match(/\/d\
 function sheetApp(){var v=String(data.config.planillaApp||"").trim();return /^https:\/\/script\.google(usercontent)?\.com\//.test(v)?v:""}
 function sendSheet(info){var u=sheetApp();if(!u)return Promise.resolve(false);return fetch(u,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(info)}).then(function(){return true})}
 function sheetBool(v,def){if(v==null||v==="")return def;return !/^(no|n|false|0)$/i.test(String(v).trim())}
-function applySheet(rows){
+function applySheet(rows,authoritative){
+  if(authoritative)data.productos.forEach(function(p){p.activo=false});
   var SZ=["S","M","L","XL","XXL"],seen={},changed=false;
   rows.forEach(function(r){
     var id=String(r.id||"").trim();if(!/^[a-zA-Z0-9_-]{1,70}$/.test(id)||seen[id])return;seen[id]=1;
@@ -268,21 +322,30 @@ function applySheet(rows){
     p.modalidad=pre?"pedido":"stock";
     if(pre){p.tallesPedido=SZ.filter(function(z){return Number(r[z])>0||/^s[ií]$/i.test(String(r[z]||"").trim())});p.stock={S:0,M:0,L:0,XL:0,XXL:0}}
     else{p.stock={};SZ.forEach(function(z){p.stock[z]=Math.max(0,Math.floor(Number(r[z])||0))});delete p.tallesPedido}
-    var f=String(r.foto||"").trim();if(/^https:\/\//i.test(f))p.foto=f;else if(!f&&!(p.foto&&String(p.foto).indexOf("data:")===0))p.foto=null;
+    var hasPhotos=['foto','foto2','foto3','foto4','foto5','foto6','fotos'].some(function(k){return Object.prototype.hasOwnProperty.call(r,k)});
+    if(hasPhotos){var fotos=[r.foto,r.foto2,r.foto3,r.foto4,r.foto5,r.foto6].concat(Array.isArray(r.fotos)?r.fotos:[]).map(safePhoto).filter(function(u,i,a){return /^https:\/\//i.test(u)&&a.indexOf(u)===i});setProductPhotos(p,fotos)}
     p.destacado=sheetBool(r.destacado,false);p.nuevo=sheetBool(r.nuevo,false);p.activo=sheetBool(r.activo,true);
     if(!p.club||!(p.precio>0))return;
     if(isNew)data.productos.push(p);changed=true;
   });
-  if(changed){data.productos=data.productos.filter(function(p){return p.activo!==false})}
-  return changed;
+  if(changed||authoritative){data.productos=data.productos.filter(function(p){return p.activo!==false})}
+  return changed||!!authoritative;
 }
 function loadSheet(){
-  var id=sheetId();if(!id||view==="admin")return;
-  fetch("https://docs.google.com/spreadsheets/d/"+id+"/gviz/tq?tqx=out:json&headers=1&sheet=Productos",{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){
-    var j=JSON.parse(t.slice(t.indexOf("(")+1,t.lastIndexOf(")")));if(!j.table)return;
-    var cols=j.table.cols.map(function(c){return String(c.label||"").trim()});
+  if(view==='admin')return;
+  var endpoint=sheetApp();
+  if(endpoint){
+    var cb='onceCatalog_'+Date.now()+'_'+Math.random().toString(36).slice(2),script=document.createElement('script'),timeout;
+    function cleanup(){clearTimeout(timeout);delete window[cb];script.remove()}
+    window[cb]=function(payload){cleanup();if(!payload||!payload.ok||!Array.isArray(payload.productos))return;if(applySheet(payload.productos,true)&&view!=='admin'&&view!=='checkout'){validCart();if(view==='home')renderHome(true);else render()}};
+    script.onerror=cleanup;timeout=setTimeout(cleanup,15000);script.src=endpoint+(endpoint.indexOf('?')<0?'?':'&')+'action=catalogo&callback='+cb;document.head.appendChild(script);return;
+  }
+  var id=sheetId();if(!id)return;
+  fetch('https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&headers=1&sheet=Productos',{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){
+    var j=JSON.parse(t.slice(t.indexOf('(')+1,t.lastIndexOf(')')));if(!j.table)return;
+    var cols=j.table.cols.map(function(c){return String(c.label||'').trim()});
     var rows=(j.table.rows||[]).map(function(row){var o={};(row.c||[]).forEach(function(c,i){o[cols[i]]=c?(c.v!=null?c.v:c.f):null});return o});
-    if(applySheet(rows)&&view!=="admin"&&view!=="checkout"){validCart();render()}
+    if(applySheet(rows)&&view!=='admin'&&view!=='checkout'){validCart();if(view==='home')renderHome(true);else render()}
   }).catch(function(){});
 }
 function sendStockAlert(info){
@@ -454,7 +517,7 @@ function renderAdmin(){
     var cats=CATS.map(function(k){return '<option '+(p.categoria===k?"selected":"")+'>'+k+'</option>'}).join("");
     var eps=EPOCAS.map(function(k){return '<option '+(p.epoca===k?"selected":"")+'>'+k+'</option>'}).join("");
     var pats=Object.keys(PATTERNS).map(function(k){return '<option value="'+k+'" '+((p.patron||{}).tipo===k?"selected":"")+'>'+PATTERNS[k]+'</option>'}).join("");
-    return '<tr><td><label class="thumb" title="Cambiar foto">'+art(p)+'<input type="file" accept="image/*" hidden data-photo="'+i+'"></label>'+(p.foto?'<button class="linkish" style="font-size:12px" data-nophoto="'+i+'">Quitar</button>':"")+'</td>'+
+    return '<tr><td>'+editorPhotos(p,i)+'</td>'+
       '<td><select aria-label="Modalidad" data-i="'+i+'" data-k="modalidad"><option value="stock" '+(!isPre(p)?'selected':'')+'>En stock</option><option value="pedido" '+(isPre(p)?'selected':'')+'>Por pedido</option></select>'+(p.fuente?'<a class="source-ref" href="'+esc(p.fuente)+'" target="_blank" rel="noopener">Ficha del proveedor ↗</a>':'')+'<input class="w-title" data-i="'+i+'" data-k="club" value="'+esc(p.club)+'" aria-label="Club"><input class="w-title" style="margin-top:4px" data-i="'+i+'" data-k="titulo" value="'+esc(p.titulo)+'" aria-label="Modelo"></td>'+
       '<td><select data-i="'+i+'" data-k="categoria" aria-label="Categoría">'+cats+'</select><select style="margin-top:4px;display:block" data-i="'+i+'" data-k="epoca" aria-label="Época">'+eps+'</select></td>'+
       '<td><input class="w-price" type="number" min="0" step="500" data-i="'+i+'" data-k="precio" value="'+Number(p.precio)+'" aria-label="Precio"><input class="w-price" style="margin-top:4px" type="number" min="0" step="500" data-i="'+i+'" data-k="precioAnterior" value="'+(Number(p.precioAnterior)||0)+'" aria-label="Precio anterior" title="Precio tachado (0 = sin oferta)"></td>'+
@@ -466,7 +529,8 @@ function renderAdmin(){
   var units=data.productos.reduce(function(a,p){return a+total(p)},0);
   function f(label,key,type,extra){return '<label class="f">'+label+'<input '+(type?'type="'+type+'"':"")+' data-c="'+key+'" value="'+esc(c[key])+'" '+(extra||"")+'></label>'}
   app.innerHTML='<main class="wrap">'+
-   '<div class="admin-head"><div><button class="linkish" data-nav="inicio">← Volver a la tienda</button><h1>Panel de socios</h1><p class="hint">'+data.productos.length+' modelos · '+units+' camisetas en stock</p></div><button class="btn btn-ink" id="add">Agregar camiseta</button></div>'+
+   '<div class="admin-head"><div><button class="linkish" data-nav="inicio">← Volver a la tienda</button><h1>Editor de prueba</h1><p class="hint">'+data.productos.length+' modelos · '+units+' camisetas en stock</p></div><button class="btn btn-ink" id="add">Agregar camiseta</button></div>'+
+   (safePhoto(c.panelSocios)?'<a class="btn btn-ink admin-live-link" href="'+esc(c.panelSocios)+'" target="_blank" rel="noopener">Abrir planilla privada de socios ↗</a><p class="hint">En la planilla: La ONCE → Cargar camisetas. Guardá desde el formulario y recargá la tienda para ver los cambios.</p>':'')+
    (adminMsg?'<div class="msg '+adminMsg.kind+'">'+esc(adminMsg.text)+'</div>':'<div class="msg info">Editá el catálogo y descargá una copia HTML para conservar los cambios. La descarga no publica la tienda.</div>')+
    '<section class="panel"><h3>Datos del negocio</h3><div class="fields">'+
      f("Nombre","nombre")+f("WhatsApp del negocio, donde llegan los pedidos (ej. 5491122334455)","whatsapp","","inputmode=\"tel\" placeholder=\"54911…\"")+f("Instagram (sin @)","instagram","","placeholder=\"laonce.camisetas\"")+
@@ -480,7 +544,7 @@ function renderAdmin(){
       return '<div><label class="tthumb" title="Cambiar foto">'+(t.foto?'<img src="'+esc(t.foto)+'" alt="" style="object-position:'+esc(t.pos||"center")+'">':jersey(t.patron))+'<input type="file" accept="image/*" hidden data-tphoto="'+i+'"></label><label class="f" style="margin-top:6px">Título<input data-tile="'+i+'" data-tk="titulo" value="'+esc(t.titulo)+'"></label><label class="f" style="margin-top:6px">Encuadre<select data-tile="'+i+'" data-tk="pos">'+o+'</select></label>'+(t.foto?'<button class="linkish" style="font-size:13px;margin-top:6px" data-tnophoto="'+i+'">Quitar foto</button>':"")+'</div>';
     }).join("")+'</div></section>'+
    '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Foto</th><th>Club y modelo</th><th>Categoría y época</th><th>Precio / tachado</th><th>Stock por talle</th><th>Dibujo sin foto</th><th>Etiquetas</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
-   '<p class="hint" style="margin:12px 0 90px">Tocá la miniatura para subir una foto. Se achica sola para que la página cargue rápido. El precio tachado arma la oferta: dejalo en 0 si no hay descuento.</p>'+
+   '<p class="hint" style="margin:12px 0 90px">Subí hasta seis fotos por camiseta. Podés elegir la portada y quitar cualquier foto. El precio tachado arma la oferta: dejalo en 0 si no hay descuento.</p>'+
    '</main>'+
    '<div class="savebar '+(dirty?"show":"")+'"><span>Tenés cambios sin guardar</span><button class="btn btn-ghost" id="discard">Descartar</button><button class="btn btn-save" id="save" '+(busy?"disabled":"")+'>'+(busy?"Guardando…":(hasClaude()?"Guardar y publicar":"Descargar copia HTML"))+'</button></div><div class="toast" id="toast"></div>';
 }
@@ -504,7 +568,7 @@ function buildDoc(){
 function hasClaude(){return !!(window.claude&&window.claude.use)}
 function downloadCopy(doc){
  var blob=new Blob([doc],{type:"text/html;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="La-ONCE-Kits.html";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},10000);
+ a.href=url;a.download="La-ONCE-Avellaneda.html";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},10000);
  saved=clone(data);dirty=false;adminMsg={kind:"info",text:"Descarga preparada. Conservá el archivo descargado con tus cambios; la tienda no se publicó."};render();
 }
 async function save(){
@@ -904,7 +968,7 @@ function setHash(h,replace){try{history[replace?'replaceState':'pushState'](null
 function go(k,fromHistory){
  if(String(k).indexOf('legal-')===0){goLegal(String(k).slice(6),fromHistory);return}
  clearTimeout(qTimer);filt=emptyFilters();sec=['stock','pedido','destacado'].includes(k)?k:'todo';
- if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'){view='admin'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.epoca='Retro';filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
+ if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'){view='admin'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
  if(!fromHistory&&location.hash!=='#'+k)setHash('#'+encodeURIComponent(k));
  render();scrollTo(0,0);
 }
@@ -954,6 +1018,7 @@ app.addEventListener("click",function(e){
     dirty=true;renderAdmin();var fi=app.querySelector('.tbl input[data-k="club"]');if(fi){fi.focus();fi.select()}return}
   if((b=t.closest("[data-del]"))){var p=data.productos[+b.dataset.del];if(confirm("¿Borrar "+p.club+" "+p.titulo+"?")){data.productos.splice(+b.dataset.del,1);dirty=true;renderAdmin()}return}
   if((b=t.closest("[data-tnophoto]"))){data.tiles[+b.dataset.tnophoto].foto=null;dirty=true;renderAdmin();return}
+  if((b=t.closest('[data-photo-remove],[data-photo-cover]'))){var remove=b.hasAttribute('data-photo-remove'),key=(remove?b.dataset.photoRemove:b.dataset.photoCover).split(':'),p=data.productos[+key[0]],photos=productPhotos(p),n=+key[1];if(remove)photos.splice(n,1);else photos.unshift(photos.splice(n,1)[0]);setProductPhotos(p,photos);dirty=true;renderAdmin();return}
   if((b=t.closest("[data-nophoto]"))){data.productos[+b.dataset.nophoto].foto=null;dirty=true;renderAdmin();return}
   if(t.closest("#discard")){data=clone(saved);dirty=false;adminMsg=null;renderAdmin();return}
   if(t.closest("#save")){save();return}
@@ -991,7 +1056,7 @@ app.addEventListener("change",function(e){
   if(t.id==="sort"){filt.orden=t.value;refreshCatalog();return}
   if(t.dataset.tile&&t.tagName==="SELECT"){data.tiles[+t.dataset.tile][t.dataset.tk]=t.value;dirty=true;renderAdmin();return}
   if(t.dataset.tphoto!=null&&t.files&&t.files[0]){var ti=+t.dataset.tphoto;resizePhoto(t.files[0],function(url){data.tiles[ti].foto=url;dirty=true;renderAdmin()},1000);return}
-  if(t.dataset.photo!=null&&t.files&&t.files[0]){var i=+t.dataset.photo;resizePhoto(t.files[0],function(url){data.productos[i].foto=url;dirty=true;renderAdmin()});return}
+  if(t.dataset.photo!=null&&t.files&&t.files.length){var p=data.productos[+t.dataset.photo],current=productPhotos(p),files=Array.from(t.files);if(files.length+current.length>6){toast('Podés cargar hasta seis fotos por camiseta.');t.value='';return}t.disabled=true;Promise.all(files.map(readProductPhoto)).then(function(urls){setProductPhotos(p,current.concat(urls));dirty=true;renderAdmin()}).catch(function(err){t.disabled=false;t.value='';toast(err.message)});return}
   if(t.dataset.k){
     var p=data.productos[+t.dataset.i];
     if(t.type==="checkbox") setPath(p,t.dataset.k,t.checked);
@@ -1013,7 +1078,7 @@ function cartDelivery(){var pre=hasPreCart(),st=cart.some(function(l){return !is
 function modeIntro(){return '<section class="mode-intro"><span class="eyebrow">Dos formas de encontrar la tuya</span><h1>La misma pasión. Vos elegís cómo.</h1><div class="mode-grid"><button class="mode-link" data-nav="stock"><span class="eyebrow">La querés ahora</span><strong>En stock</strong><p>Camisetas que ya tenemos. Elegí tu talle y coordiná la entrega.</p><span class="go-arrow" aria-hidden="true">↗</span></button><button class="mode-link pre" data-nav="pedido"><span class="eyebrow">La espera vale la pena</span><strong>Por pedido</strong><p>Más modelos, menor precio. La traemos para vos en aproximadamente un mes.</p><span class="go-arrow" aria-hidden="true">↗</span></button></div><p class="prototype-note">Precios finales en pesos · Stock sujeto a disponibilidad.</p></section>'}
 function clubInvite(){return '<section class="club-invite"><div><span class="eyebrow">La ruleta de La ONCE</span><h2>Probá tu suerte.</h2><p>Descuentos, envío gratis y una Mystery Box en juego. Girá gratis cada 3 días.</p></div><button class="btn" data-nav="ruleta">Ir a la ruleta ↗</button></section>'}
 function requestShirt(){return '<section class="request-shirt"><div><h3>¿Tenés una camiseta en mente?</h3><p>Decinos el club, el año y el talle. La buscamos por vos.</p></div><button class="btn btn-ghost" id="customRequest">Pedir otro modelo ↗</button></section>'}
-function catalogIntro(){var pre=sec==='pedido';return '<section class="catalog-intro"><span class="eyebrow">'+(pre?'Elegida por vos · Traída por nosotros':'La ONCE Kits')+'</span><h1>'+(pre?'Tu próxima camiseta puede esperar.':sec==='stock'?'La querés. La tenemos.':sec==='destacado'?'Las elegidas de La ONCE.':'Encontrá la tuya.')+'</h1><p>'+(pre?'Un catálogo más amplio, a un precio menor. Elegís el modelo y el talle; nosotros nos encargamos de traerlo. Aproximadamente un mes desde la confirmación.':sec==='stock'?'Modelos para coordinar envío o retiro sin esperar una importación.':'Buscá por club, época o talle. Cada modelo indica si está en stock o se trae por pedido.')+'</p>'+(pre?'<div class="pre-steps"><span><b>01</b> Elegís tu camiseta</span><span><b>02</b> Confirmamos y coordinamos el pago</span><span><b>03</b> La recibís en ≈ 30 días + entrega local</span></div>':'')+'<p class="prototype-note">'+(pre?'Modelos seleccionados de nuestros proveedores · Confirmamos disponibilidad antes del pago.':'Precios finales en pesos · Stock sujeto a disponibilidad.')+'</p></section>'}
+function catalogIntro(){var pre=sec==='pedido';return '<section class="catalog-intro"><span class="eyebrow">'+(pre?'Elegida por vos · Traída por nosotros':'La ONCE Avellaneda')+'</span><h1>'+(pre?'Tu próxima camiseta puede esperar.':sec==='stock'?'La querés. La tenemos.':sec==='destacado'?'Las elegidas de La ONCE.':'Encontrá la tuya.')+'</h1><p>'+(pre?'Un catálogo más amplio, a un precio menor. Elegís el modelo y el talle; nosotros nos encargamos de traerlo. Aproximadamente un mes desde la confirmación.':sec==='stock'?'Modelos para coordinar envío o retiro sin esperar una importación.':'Buscá por club, época o talle. Cada modelo indica si está en stock o se trae por pedido.')+'</p>'+(pre?'<div class="pre-steps"><span><b>01</b> Elegís tu camiseta</span><span><b>02</b> Confirmamos y coordinamos el pago</span><span><b>03</b> La recibís en ≈ 30 días + entrega local</span></div>':'')+'<p class="prototype-note">'+(pre?'Modelos seleccionados de nuestros proveedores · Confirmamos disponibilidad antes del pago.':'Precios finales en pesos · Stock sujeto a disponibilidad.')+'</p></section>'}
 function openCustomRequest(){var d=document.getElementById('dlg');d.innerHTML='<form class="custom-form"><button type="button" class="close" aria-label="Cerrar">×</button><span class="eyebrow">La buscamos por vos</span><h2>¿Cuál te falta?</h2><p>Sin compromiso. Primero confirmamos si se puede conseguir y cuánto cuesta.</p><label>Club o selección<input name="club" required maxlength="100" placeholder="Ej.: Racing"></label><label>Año, versión o detalles<input name="modelo" required maxlength="180" placeholder="Ej.: titular 2001, manga corta"></label><label>Talle<select name="talle">'+SIZES.map(function(s){return '<option>'+s+'</option>'}).join('')+'</select></label><label>Enlace de referencia (opcional)<input type="url" name="url" placeholder="https://…" maxlength="1000"></label><button class="btn btn-ink" type="submit">Consultar por WhatsApp</button><p class="hint" role="status"></p></form>';d.querySelector('.close').onclick=function(){d.close()};d.querySelector('form').onsubmit=function(e){e.preventDefault();var n=waNumber();if(!n){d.querySelector('[role=status]').textContent='Falta configurar el WhatsApp del negocio. Tu consulta todavía no se envió.';return}var f=new FormData(e.target),u=String(f.get('url')||'');if(u&&!/^https?:\/\//i.test(u)){d.querySelector('[role=status]').textContent='Usá un enlace que empiece con https://';return}window.open('https://wa.me/'+n+'?text='+encodeURIComponent('Hola, busco una camiseta por pedido.\nClub: '+f.get('club')+'\nModelo: '+f.get('modelo')+'\nTalle: '+f.get('talle')+(u?'\nReferencia: '+u:'')+'\nSé que la demora estimada es de un mes desde la confirmación.'),'_blank','noopener')};d.showModal()}
 
 /* @include pagos.js */

@@ -1,6 +1,6 @@
 {
   "config": {
-    "nombre": "La ONCE Kits",
+    "nombre": "La ONCE Avellaneda",
     "whatsapp": "",
     "instagram": "",
     "descuentoTransferencia": 10,
@@ -22,7 +22,8 @@
     "precioPersonalizacion": 8000,
     "logo": "assets/logo-once.webp",
     "planilla": "",
-    "planillaApp": ""
+    "planillaApp": "https://script.google.com/macros/s/AKfycbwfUFXRDo9r_WilHXYatyWefW_JbKl5_BtvqibljfBM6oNMCDUALOf-wzFaMFoOc-wb8A/exec",
+    "panelSocios": "https://docs.google.com/spreadsheets/d/1MxY9ql1XOr8Zk8zIHv8rOQiAP-JAQdEAblsZ42FGspQ/edit"
   },
   "productos": [
     {
@@ -563,8 +564,8 @@
   ],
   "tiles": [
     {
-      "titulo": "Retro Sudamérica",
-      "nav": "retro-sudamerica",
+      "titulo": "Sudamérica",
+      "nav": "Sudamérica",
       "color": "#6B2D1F",
       "foto": "assets/06471fc54a73a356.jpg",
       "pos": "center 15%"
@@ -586,19 +587,19 @@
   ],
   "heroJugadores": [
     {
-      "foto": "assets/94ef99990411e4fd.webp",
-      "alt": "Thiago Almada con la camiseta alternativa de River Plate"
+      "foto": "assets/2640c9dae6f3b6cd.png",
+      "alt": "Jugador de River Plate mostrando el escudo de la camiseta"
     },
     {
-      "foto": "assets/0acf4da3b9b30e9f.webp",
+      "foto": "assets/1273cbffb410e510.png",
       "alt": "Jugador con camiseta celeste"
     },
     {
-      "foto": "assets/ad45b3cc50003140.webp",
+      "foto": "assets/7b89cd5bfb67b759.png",
       "alt": "Jugador de espaldas con camiseta roja"
     },
     {
-      "foto": "assets/paredes-boca.webp",
+      "foto": "assets/c3f8efdae26e257e.png",
       "alt": "Leandro Paredes con la camiseta titular de Boca Juniors"
     }
   ],
@@ -609,7 +610,7 @@
     "alt": "Camiseta blanca del Santos FC con BMG, sin percha",
     "foto2": "assets/29a36af564856cf3.webp",
     "alt2": "Camiseta roja del Manchester United 2008 con AIG, sin percha",
-    "foto3": "assets/19eac94ba631ec11.webp",
+    "foto3": "assets/606788f20408f4a0.png",
     "alt3": "Camiseta retro del Barcelona con el 10"
   },
   "heroPago": {
