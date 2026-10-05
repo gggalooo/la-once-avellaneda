@@ -564,8 +564,8 @@
   ],
   "tiles": [
     {
-      "titulo": "Retro Sudamérica",
-      "nav": "retro-sudamerica",
+      "titulo": "Sudamérica",
+      "nav": "Sudamérica",
       "color": "#6B2D1F",
       "foto": "assets/06471fc54a73a356.jpg",
       "pos": "center 15%"

@@ -160,7 +160,7 @@ function renderHome(){
   hero.addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>45){setSlide((slide+(dx<0?1:-1)+SLIDES.length)%SLIDES.length);startTimer()}});
 }
 function tileList(){
-  var def=[{titulo:"Retro Sudamérica",nav:"Retro",color:"#6B2D1F",patron:{tipo:"banda",c1:"#10245E",c2:"#F2C230"}},{titulo:"Clubes de Europa",nav:"Europa",color:"#0F2A5C",patron:{tipo:"bastones",c1:"#004D98",c2:"#A50044"}},{titulo:"Selecciones",nav:"Selecciones",color:"#1E6B45",patron:{tipo:"bastones",c1:"#FFFFFF",c2:"#7CC0F0"}}];
+  var def=[{titulo:"Sudamérica",nav:"Sudamérica",color:"#6B2D1F",patron:{tipo:"banda",c1:"#10245E",c2:"#F2C230"}},{titulo:"Clubes de Europa",nav:"Europa",color:"#0F2A5C",patron:{tipo:"bastones",c1:"#004D98",c2:"#A50044"}},{titulo:"Selecciones",nav:"Selecciones",color:"#1E6B45",patron:{tipo:"bastones",c1:"#FFFFFF",c2:"#7CC0F0"}}];
   if(!Array.isArray(data.tiles)) data.tiles=clone(def);
   return data.tiles.map(function(t,i){var d=def[i]||def[0];if(!t.patron)t.patron=d.patron;return t});
 }
@@ -933,7 +933,7 @@ function setHash(h,replace){try{history[replace?'replaceState':'pushState'](null
 function go(k,fromHistory){
  if(String(k).indexOf('legal-')===0){goLegal(String(k).slice(6),fromHistory);return}
  clearTimeout(qTimer);filt=emptyFilters();sec=['stock','pedido','destacado'].includes(k)?k:'todo';
- if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'){view='admin'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.epoca='Retro';filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
+ if(k==='inicio'){view='home'}else if(k==='ruleta'){view='game'}else if(k==='socios'){view='admin'}else{view='catalog';if(CATS.includes(k))filt.categoria=k;if(EPOCAS.includes(k))filt.epoca=k;if(k==='retro-sudamerica'){filt.categoria='Sudamérica'}if(k==='oferta')filt.oferta=true;if(k==='nuevo')filt.nuevo=true}
  if(!fromHistory&&location.hash!=='#'+k)setHash('#'+encodeURIComponent(k));
  render();scrollTo(0,0);
 }
