@@ -32,5 +32,7 @@ if(site){
   html=html.replace(/<link rel="canonical"[^>]*>\n?/,'').replace(/<meta property="og:url"[^>]*>\n?/,'');
   fs.writeFileSync(path.join(dist,'robots.txt'),'User-agent: *\nAllow: /\n');
 }
+// El link de la planilla privada de socios no se publica en la tienda.
+html=html.replace(/,"panelSocios":"[^"]*"/,'');
 fs.writeFileSync(path.join(dist,'index.html'),html);
 console.log('Listo: carpeta dist para Netlify'+(site?' ('+site+')':'')+'.');
