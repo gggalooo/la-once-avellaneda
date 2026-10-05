@@ -8,7 +8,7 @@ function productPhotos(p){
 }
 function setProductPhotos(p,photos){p.fotos=photos.slice(0,6);p.foto=p.fotos[0]||null}
 function productGallery(p,index){
- var photos=productPhotos(p);if(!photos.length)return '<div class="art">'+art(p)+'</div>';
+ var photos=productPhotos(p);if(!photos.length)return '<div class="product-gallery" aria-label="Imagen de prueba de '+esc(p.club)+'"><div class="gallery-stage gallery-placeholder"><div class="art">'+art(p)+'</div><span class="gallery-zoom-label">Imagen de prueba · Foto pendiente</span></div></div>';
  index=Math.min(index,photos.length-1);
  var name=p.club+' '+p.titulo;
  return '<div class="product-gallery" aria-label="Fotos de '+esc(name)+'">'+
