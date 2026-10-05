@@ -4,7 +4,7 @@ export default {
   "descuentoTransferencia": 10,
   "precioPersonalizacion": 8000,
   "planilla": "",
-  "planillaApp": ""
+  "planillaApp": "https://script.google.com/macros/s/AKfycbwfUFXRDo9r_WilHXYatyWefW_JbKl5_BtvqibljfBM6oNMCDUALOf-wzFaMFoOc-wb8A/exec"
  },
  "productos": [
   {

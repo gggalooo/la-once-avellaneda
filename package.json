@@ -4,8 +4,8 @@
   "private": true,
   "description": "Prototipo de camisetas en stock, por pedido y ruleta de La ONCE Avellaneda",
   "scripts": {
-    "build": "node scripts/build.cjs",
-    "check": "node --check src/app.js && node --check src/ruleta.js && node --check src/pagos.js && node scripts/build.cjs --check",
+    "build": "node scripts/build-editor.cjs && node scripts/build.cjs",
+    "check": "node --check src/app.js && node --check src/galeria.js && node --check src/ruleta.js && node --check src/pagos.js && node scripts/build-editor.cjs --check && node scripts/test-editor.cjs && node scripts/build.cjs --check",
     "netlify": "node scripts/netlify.cjs"
   },
   "engines": {

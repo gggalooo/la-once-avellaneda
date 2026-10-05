@@ -46,7 +46,8 @@ function jersey(pt){
   var shape="M62 18 L86 10 Q100 26 114 10 L138 18 L186 48 L168 90 L150 80 L150 206 Q100 214 50 206 L50 80 L32 90 L14 48 Z";
   return '<svg viewBox="0 0 200 220" aria-hidden="true"><defs><clipPath id="'+id+'"><path d="'+shape+'"/></clipPath></defs><g clip-path="url(#'+id+')">'+fill+'</g><path d="'+shape+'" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2.5"/><path d="M86 10 Q100 26 114 10" fill="none" stroke="'+c2+'" stroke-width="6"/></svg>';
 }
-function art(p){if(!p.foto&&isPre(p))return '<div class="missing-photo"><div><b>Foto pendiente</b><br>'+esc(p.club)+'<br>Referencia del proveedor</div></div>';return p.foto?'<img src="'+esc(p.foto)+'" alt="'+esc(p.club+" "+p.titulo)+'" loading="lazy" decoding="async">':jersey(p.patron)}
+/* @include galeria.js */
+function art(p){var photo=productPhotos(p)[0];if(!photo&&isPre(p))return '<div class="missing-photo"><div><b>Foto pendiente</b><br>'+esc(p.club)+'<br>Referencia del proveedor</div></div>';return photo?'<img src="'+esc(photo)+'" alt="'+esc(p.club+" "+p.titulo)+'" loading="lazy" decoding="async">':jersey(p.patron)}
 function waNumber(){return String(data.config.whatsapp||"").replace(/\D/g,"")}
 
 /* ---------- Partes comunes ---------- */
@@ -204,7 +205,7 @@ function renderCatalog(){
 
 function openDetail(id){
   var p=byId(id); if(!p) return;
-  var dlg=document.getElementById("dlg"), sel=null, qty=1, persOpen=false, pers={nombre:"",numero:""};
+  var dlg=document.getElementById("dlg"), sel=null, qty=1, persOpen=false, pers={nombre:"",numero:""}, photoIndex=0;
   function persOn(){return persOpen&&isPre(p)&&!!(pers.nombre||pers.numero)}
   function addLabel(maxQ){return 'Agregar al pedido'+(sel&&maxQ?' · '+money((p.precio+(persOn()?persPrice():0))*qty):"")}
   function extras(){if(!isPre(p))return "";if(!persOpen)return '<button type="button" class="add-extras" id="persToggle" aria-expanded="false"><span class="ae-plus" aria-hidden="true">+</span><span><b>Agregar adicionales</b><small>Nombre y número en la espalda</small></span></button>';
@@ -220,14 +221,28 @@ function openDetail(id){
     var note=isPre(p)?(sel?"Talle a confirmar con el proveedor. Máximo 5 unidades por talle en esta solicitud.":"Elegí el talle que querés consultar."):t===0?"":(sel?(!maxQ?"Ya agregaste todas las que hay en talle "+sel+".":(left<=2?"Quedan "+left+" en talle "+sel+".":"Hay stock en talle "+sel+".")):"Elegí un talle.");
     var avisar=n?"https://wa.me/"+n+"?text="+encodeURIComponent("Hola! Me avisan cuando vuelva la camiseta de "+p.club+" "+p.titulo+"?"):"#";
     var cuotas=Number(data.config.cuotas)||0;
-    dlg.innerHTML='<div class="detail"><div class="art">'+art(p)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' '+offW()+'</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
+    dlg.innerHTML='<div class="detail"><div class="gallery-slot">'+productGallery(p,photoIndex)+'</div><div class="detail-body">'+modeBadge(p)+'<span class="hint">'+esc(p.categoria)+' · '+esc(p.epoca)+'</span><div class="d-title"><h2>'+esc(p.club)+'</h2><button class="fav'+(isFav(p.id)?" on":"")+'" id="favBtn" aria-pressed="'+isFav(p.id)+'" aria-label="'+(isFav(p.id)?"Quitar de favoritos":"Agregar a favoritos")+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.9 4.5 7.3 4.5c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.4 0 5.7 3.3 4.5 6.7-1.7 4.7-9.2 9.3-9.2 9.3z"/></svg><span>'+(isFav(p.id)?"En favoritos":"Favoritos")+'</span></button></div><p style="margin:0;font-weight:600">'+esc(p.titulo)+'</p><div class="prices">'+(onSale(p)?'<s>'+money(p.precioAnterior)+'</s>':"")+'<strong>'+money(p.precio)+'</strong></div><span class="transfer">'+money(transfer(p.precio))+' '+offW()+'</span>'+(cuotas>1?'<span class="hint">o '+cuotas+' cuotas de '+money(p.precio/cuotas)+'</span>':"")+
       '<div><p class="hint" style="margin-bottom:8px">Talle</p><div class="pick">'+btns+'</div></div>'+stepper+(note?'<p class="hint">'+note+'</p>':"")+extras()+
       (t?'<button class="btn btn-ink" id="addBag" '+(sel&&maxQ?"":"disabled")+'>'+addLabel(maxQ)+'</button>':'<button class="btn btn-nostock" disabled>Sin stock</button><button class="btn btn-notify" id="notifyBtn">¿Querés que te avise cuando haya stock?</button>')+
       ""+
       deliveryInfo(p)+'<p class="hint legal-mini">Tenés 10 días desde que la recibís para arrepentirte de la compra, y garantía por falla. <button class="inline-link" data-legal="cambios">Cambios y devoluciones</button></p>'+
       shipBlock()+'</div></div><button class="close" aria-label="Cerrar">×</button>';
   }
+  function changePhoto(index,focus){
+    var photos=productPhotos(p);if(!photos.length)return;
+    photoIndex=(index+photos.length)%photos.length;
+    dlg.querySelector('.gallery-slot').innerHTML=productGallery(p,photoIndex);
+    if(focus){var b=dlg.querySelector(focus);if(b)b.focus({preventScroll:true})}
+  }
+  var touchX=null;
+  dlg.ontouchstart=function(e){if(e.target.closest('.gallery-stage'))touchX=e.touches[0].clientX};
+  dlg.ontouchend=function(e){if(touchX===null)return;var dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>45)changePhoto(photoIndex+(dx<0?1:-1))};
+  dlg.onpointermove=function(e){var stage=e.target.closest('.gallery-stage');if(stage&&e.pointerType==='mouse'){var r=stage.getBoundingClientRect();stage.style.setProperty('--zx',Math.max(0,Math.min(100,(e.clientX-r.x)/r.width*100))+'%');stage.style.setProperty('--zy',Math.max(0,Math.min(100,(e.clientY-r.y)/r.height*100))+'%')}};
   dlg.onclick=function(e){
+    var thumb=e.target.closest('[data-gallery-index]'),step=e.target.closest('[data-gallery-step]'),zoom=e.target.closest('[data-gallery-zoom]');
+    if(thumb){changePhoto(+thumb.dataset.galleryIndex,'[data-gallery-index="'+thumb.dataset.galleryIndex+'"]');return}
+    if(step){changePhoto(photoIndex+Number(step.dataset.galleryStep),'[data-gallery-step="'+step.dataset.galleryStep+'"]');return}
+    if(zoom){var enlarged=zoom.getAttribute('aria-pressed')!=='true';zoom.setAttribute('aria-pressed',String(enlarged));zoom.setAttribute('aria-label',enlarged?'Reducir foto':'Ampliar foto');zoom.querySelector('.gallery-zoom-label').textContent=enlarged?'− Reducir':'＋ Ampliar';return}
     if(e.target===dlg||e.target.closest(".close")){dlg.close();return}
     var b=e.target.closest("[data-s]"); if(b&&!b.disabled){if(sel!==b.dataset.s){sel=b.dataset.s;qty=1}draw();return}
     if(e.target.closest("#favBtn")){var wasIn=!!me();toggleFav(p.id,function(){draw();if(view==="account")renderAccount()});if(!wasIn)dlg.close();return}
@@ -239,7 +254,7 @@ function openDetail(id){
     if(e.target.closest("#shipCalc")){var inp=dlg.querySelector("#shipIn");shipCp=(inp?inp.value:"").trim();try{localStorage.setItem("laonce-cp",shipCp)}catch(_){}draw();return}
     if(e.target.closest("#shipChange")){shipCp="";draw();var i2=dlg.querySelector("#shipIn");if(i2)i2.focus();return}
   };
-  dlg.onkeydown=function(e){if(e.key==="Enter"&&e.target.id==="shipIn"){e.preventDefault();dlg.querySelector("#shipCalc").click()}};
+  dlg.onkeydown=function(e){if(e.target.closest('.product-gallery')&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();changePhoto(photoIndex+(e.key==='ArrowRight'?1:-1),'[data-gallery-index="'+((photoIndex+(e.key==='ArrowRight'?1:-1)+productPhotos(p).length)%productPhotos(p).length)+'"]');return}if(e.key==="Enter"&&e.target.id==="shipIn"){e.preventDefault();dlg.querySelector("#shipCalc").click()}};
   dlg.oninput=function(e){var t=e.target;if(t.id!=="persNombre"&&t.id!=="persNumero")return;
     if(t.id==="persNombre"){var v=t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÜÑ .'-]/g,"").slice(0,12);if(v!==t.value)t.value=v;pers.nombre=v.trim()}
     else{var u=t.value.replace(/\D/g,"").slice(0,2);if(u!==t.value)t.value=u;pers.numero=u}
@@ -257,7 +272,8 @@ function sheetId(){var v=String(data.config.planilla||"").trim(),m=v.match(/\/d\
 function sheetApp(){var v=String(data.config.planillaApp||"").trim();return /^https:\/\/script\.google(usercontent)?\.com\//.test(v)?v:""}
 function sendSheet(info){var u=sheetApp();if(!u)return Promise.resolve(false);return fetch(u,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(info)}).then(function(){return true})}
 function sheetBool(v,def){if(v==null||v==="")return def;return !/^(no|n|false|0)$/i.test(String(v).trim())}
-function applySheet(rows){
+function applySheet(rows,authoritative){
+  if(authoritative)data.productos.forEach(function(p){p.activo=false});
   var SZ=["S","M","L","XL","XXL"],seen={},changed=false;
   rows.forEach(function(r){
     var id=String(r.id||"").trim();if(!/^[a-zA-Z0-9_-]{1,70}$/.test(id)||seen[id])return;seen[id]=1;
@@ -269,21 +285,30 @@ function applySheet(rows){
     p.modalidad=pre?"pedido":"stock";
     if(pre){p.tallesPedido=SZ.filter(function(z){return Number(r[z])>0||/^s[ií]$/i.test(String(r[z]||"").trim())});p.stock={S:0,M:0,L:0,XL:0,XXL:0}}
     else{p.stock={};SZ.forEach(function(z){p.stock[z]=Math.max(0,Math.floor(Number(r[z])||0))});delete p.tallesPedido}
-    var f=String(r.foto||"").trim();if(/^https:\/\//i.test(f))p.foto=f;else if(!f&&!(p.foto&&String(p.foto).indexOf("data:")===0))p.foto=null;
+    var hasPhotos=['foto','foto2','foto3','foto4','foto5','foto6','fotos'].some(function(k){return Object.prototype.hasOwnProperty.call(r,k)});
+    if(hasPhotos){var fotos=[r.foto,r.foto2,r.foto3,r.foto4,r.foto5,r.foto6].concat(Array.isArray(r.fotos)?r.fotos:[]).map(safePhoto).filter(function(u,i,a){return /^https:\/\//i.test(u)&&a.indexOf(u)===i});setProductPhotos(p,fotos)}
     p.destacado=sheetBool(r.destacado,false);p.nuevo=sheetBool(r.nuevo,false);p.activo=sheetBool(r.activo,true);
     if(!p.club||!(p.precio>0))return;
     if(isNew)data.productos.push(p);changed=true;
   });
-  if(changed){data.productos=data.productos.filter(function(p){return p.activo!==false})}
-  return changed;
+  if(changed||authoritative){data.productos=data.productos.filter(function(p){return p.activo!==false})}
+  return changed||!!authoritative;
 }
 function loadSheet(){
-  var id=sheetId();if(!id||view==="admin")return;
-  fetch("https://docs.google.com/spreadsheets/d/"+id+"/gviz/tq?tqx=out:json&headers=1&sheet=Productos",{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){
-    var j=JSON.parse(t.slice(t.indexOf("(")+1,t.lastIndexOf(")")));if(!j.table)return;
-    var cols=j.table.cols.map(function(c){return String(c.label||"").trim()});
+  if(view==='admin')return;
+  var endpoint=sheetApp();
+  if(endpoint){
+    var cb='onceCatalog_'+Date.now()+'_'+Math.random().toString(36).slice(2),script=document.createElement('script'),timeout;
+    function cleanup(){clearTimeout(timeout);delete window[cb];script.remove()}
+    window[cb]=function(payload){cleanup();if(!payload||!payload.ok||!Array.isArray(payload.productos))return;if(applySheet(payload.productos,true)&&view!=='admin'&&view!=='checkout'){validCart();render()}};
+    script.onerror=cleanup;timeout=setTimeout(cleanup,15000);script.src=endpoint+(endpoint.indexOf('?')<0?'?':'&')+'action=catalogo&callback='+cb;document.head.appendChild(script);return;
+  }
+  var id=sheetId();if(!id)return;
+  fetch('https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&headers=1&sheet=Productos',{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){
+    var j=JSON.parse(t.slice(t.indexOf('(')+1,t.lastIndexOf(')')));if(!j.table)return;
+    var cols=j.table.cols.map(function(c){return String(c.label||'').trim()});
     var rows=(j.table.rows||[]).map(function(row){var o={};(row.c||[]).forEach(function(c,i){o[cols[i]]=c?(c.v!=null?c.v:c.f):null});return o});
-    if(applySheet(rows)&&view!=="admin"&&view!=="checkout"){validCart();render()}
+    if(applySheet(rows)&&view!=='admin'&&view!=='checkout'){validCart();render()}
   }).catch(function(){});
 }
 function sendStockAlert(info){
@@ -455,7 +480,7 @@ function renderAdmin(){
     var cats=CATS.map(function(k){return '<option '+(p.categoria===k?"selected":"")+'>'+k+'</option>'}).join("");
     var eps=EPOCAS.map(function(k){return '<option '+(p.epoca===k?"selected":"")+'>'+k+'</option>'}).join("");
     var pats=Object.keys(PATTERNS).map(function(k){return '<option value="'+k+'" '+((p.patron||{}).tipo===k?"selected":"")+'>'+PATTERNS[k]+'</option>'}).join("");
-    return '<tr><td><label class="thumb" title="Cambiar foto">'+art(p)+'<input type="file" accept="image/*" hidden data-photo="'+i+'"></label>'+(p.foto?'<button class="linkish" style="font-size:12px" data-nophoto="'+i+'">Quitar</button>':"")+'</td>'+
+    return '<tr><td>'+editorPhotos(p,i)+'</td>'+
       '<td><select aria-label="Modalidad" data-i="'+i+'" data-k="modalidad"><option value="stock" '+(!isPre(p)?'selected':'')+'>En stock</option><option value="pedido" '+(isPre(p)?'selected':'')+'>Por pedido</option></select>'+(p.fuente?'<a class="source-ref" href="'+esc(p.fuente)+'" target="_blank" rel="noopener">Ficha del proveedor ↗</a>':'')+'<input class="w-title" data-i="'+i+'" data-k="club" value="'+esc(p.club)+'" aria-label="Club"><input class="w-title" style="margin-top:4px" data-i="'+i+'" data-k="titulo" value="'+esc(p.titulo)+'" aria-label="Modelo"></td>'+
       '<td><select data-i="'+i+'" data-k="categoria" aria-label="Categoría">'+cats+'</select><select style="margin-top:4px;display:block" data-i="'+i+'" data-k="epoca" aria-label="Época">'+eps+'</select></td>'+
       '<td><input class="w-price" type="number" min="0" step="500" data-i="'+i+'" data-k="precio" value="'+Number(p.precio)+'" aria-label="Precio"><input class="w-price" style="margin-top:4px" type="number" min="0" step="500" data-i="'+i+'" data-k="precioAnterior" value="'+(Number(p.precioAnterior)||0)+'" aria-label="Precio anterior" title="Precio tachado (0 = sin oferta)"></td>'+
@@ -467,7 +492,8 @@ function renderAdmin(){
   var units=data.productos.reduce(function(a,p){return a+total(p)},0);
   function f(label,key,type,extra){return '<label class="f">'+label+'<input '+(type?'type="'+type+'"':"")+' data-c="'+key+'" value="'+esc(c[key])+'" '+(extra||"")+'></label>'}
   app.innerHTML='<main class="wrap">'+
-   '<div class="admin-head"><div><button class="linkish" data-nav="inicio">← Volver a la tienda</button><h1>Panel de socios</h1><p class="hint">'+data.productos.length+' modelos · '+units+' camisetas en stock</p></div><button class="btn btn-ink" id="add">Agregar camiseta</button></div>'+
+   '<div class="admin-head"><div><button class="linkish" data-nav="inicio">← Volver a la tienda</button><h1>Editor de prueba</h1><p class="hint">'+data.productos.length+' modelos · '+units+' camisetas en stock</p></div><button class="btn btn-ink" id="add">Agregar camiseta</button></div>'+
+   (safePhoto(c.panelSocios)?'<a class="btn btn-ink admin-live-link" href="'+esc(c.panelSocios)+'" target="_blank" rel="noopener">Abrir planilla privada de socios ↗</a><p class="hint">En la planilla: La ONCE → Cargar camisetas. Guardá desde el formulario y recargá la tienda para ver los cambios.</p>':'')+
    (adminMsg?'<div class="msg '+adminMsg.kind+'">'+esc(adminMsg.text)+'</div>':'<div class="msg info">Editá el catálogo y descargá una copia HTML para conservar los cambios. La descarga no publica la tienda.</div>')+
    '<section class="panel"><h3>Datos del negocio</h3><div class="fields">'+
      f("Nombre","nombre")+f("WhatsApp del negocio, donde llegan los pedidos (ej. 5491122334455)","whatsapp","","inputmode=\"tel\" placeholder=\"54911…\"")+f("Instagram (sin @)","instagram","","placeholder=\"laonce.camisetas\"")+
@@ -481,7 +507,7 @@ function renderAdmin(){
       return '<div><label class="tthumb" title="Cambiar foto">'+(t.foto?'<img src="'+esc(t.foto)+'" alt="" style="object-position:'+esc(t.pos||"center")+'">':jersey(t.patron))+'<input type="file" accept="image/*" hidden data-tphoto="'+i+'"></label><label class="f" style="margin-top:6px">Título<input data-tile="'+i+'" data-tk="titulo" value="'+esc(t.titulo)+'"></label><label class="f" style="margin-top:6px">Encuadre<select data-tile="'+i+'" data-tk="pos">'+o+'</select></label>'+(t.foto?'<button class="linkish" style="font-size:13px;margin-top:6px" data-tnophoto="'+i+'">Quitar foto</button>':"")+'</div>';
     }).join("")+'</div></section>'+
    '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Foto</th><th>Club y modelo</th><th>Categoría y época</th><th>Precio / tachado</th><th>Stock por talle</th><th>Dibujo sin foto</th><th>Etiquetas</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
-   '<p class="hint" style="margin:12px 0 90px">Tocá la miniatura para subir una foto. Se achica sola para que la página cargue rápido. El precio tachado arma la oferta: dejalo en 0 si no hay descuento.</p>'+
+   '<p class="hint" style="margin:12px 0 90px">Subí hasta seis fotos por camiseta. Podés elegir la portada y quitar cualquier foto. El precio tachado arma la oferta: dejalo en 0 si no hay descuento.</p>'+
    '</main>'+
    '<div class="savebar '+(dirty?"show":"")+'"><span>Tenés cambios sin guardar</span><button class="btn btn-ghost" id="discard">Descartar</button><button class="btn btn-save" id="save" '+(busy?"disabled":"")+'>'+(busy?"Guardando…":(hasClaude()?"Guardar y publicar":"Descargar copia HTML"))+'</button></div><div class="toast" id="toast"></div>';
 }
@@ -955,6 +981,7 @@ app.addEventListener("click",function(e){
     dirty=true;renderAdmin();var fi=app.querySelector('.tbl input[data-k="club"]');if(fi){fi.focus();fi.select()}return}
   if((b=t.closest("[data-del]"))){var p=data.productos[+b.dataset.del];if(confirm("¿Borrar "+p.club+" "+p.titulo+"?")){data.productos.splice(+b.dataset.del,1);dirty=true;renderAdmin()}return}
   if((b=t.closest("[data-tnophoto]"))){data.tiles[+b.dataset.tnophoto].foto=null;dirty=true;renderAdmin();return}
+  if((b=t.closest('[data-photo-remove],[data-photo-cover]'))){var remove=b.hasAttribute('data-photo-remove'),key=(remove?b.dataset.photoRemove:b.dataset.photoCover).split(':'),p=data.productos[+key[0]],photos=productPhotos(p),n=+key[1];if(remove)photos.splice(n,1);else photos.unshift(photos.splice(n,1)[0]);setProductPhotos(p,photos);dirty=true;renderAdmin();return}
   if((b=t.closest("[data-nophoto]"))){data.productos[+b.dataset.nophoto].foto=null;dirty=true;renderAdmin();return}
   if(t.closest("#discard")){data=clone(saved);dirty=false;adminMsg=null;renderAdmin();return}
   if(t.closest("#save")){save();return}
@@ -992,7 +1019,7 @@ app.addEventListener("change",function(e){
   if(t.id==="sort"){filt.orden=t.value;refreshCatalog();return}
   if(t.dataset.tile&&t.tagName==="SELECT"){data.tiles[+t.dataset.tile][t.dataset.tk]=t.value;dirty=true;renderAdmin();return}
   if(t.dataset.tphoto!=null&&t.files&&t.files[0]){var ti=+t.dataset.tphoto;resizePhoto(t.files[0],function(url){data.tiles[ti].foto=url;dirty=true;renderAdmin()},1000);return}
-  if(t.dataset.photo!=null&&t.files&&t.files[0]){var i=+t.dataset.photo;resizePhoto(t.files[0],function(url){data.productos[i].foto=url;dirty=true;renderAdmin()});return}
+  if(t.dataset.photo!=null&&t.files&&t.files.length){var p=data.productos[+t.dataset.photo],current=productPhotos(p),files=Array.from(t.files);if(files.length+current.length>6){toast('Podés cargar hasta seis fotos por camiseta.');t.value='';return}t.disabled=true;Promise.all(files.map(readProductPhoto)).then(function(urls){setProductPhotos(p,current.concat(urls));dirty=true;renderAdmin()}).catch(function(err){t.disabled=false;t.value='';toast(err.message)});return}
   if(t.dataset.k){
     var p=data.productos[+t.dataset.i];
     if(t.type==="checkbox") setPath(p,t.dataset.k,t.checked);

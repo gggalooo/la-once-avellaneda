@@ -67,9 +67,17 @@ Las imágenes proceden del prototipo y de fichas de proveedores; no se agregó u
 La página puede leer el catálogo desde una planilla de Google y anotar ahí los pedidos y los avisos de stock.
 
 1. Importar `planilla/La-ONCE-planilla.xlsx` a Google Drive y guardarla como Hoja de cálculo de Google.
-2. Compartir → "Cualquier persona con el enlace" → Lector.
-3. Extensiones → Apps Script: pegar `planilla/codigo-apps-script.txt` e implementarlo como Aplicación web (Ejecutar como: Yo · Acceso: Cualquier persona).
-4. Cargar en `src/catalogo.json` → `config.planilla` el link de la planilla y en `config.planillaApp` la URL que termina en `/exec`. Después `npm run build`.
+2. Mantener **Compartir → Acceso general → Restringido**. La planilla incluye pedidos y no debe hacerse pública.
+3. Extensiones → Apps Script: pegar `planilla/instalar.gs`, guardar y ejecutar `configurarTienda` como propietario. Revisar y autorizar los permisos de Google. Al volver a abrir la planilla aparece **La ONCE → Cargar camisetas**.
+4. El propietario puede sumar hasta dos compañeros desde **La ONCE → Administrar socios**. Cada uno entra con su propia cuenta. El servidor comprueba esa identidad antes de permitir leer o guardar desde el formulario.
+5. Implementar el script como Aplicación web (Ejecutar como: Yo · Acceso: Cualquier persona). La lectura pública sirve únicamente los campos del catálogo activo; no publica la planilla, pedidos ni el formulario privado. Configurar la clave de pedidos según las instrucciones de pagos antes de usarlos.
+6. Cargar en `src/catalogo.json` → `config.panelSocios` el enlace de la planilla y en `config.planillaApp` la URL que termina en `/exec`. Después `npm run build`. Hasta completar la autorización y esta configuración, el formulario no está conectado a la tienda.
+
+El formulario permite hasta seis fotos por camiseta, elegir portada, editar nombre, precio, talles y visibilidad. Las fotos que se suben son públicas mediante enlace para que las vea el cliente; la carpeta y la planilla conservan acceso restringido. Si dos socios editan la misma camiseta, se rechaza el guardado de una versión desactualizada para evitar pisar cambios.
+
+`foto` es la portada y `foto2`–`foto6` son las vistas adicionales en la planilla. En el catálogo fuente se admite `fotos: ["assets/frente.webp", "assets/espalda.webp"]` junto con `foto`. El editor de prueba del sitio solo modifica una copia local; el formulario de Google guarda el catálogo compartido.
+
+El instalador se genera con `npm run build` a partir de `codigo-apps-script.txt`, `editor.gs` y `Panel.html`. Después de cambiarlo, actualizar el código del proyecto y crear una nueva versión de su implementación, conservando la URL.
 
 Pestaña **Productos**: en stock, los talles S–XXL son cantidades; en pedido, 1 = se puede encargar y 0 = no. `activo = NO` oculta la camiseta. Los cambios aparecen al recargar la página (Google puede demorar 1 o 2 minutos).
 

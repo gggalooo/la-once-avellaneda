@@ -50,6 +50,8 @@ function bool(v, def) {
 }
 
 async function productosDePlanilla() {
+  const endpoint=sheetAppUrl();
+  if(endpoint){const u=new URL(endpoint);u.searchParams.set('action','catalogo');const r=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)throw Error('No se pudo leer el catálogo');const j=await r.json();if(!j.ok||!Array.isArray(j.productos))throw Error('Catálogo no válido');return j.productos;}
   const id = sheetId();
   if (!id) return null;
   const r = await fetch(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&headers=1&sheet=Productos`, { cache: "no-store", signal: AbortSignal.timeout(4000) });
@@ -77,8 +79,9 @@ export async function cargarCatalogo() {
     });
   }
   let filas = null;
-  try { filas = await productosDePlanilla(); } catch (e) { filas = null; }
+  try { filas = await productosDePlanilla(); } catch (e) { if(sheetAppUrl())throw e;filas = null; }
   if (filas) {
+    if(sheetAppUrl())base.clear();
     for (const r of filas) {
       const id = String(r.id || "").trim();
       if (!id) continue;

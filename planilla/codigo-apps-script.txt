@@ -26,46 +26,46 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     var d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = tienda_();
 
     // Acciones públicas (las manda la página): pedidos por WhatsApp y avisos de stock.
     if (d.tipo === 'pedido') {
       // Los números de pedido online (LOaammdd-XXXXXX) solo los puede anotar el servidor de la tienda.
-      if (/^LO\d{6}-[0-9A-F]{6}$/.test(String(d.codigo || ''))) return respuesta({ ok: false, error: 'codigo reservado' });
-      agregarPedido(ss, d, 'Nuevo');
-      return respuesta({ ok: true });
+      if (/^LO\d{6}-[0-9A-F]{6}$/.test(String(d.codigo || ''))) return respuesta_({ ok: false, error: 'codigo reservado' });
+      agregarPedido_(ss, d, 'Nuevo');
+      return respuesta_({ ok: true });
     }
     if (d.tipo === 'aviso_stock') {
-      ss.getSheetByName(HOJA_AVISOS).appendRow([new Date(), txt(d.email, 120), txt(d.producto, 200), txt(d.id, 80)]);
-      return respuesta({ ok: true });
+      ss.getSheetByName(HOJA_AVISOS).appendRow([new Date(), txt_(d.email, 120), txt_(d.producto, 200), txt_(d.id, 80)]);
+      return respuesta_({ ok: true });
     }
 
     // Acciones protegidas (solo el servidor de la tienda, con la clave): pagos online.
-    if (CLAVE === 'CAMBIAR-POR-UNA-CLAVE-LARGA' || d.clave !== CLAVE) return respuesta({ ok: false, error: 'clave' });
+    if (CLAVE === 'CAMBIAR-POR-UNA-CLAVE-LARGA' || d.clave !== CLAVE) return respuesta_({ ok: false, error: 'clave' });
 
     if (d.tipo === 'pedido_online') {
-      if (!buscarFila(ss.getSheetByName(HOJA_PEDIDOS), d.codigo)) agregarPedido(ss, d, d.estado || 'Esperando pago');
-      return respuesta({ ok: true });
+      if (!buscarFila_(ss.getSheetByName(HOJA_PEDIDOS), d.codigo)) agregarPedido_(ss, d, d.estado || 'Esperando pago');
+      return respuesta_({ ok: true });
     }
     if (d.tipo === 'estado') {
-      var hp = ss.getSheetByName(HOJA_PEDIDOS), fila = buscarFila(hp, d.codigo);
-      if (fila && hp.getRange(fila, 10).getValue() !== 'Pagado') hp.getRange(fila, 10).setValue(txt(d.estado, 60));
-      return respuesta({ ok: true });
+      var hp = ss.getSheetByName(HOJA_PEDIDOS), fila = buscarFila_(hp, d.codigo);
+      if (fila && hp.getRange(fila, 10).getValue() !== 'Pagado') hp.getRange(fila, 10).setValue(txt_(d.estado, 60));
+      return respuesta_({ ok: true });
     }
-    if (d.tipo === 'pago') return respuesta(registrarPago(ss, d));
+    if (d.tipo === 'pago') return respuesta_(registrarPago_(ss, d));
 
-    return respuesta({ ok: false, error: 'tipo desconocido' });
+    return respuesta_({ ok: false, error: 'tipo desconocido' });
   } catch (err) {
-    return respuesta({ ok: false, error: String(err) });
+    return respuesta_({ ok: false, error: String(err) });
   } finally {
     lock.releaseLock();
   }
 }
 
 // Marca el pedido como pagado y descuenta el stock. Si ya estaba pagado no hace nada (no descuenta dos veces).
-function registrarPago(ss, d) {
+function registrarPago_(ss, d) {
   var hp = ss.getSheetByName(HOJA_PEDIDOS);
-  var fila = buscarFila(hp, d.codigo);
+  var fila = buscarFila_(hp, d.codigo);
   if (fila && hp.getRange(fila, 10).getValue() === 'Pagado') return { ok: true, repetido: true };
 
   var sinStock = [];
@@ -87,31 +87,31 @@ function registrarPago(ss, d) {
     }
   });
 
-  if (!fila && d.nombre) { agregarPedido(ss, d, 'Pagado'); fila = buscarFila(hp, d.codigo); }
+  if (!fila && d.nombre) { agregarPedido_(ss, d, 'Pagado'); fila = buscarFila_(hp, d.codigo); }
   if (fila) {
     hp.getRange(fila, 10).setValue('Pagado');
-    var nota = 'Pago MP ' + txt(d.pago_id, 40) + (d.nota ? ' · ' + txt(d.nota, 300) : '') + (sinStock.length ? ' · REVISAR STOCK: ' + sinStock.join(', ') : '');
+    var nota = 'Pago MP ' + txt_(d.pago_id, 40) + (d.nota ? ' · ' + txt_(d.nota, 300) : '') + (sinStock.length ? ' · REVISAR STOCK: ' + sinStock.join(', ') : '');
     hp.getRange(fila, 11).setValue(nota);
   }
   return { ok: true, sinStock: sinStock.length ? sinStock : null };
 }
 
-function agregarPedido(ss, d, estado) {
+function agregarPedido_(ss, d, estado) {
   ss.getSheetByName(HOJA_PEDIDOS).appendRow([
     new Date(),
-    txt(d.codigo, 30),
-    txt(d.nombre, 80),
-    "'" + txt(d.telefono, 30),
-    txt(d.email, 120),
-    txt(d.entrega, 200),
-    txt(d.pago, 60),
+    txt_(d.codigo, 30),
+    txt_(d.nombre, 80),
+    "'" + txt_(d.telefono, 30),
+    txt_(d.email, 120),
+    txt_(d.entrega, 200),
+    txt_(d.pago, 60),
     Number(d.total) || 0,
-    txt(d.detalle, 4000),
-    txt(estado, 60)
+    txt_(d.detalle, 4000),
+    txt_(estado, 60)
   ]);
 }
 
-function buscarFila(hoja, codigo) {
+function buscarFila_(hoja, codigo) {
   if (!codigo) return 0;
   var col = hoja.getRange(1, 2, Math.max(1, hoja.getLastRow()), 1).getValues();
   for (var i = col.length - 1; i >= 1; i--) if (String(col[i][0]) === String(codigo)) return i + 1;
@@ -119,16 +119,23 @@ function buscarFila(hoja, codigo) {
 }
 
 // Para probar que la URL funciona: abrila en el navegador y tiene que decir {"ok":true}.
-function doGet() {
-  return respuesta({ ok: true, tienda: 'La ONCE Avellaneda' });
+function doGet(e) {
+  if(e&&e.parameter&&e.parameter.action==='catalogo'){
+    var payload={ok:true,productos:catalogoPublico_()};
+    var cb=String(e.parameter.callback||'');
+    if(cb){if(!/^onceCatalog_[a-zA-Z0-9_]{1,70}$/.test(cb))return respuesta_({ok:false,error:'callback no válido'});
+      return ContentService.createTextOutput(cb+'('+JSON.stringify(payload).replace(/</g,'\\u003c')+');').setMimeType(ContentService.MimeType.JAVASCRIPT);}
+    return respuesta_(payload);
+  }
+  return respuesta_({ok:true,tienda:'La ONCE Avellaneda'});
 }
 
 // Texto seguro: corta el largo y evita que algo empiece con "=" y se tome como fórmula.
-function txt(v, max) {
+function txt_(v, max) {
   var s = String(v == null ? '' : v).slice(0, max);
   return /^[=+\-@]/.test(s) ? "'" + s : s;
 }
 
-function respuesta(obj) {
+function respuesta_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }

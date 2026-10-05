@@ -16,7 +16,7 @@ function embed(value){
 }
 const data=JSON.parse(read('src/catalogo.json'));
 const ids=new Set();for(const p of data.productos){if(ids.has(p.id))throw Error('ID repetido: '+p.id);ids.add(p.id);if(!Number.isFinite(p.precio)||p.precio<0)throw Error('Precio inválido: '+p.id)}
-const js=read('src/app.js').replace('/* @include pagos.js */',()=>read('src/pagos.js')).replace('/* @include ruleta.js */',()=>read('src/ruleta.js'));
+const js=read('src/app.js').replace('/* @include galeria.js */',()=>read('src/galeria.js')).replace('/* @include pagos.js */',()=>read('src/pagos.js')).replace('/* @include ruleta.js */',()=>read('src/ruleta.js'));
 if(js.includes('/* @include'))throw Error('Quedó un archivo sin incluir.');
 const html=read('src/index.template.html').replace('{{STYLES}}',()=>read('src/styles.css')).replace('{{CATALOG}}',()=>JSON.stringify(embed(data)).replace(/</g,'\\u003c')).replace('{{APP}}',()=>js);
 const output=path.join(root,'index.html');

@@ -22,7 +22,8 @@
     "precioPersonalizacion": 8000,
     "logo": "assets/logo-once.webp",
     "planilla": "",
-    "planillaApp": ""
+    "planillaApp": "https://script.google.com/macros/s/AKfycbwfUFXRDo9r_WilHXYatyWefW_JbKl5_BtvqibljfBM6oNMCDUALOf-wzFaMFoOc-wb8A/exec",
+    "panelSocios": "https://docs.google.com/spreadsheets/d/1MxY9ql1XOr8Zk8zIHv8rOQiAP-JAQdEAblsZ42FGspQ/edit"
   },
   "productos": [
     {
@@ -590,15 +591,15 @@
       "alt": "Jugador de River Plate mostrando el escudo de la camiseta"
     },
     {
-      "foto": "assets/0acf4da3b9b30e9f.webp",
+      "foto": "assets/enzo-hd.png",
       "alt": "Jugador con camiseta celeste"
     },
     {
-      "foto": "assets/ad45b3cc50003140.webp",
+      "foto": "assets/rashford-hd.png",
       "alt": "Jugador de espaldas con camiseta roja"
     },
     {
-      "foto": "assets/paredes-boca.webp",
+      "foto": "assets/paredes-hd.png",
       "alt": "Leandro Paredes con la camiseta titular de Boca Juniors"
     }
   ],
@@ -609,7 +610,7 @@
     "alt": "Camiseta blanca del Santos FC con BMG, sin percha",
     "foto2": "assets/29a36af564856cf3.webp",
     "alt2": "Camiseta roja del Manchester United 2008 con AIG, sin percha",
-    "foto3": "assets/19eac94ba631ec11.webp",
+    "foto3": "assets/barcelona-retro-hd.png",
     "alt3": "Camiseta retro del Barcelona con el 10"
   },
   "heroPago": {
